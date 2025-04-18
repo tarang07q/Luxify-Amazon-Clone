@@ -1,0 +1,216 @@
+[
+  {
+    "_id": "5d713995b721c3bb38c1f5d0",
+    "title": "iPhone 15 Pro Max - 256GB - Deep Blue",
+    "description": "The iPhone 15 Pro Max features a stunning 6.7-inch Super Retina XDR display with ProMotion technology, A17 Pro chip, and a professional camera system with 48MP main camera. Experience the power of Apple's latest flagship smartphone.",
+    "brand": "Apple",
+    "price": 1199.99,
+    "mrp": 1299.99,
+    "discount": 7,
+    "stock": 50,
+    "images": ["/uploads/iphone15promax.jpg"],
+    "category": "Electronics",
+    "specifications": {
+      "display": "6.7-inch Super Retina XDR",
+      "processor": "A17 Pro chip",
+      "camera": "48MP main, 12MP ultra-wide, 12MP telephoto",
+      "battery": "4422 mAh",
+      "storage": "256GB",
+      "os": "iOS 17"
+    },
+    "featured": true,
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d713a66ec8f2b88b8f830b8",
+    "title": "Samsung Galaxy S24 Ultra - 512GB - Titanium Black",
+    "description": "The Galaxy S24 Ultra is Samsung's most advanced smartphone yet, featuring a 6.8-inch Dynamic AMOLED 2X display, Snapdragon 8 Gen 3 processor, and a revolutionary 200MP camera system. Experience the future of mobile technology.",
+    "brand": "Samsung",
+    "price": 1299.99,
+    "mrp": 1399.99,
+    "discount": 7,
+    "stock": 35,
+    "images": ["/uploads/s24ultra.jpg"],
+    "category": "Electronics",
+    "specifications": {
+      "display": "6.8-inch Dynamic AMOLED 2X",
+      "processor": "Snapdragon 8 Gen 3",
+      "camera": "200MP main, 12MP ultra-wide, 10MP telephoto, 10MP periscope",
+      "battery": "5000 mAh",
+      "storage": "512GB",
+      "os": "Android 14"
+    },
+    "featured": true,
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff787",
+    "title": "MacBook Pro 16-inch - M3 Max - 32GB RAM - 1TB SSD",
+    "description": "The most powerful MacBook Pro ever is here. Featuring the blazing-fast M3 Max chip, stunning 16-inch Liquid Retina XDR display, and up to 32 hours of battery life. Perfect for professionals and creatives who demand the best.",
+    "brand": "Apple",
+    "price": 3499.99,
+    "mrp": 3699.99,
+    "discount": 5,
+    "stock": 20,
+    "images": ["/uploads/macbookpro.jpg"],
+    "category": "Computers",
+    "specifications": {
+      "display": "16-inch Liquid Retina XDR",
+      "processor": "M3 Max chip",
+      "memory": "32GB unified memory",
+      "storage": "1TB SSD",
+      "graphics": "38-core GPU",
+      "battery": "Up to 32 hours"
+    },
+    "featured": true,
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a1b7b292f5f8ceff788",
+    "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+    "description": "Experience industry-leading noise cancellation with the Sony WH-1000XM5. These premium wireless headphones feature exceptional sound quality, up to 30 hours of battery life, and advanced AI noise cancellation technology.",
+    "brand": "Sony",
+    "price": 349.99,
+    "mrp": 399.99,
+    "discount": 12,
+    "stock": 75,
+    "images": ["/uploads/sonywh1000xm5.jpg"],
+    "category": "Electronics",
+    "specifications": {
+      "type": "Over-ear",
+      "connectivity": "Bluetooth 5.2",
+      "battery": "Up to 30 hours",
+      "noise cancellation": "Advanced AI NC",
+      "charging": "USB-C",
+      "weight": "250g"
+    },
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff789",
+    "title": "Amazon Echo Show 10 (3rd Gen) - Smart Display with Alexa",
+    "description": "The Echo Show 10 features a 10.1-inch HD screen that automatically moves to face you, premium sound, and a 13MP camera for video calls. Control your smart home, watch shows, make video calls, and more with Alexa.",
+    "brand": "Amazon",
+    "price": 249.99,
+    "mrp": 269.99,
+    "discount": 7,
+    "stock": 60,
+    "images": ["/uploads/echoshow10.jpg"],
+    "category": "Smart Home",
+    "specifications": {
+      "display": "10.1-inch HD",
+      "camera": "13MP",
+      "audio": "2 x 1-inch tweeters, 3-inch woofer",
+      "connectivity": "Wi-Fi, Bluetooth",
+      "assistant": "Alexa",
+      "motion": "Automatic rotation"
+    },
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff790",
+    "title": "LG C3 65-inch 4K OLED Smart TV",
+    "description": "Experience breathtaking picture quality with the LG C3 OLED TV. Featuring perfect blacks, infinite contrast, and over a billion colors. Powered by the α9 Gen6 AI Processor 4K for stunning picture and sound.",
+    "brand": "LG",
+    "price": 1799.99,
+    "mrp": 2099.99,
+    "discount": 14,
+    "stock": 25,
+    "images": ["/uploads/lgc3oled.jpg"],
+    "category": "Electronics",
+    "specifications": {
+      "display": "65-inch 4K OLED",
+      "processor": "α9 Gen6 AI Processor 4K",
+      "refresh rate": "120Hz",
+      "hdr": "Dolby Vision, HDR10, HLG",
+      "audio": "Dolby Atmos",
+      "smart platform": "webOS 23"
+    },
+    "featured": true,
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff791",
+    "title": "Dyson V15 Detect Absolute Cordless Vacuum Cleaner",
+    "description": "The Dyson V15 Detect features a laser that reveals microscopic dust, an LCD screen that counts and categorizes particles, and powerful suction for deep cleaning. Experience the most intelligent cordless vacuum.",
+    "brand": "Dyson",
+    "price": 749.99,
+    "mrp": 799.99,
+    "discount": 6,
+    "stock": 30,
+    "images": ["/uploads/dysonv15.jpg"],
+    "category": "Home & Kitchen",
+    "specifications": {
+      "suction power": "230 AW",
+      "battery life": "Up to 60 minutes",
+      "weight": "6.8 lbs",
+      "bin volume": "0.2 gallons",
+      "filtration": "HEPA",
+      "features": "Laser dust detection, particle counter"
+    },
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff792",
+    "title": "Bose QuietComfort Ultra Earbuds - Wireless Noise Cancelling",
+    "description": "Bose QuietComfort Ultra Earbuds deliver world-class noise cancellation and immersive sound in a comfortable, secure fit. With up to 6 hours of battery life and touch controls, these earbuds are perfect for all-day listening.",
+    "brand": "Bose",
+    "price": 299.99,
+    "mrp": 329.99,
+    "discount": 9,
+    "stock": 45,
+    "images": ["/uploads/boseqcearbuds.jpg"],
+    "category": "Electronics",
+    "specifications": {
+      "type": "True wireless earbuds",
+      "noise cancellation": "Adjustable ANC",
+      "battery life": "6 hours (24 with case)",
+      "charging": "USB-C, wireless",
+      "water resistance": "IPX4",
+      "connectivity": "Bluetooth 5.3"
+    },
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff793",
+    "title": "Nintendo Switch OLED Model - White",
+    "description": "The Nintendo Switch OLED Model features a vibrant 7-inch OLED screen, enhanced audio, 64GB of internal storage, and a wired LAN port in the dock. Play at home on the TV or on-the-go with this versatile gaming system.",
+    "brand": "Nintendo",
+    "price": 349.99,
+    "mrp": 349.99,
+    "discount": 0,
+    "stock": 40,
+    "images": ["/uploads/switcholed.jpg"],
+    "category": "Electronics",
+    "specifications": {
+      "display": "7-inch OLED",
+      "storage": "64GB (expandable)",
+      "battery": "4.5-9 hours",
+      "connectivity": "Wi-Fi, Bluetooth, LAN port",
+      "modes": "TV, Tabletop, Handheld",
+      "includes": "Joy-Con controllers, dock"
+    },
+    "user": "5d7a514b5d2c12c7449be042"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff794",
+    "title": "Philips Hue White and Color Ambiance Starter Kit",
+    "description": "Transform your home lighting with the Philips Hue Starter Kit. Includes 4 color-changing smart bulbs and a Hue Bridge. Control with your voice, app, or smart home system for millions of colors and scenes.",
+    "brand": "Philips",
+    "price": 199.99,
+    "mrp": 219.99,
+    "discount": 9,
+    "stock": 55,
+    "images": ["/uploads/philipshue.jpg"],
+    "category": "Smart Home",
+    "specifications": {
+      "bulbs": "4 x E26 color bulbs",
+      "bridge": "Hue Bridge included",
+      "compatibility": "Alexa, Google Assistant, HomeKit",
+      "colors": "16 million colors",
+      "lifespan": "25,000 hours",
+      "wattage": "9.5W (60W equivalent)"
+    },
+    "user": "5d7a514b5d2c12c7449be042"
+  }
+]

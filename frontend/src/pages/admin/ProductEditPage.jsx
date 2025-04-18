@@ -61,10 +61,10 @@ const ProductEditPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    
+
     // Calculate discount if MRP and price are provided
     const calculatedDiscount = mrp > 0 ? Math.round(((mrp - price) / mrp) * 100) : 0;
-    
+
     try {
       await updateProduct({
         productId,
@@ -96,13 +96,24 @@ const ProductEditPage = () => {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append('image', file);
-    
+
     try {
       const res = await uploadProductImage(formData).unwrap();
-      setImages([...images, res.data.filePath]);
+      console.log('Upload response:', res);
       toast.success('Image uploaded successfully');
+
+      // Check if the response has the expected structure
+      if (res.image) {
+        setImages([...images, res.image]);
+      } else if (res.data && res.data.filePath) {
+        setImages([...images, res.data.filePath]);
+      } else {
+        toast.warning('Image uploaded but path not returned correctly');
+        console.error('Unexpected response format:', res);
+      }
     } catch (err) {
-      toast.error(err?.data?.error || err.error || 'An error occurred');
+      console.error('Upload error:', err);
+      toast.error(err?.data?.error || err.error || 'An error occurred during upload');
     }
   };
 
@@ -130,25 +141,25 @@ const ProductEditPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <Link to="/admin/products" className="flex items-center text-primary mb-4 hover:underline">
-        <FaArrowLeft className="mr-1" /> Back to Products
-      </Link>
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="flex items-center mb-6">
+        <Link to="/admin/products" className="flex items-center text-primary hover:underline mr-4">
+          <FaArrowLeft className="mr-1" /> Back to Products
+        </Link>
+        <h1 className="text-2xl font-bold">Edit Product</h1>
+      </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold mb-6">Edit Product</h1>
-
-        {isLoading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">
-            {error?.data?.error || error.error || 'An error occurred'}
-          </Message>
-        ) : (
-          <form onSubmit={submitHandler}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <div className="mb-4">
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">
+          {error?.data?.error || error.error || 'An error occurred'}
+        </Message>
+      ) : (
+        <form onSubmit={submitHandler}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <div className="mb-4">
                   <label htmlFor="title" className="block text-gray-700 mb-1">
                     Title
                   </label>
@@ -293,10 +304,10 @@ const ProductEditPage = () => {
                     Featured Product
                   </label>
                 </div>
-              </div>
+            </div>
 
-              <div>
-                <div className="mb-4">
+            <div>
+              <div className="mb-4">
                   <label className="block text-gray-700 mb-1">Images</label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2">
                     {images.map((img, index) => (
@@ -379,21 +390,20 @@ const ProductEditPage = () => {
                     Add Specification
                   </button>
                 </div>
-              </div>
             </div>
+          </div>
 
-            <div className="flex justify-end mt-6">
-              <button
-                type="submit"
-                className="btn-primary"
-                disabled={loadingUpdate}
-              >
-                {loadingUpdate ? <Loader size="small" /> : 'Update Product'}
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
+          <div className="flex justify-end mt-6">
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={loadingUpdate}
+            >
+              {loadingUpdate ? <Loader size="small" /> : 'Update Product'}
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

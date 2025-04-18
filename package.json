@@ -10,7 +10,10 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder.js -i",
     "data:destroy": "node backend/seeder.js -d",
-    "admin:create": "node backend/seeder.js -a"
+    "admin:create": "node backend/seeder.js -a",
+    "products:import": "node backend/seedProducts.js",
+    "products:destroy": "node backend/seedProducts.js -d",
+    "create:admin": "node backend/createSimpleAdmin.js"
   },
   "keywords": [
     "ecommerce",

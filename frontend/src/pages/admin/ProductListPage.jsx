@@ -94,7 +94,7 @@ const ProductListPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h1 className="text-2xl font-bold mb-4 md:mb-0">Products</h1>
         <button

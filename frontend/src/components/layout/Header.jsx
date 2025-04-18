@@ -1,22 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes, FaShoppingBag } from 'react-icons/fa';
 import { logout } from '../../slices/authSlice';
 import { useLogoutMutation } from '../../slices/services/authService';
+import { useTheme } from '../../context/ThemeContext';
+import ThemeToggler from '../ThemeToggler';
 import './Header.css';
 
 const Header = () => {
   const [keyword, setKeyword] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { theme, currentTheme } = useTheme();
 
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
 
   const [logoutApiCall] = useLogoutMutation();
+
+  // Create a ref for the dropdown
+  const dropdownRef = useRef(null);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Add event listener when dropdown is open
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -30,11 +56,19 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-      await logoutApiCall().unwrap();
+      // First dispatch the logout action to clear the Redux state
       dispatch(logout());
+
+      // Then call the API to clear the cookie on the server
+      await logoutApiCall().unwrap();
+
+      // Navigate to login page
       navigate('/login');
     } catch (err) {
-      console.error(err);
+      console.error('Logout error:', err);
+      // Even if the API call fails, we still want to clear the local state
+      dispatch(logout());
+      navigate('/login');
     }
   };
 
@@ -42,12 +76,21 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Close dropdown when clicking outside
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
   return (
-    <header className="header">
+    <header className="header themed-nav" style={{ backgroundColor: theme.navBg, color: theme.navText, borderColor: theme.border }}>
       <div className="container">
         <div className="header-content">
           {/* Logo */}
-          <Link to="/" className="logo">
+          <Link to="/" className="logo" style={{ color: theme.primary }}>
             <FaShoppingBag className="logo-icon" />
             Luxify
           </Link>
@@ -61,11 +104,17 @@ const Header = () => {
                 onChange={(e) => setKeyword(e.target.value)}
                 value={keyword}
                 placeholder="Search products..."
-                className="search-input"
+                className="search-input themed-input"
+                style={{
+                  backgroundColor: theme.background,
+                  color: theme.text,
+                  borderColor: theme.border
+                }}
               />
               <button
                 type="submit"
                 className="search-button"
+                style={{ backgroundColor: theme.primary, color: theme.buttonText }}
               >
                 <FaSearch />
               </button>
@@ -73,7 +122,11 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="nav-links">
+          <div className="nav-links" style={{ color: theme.navText }}>
+            <Link to="/shop" className="nav-link">
+              <FaShoppingBag className="mr-2" />
+              Shop
+            </Link>
             <Link to="/cart" className="nav-link">
               <FaShoppingCart className="cart-icon" />
               Cart
@@ -84,38 +137,64 @@ const Header = () => {
               )}
             </Link>
 
+            <ThemeToggler />
+
             {user ? (
-              <div className="user-dropdown">
-                <button className="nav-link">
+              <div className="user-dropdown" ref={dropdownRef}>
+                <button className="nav-link" onClick={toggleDropdown} style={{ color: theme.navText }}>
                   <FaUser style={{marginRight: '5px'}} />
                   {user.name}
                 </button>
-                <div className="dropdown-menu">
-                  <Link to="/profile" className="dropdown-item">Profile</Link>
-                  <Link to="/orderhistory" className="dropdown-item">Orders</Link>
-                  {user.role === 'admin' && (
-                    <>
-                      <Link to="/admin/dashboard" className="dropdown-item">Dashboard</Link>
-                      <Link to="/admin/products" className="dropdown-item">Products</Link>
-                      <Link to="/admin/orders" className="dropdown-item">Orders</Link>
-                    </>
-                  )}
-                  <button onClick={logoutHandler} className="dropdown-item">Logout</button>
-                </div>
+                {isDropdownOpen && (
+                  <div className="dropdown-menu" style={{
+                    backgroundColor: theme.cardBg,
+                    color: theme.text,
+                    borderColor: theme.border,
+                    boxShadow: theme.shadow
+                  }}>
+                    <Link to="/profile" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Profile</Link>
+                    <Link to="/orderhistory" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Orders</Link>
+                    {user.role === 'admin' && (
+                      <>
+                        <Link to="/admin/dashboard" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Dashboard</Link>
+                        <Link to="/admin/products" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Products</Link>
+                        <Link to="/admin/orders" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Orders</Link>
+                      </>
+                    )}
+                    <button
+                      onClick={() => {
+                        logoutHandler();
+                        closeDropdown();
+                      }}
+                      className="dropdown-item"
+                      style={{ color: theme.error }}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="auth-buttons">
-                <Link to="/login" className="signin-button">
+                <Link to="/login" className="signin-button" style={{
+                  backgroundColor: theme.buttonPrimary,
+                  color: theme.buttonText,
+                  boxShadow: theme.shadow
+                }}>
                   <FaUser style={{marginRight: '5px'}} />
                   Sign In
                 </Link>
-                <Link to="/register" className="register-button">Register</Link>
+                <Link to="/register" className="register-button" style={{
+                  backgroundColor: 'transparent',
+                  color: theme.navText,
+                  borderColor: theme.navText
+                }}>Register</Link>
               </div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={toggleMenu} className="menu-button">
+          <button onClick={toggleMenu} className="menu-button" style={{ color: theme.navText }}>
             {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
@@ -129,11 +208,17 @@ const Header = () => {
               onChange={(e) => setKeyword(e.target.value)}
               value={keyword}
               placeholder="Search products..."
-              className="search-input"
+              className="search-input themed-input"
+              style={{
+                backgroundColor: theme.background,
+                color: theme.text,
+                borderColor: theme.border
+              }}
             />
             <button
               type="submit"
               className="search-button"
+              style={{ backgroundColor: theme.primary, color: theme.buttonText }}
             >
               <FaSearch />
             </button>
@@ -141,7 +226,22 @@ const Header = () => {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
+        <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`} style={{
+          backgroundColor: theme.navBg,
+          color: theme.navText,
+          borderColor: theme.border,
+          boxShadow: theme.shadow
+        }}>
+          <Link
+            to="/shop"
+            className="mobile-nav-link"
+            onClick={toggleMenu}
+          >
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <FaShoppingBag style={{marginRight: '8px'}} />
+              Shop
+            </div>
+          </Link>
           <Link
             to="/cart"
             className="mobile-nav-link"

@@ -20,7 +20,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/auth/logout',
         method: 'POST',
+        credentials: 'include', // Include cookies in the request
       }),
+      // Force a cache invalidation to ensure we don't use cached data after logout
+      invalidatesTags: ['User'],
     }),
     getMe: builder.query({
       query: () => '/auth/me',

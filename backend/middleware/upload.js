@@ -2,12 +2,15 @@ const multer = require('multer');
 const path = require('path');
 
 // Set storage engine
+
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, path.join(__dirname, '../uploads/'));
   },
   filename: function(req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    // Clean the filename to remove special characters
+    const cleanFileName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '-');
+    cb(null, `${Date.now()}-${cleanFileName}`);
   }
 });
 

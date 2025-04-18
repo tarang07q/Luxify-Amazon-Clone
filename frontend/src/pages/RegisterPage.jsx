@@ -51,15 +51,15 @@ const RegisterPage = () => {
   return (
     <FormContainer>
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold flex items-center justify-center text-primary">
+        <h1 className="text-3xl font-bold flex items-center justify-center text-indigo-600">
           <FaUser className="mr-2" /> Create Account
         </h1>
-        <p className="text-gray-600 mt-2">Join Amazer and start shopping today!</p>
+        <p className="text-gray-700 mt-2">Join Luxify and start shopping today!</p>
       </div>
 
       <form onSubmit={submitHandler}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 mb-1">
+          <label htmlFor="name" className="block text-gray-800 font-medium mb-1">
             Name
           </label>
           <input
@@ -74,7 +74,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-gray-800 font-medium mb-1">
             Email Address
           </label>
           <input
@@ -89,7 +89,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-gray-800 font-medium mb-1">
             Password
           </label>
           <input
@@ -104,7 +104,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-gray-700 mb-1">
+          <label htmlFor="confirmPassword" className="block text-gray-800 font-medium mb-1">
             Confirm Password
           </label>
           <input
@@ -120,7 +120,7 @@ const RegisterPage = () => {
 
         <button
           type="submit"
-          className="btn-primary w-full py-3 rounded-full flex items-center justify-center transition-transform transform hover:scale-105"
+          className="btn-primary w-full py-3 rounded-full flex items-center justify-center transition-transform transform hover:scale-105 bg-indigo-600 text-white font-semibold"
           disabled={isLoading}
         >
           {isLoading ? <Loader size="small" /> : 'Create Account'}
@@ -129,10 +129,10 @@ const RegisterPage = () => {
 
       <div className="py-5 border-t mt-6">
         <div className="text-center">
-          <p className="text-gray-600 mb-2">Already have an account?</p>
+          <p className="text-gray-700 mb-2">Already have an account?</p>
           <Link
             to={redirect ? `/login?redirect=${redirect}` : '/login'}
-            className="text-primary hover:underline font-semibold flex items-center justify-center"
+            className="text-indigo-600 hover:underline font-semibold flex items-center justify-center"
           >
             Sign In <FaArrowRight className="ml-1" />
           </Link>

@@ -1,14 +1,16 @@
 import React from 'react';
-import { FaCreditCard, FaChartLine, FaFileInvoiceDollar, FaShieldAlt, FaGift, FaPlane } from 'react-icons/fa';
-import PageTemplate from '../components/layout/PageTemplate';
+import { FaCreditCard, FaChartLine, FaFileInvoiceDollar, FaShieldAlt, FaGift, FaPlane, FaCheckCircle } from 'react-icons/fa';
+import FooterPageTemplate from '../components/layout/FooterPageTemplate';
 
 const BusinessCardPage = () => {
   return (
-    <PageTemplate 
-      title="Luxify Business Card" 
-      breadcrumbs={[{ text: 'Luxify Business Card' }]}
+    <FooterPageTemplate
+      title="Luxify Business Card"
+      subtitle="The ultimate business card for your company"
+      icon={<FaCreditCard />}
+      breadcrumbs={[{ text: 'Payment Products', link: '/payment-products' }, { text: 'Business Card' }]}
     >
-      <div className="page-section">
+      <div className="footer-page-section">
         <div className="bg-gradient-to-r from-indigo-500 to-pink-500 text-white p-8 rounded-xl mb-8">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-2/3 mb-6 md:mb-0 md:pr-8">
@@ -35,74 +37,74 @@ const BusinessCardPage = () => {
             </div>
           </div>
         </div>
-        
+
         <p className="text-lg">
-          The Luxify Business Card is designed specifically for businesses of all sizes, 
-          from startups to enterprises. It offers a seamless way to manage your business 
-          purchases on Luxify while earning rewards and gaining valuable insights into 
+          The Luxify Business Card is designed specifically for businesses of all sizes,
+          from startups to enterprises. It offers a seamless way to manage your business
+          purchases on Luxify while earning rewards and gaining valuable insights into
           your spending patterns.
         </p>
       </div>
 
-      <div className="page-section">
-        <h2>Key Benefits</h2>
-        
-        <div className="info-grid">
-          <div className="info-card">
-            <FaChartLine className="text-primary text-3xl mb-4" />
-            <h3>5% Back on Luxify Business</h3>
-            <p>
-              Earn 5% back on all purchases made at Luxify Business, including office supplies, 
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Key Benefits</h2>
+
+        <div className="footer-card-grid">
+          <div className="footer-card">
+            <FaChartLine className="footer-card-icon" />
+            <h3 className="footer-card-title">5% Back on Luxify Business</h3>
+            <p className="footer-card-content">
+              Earn 5% back on all purchases made at Luxify Business, including office supplies,
               electronics, and business services.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaFileInvoiceDollar className="text-primary text-3xl mb-4" />
-            <h3>Detailed Expense Tracking</h3>
-            <p>
-              Easily categorize and track business expenses with detailed reporting and 
+
+          <div className="footer-card">
+            <FaFileInvoiceDollar className="footer-card-icon" />
+            <h3 className="footer-card-title">Detailed Expense Tracking</h3>
+            <p className="footer-card-content">
+              Easily categorize and track business expenses with detailed reporting and
               QuickBooks integration.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaShieldAlt className="text-primary text-3xl mb-4" />
-            <h3>Purchase Protection</h3>
-            <p>
+
+          <div className="footer-card">
+            <FaShieldAlt className="footer-card-icon" />
+            <h3 className="footer-card-title">Purchase Protection</h3>
+            <p className="footer-card-content">
               Get additional protection on eligible purchases against damage or theft for 120 days.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaGift className="text-primary text-3xl mb-4" />
-            <h3>No Annual Fee</h3>
-            <p>
+
+          <div className="footer-card">
+            <FaGift className="footer-card-icon" />
+            <h3 className="footer-card-title">No Annual Fee</h3>
+            <p className="footer-card-content">
               Enjoy all the benefits of the Luxify Business Card with no annual fee.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaPlane className="text-primary text-3xl mb-4" />
-            <h3>Travel Benefits</h3>
-            <p>
+
+          <div className="footer-card">
+            <FaPlane className="footer-card-icon" />
+            <h3 className="footer-card-title">Travel Benefits</h3>
+            <p className="footer-card-content">
               Access to travel insurance, car rental coverage, and no foreign transaction fees.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaCreditCard className="text-primary text-3xl mb-4" />
-            <h3>Employee Cards</h3>
-            <p>
+
+          <div className="footer-card">
+            <FaCreditCard className="footer-card-icon" />
+            <h3 className="footer-card-title">Employee Cards</h3>
+            <p className="footer-card-content">
               Add employee cards with custom spending limits and earn rewards on their purchases too.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="page-section">
-        <h2>Rewards Program</h2>
-        
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Rewards Program</h2>
+
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-100">
@@ -136,7 +138,7 @@ const BusinessCardPage = () => {
             </tbody>
           </table>
         </div>
-        
+
         <div className="mt-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <h3 className="text-lg font-semibold mb-2">How Rewards Work</h3>
           <ul className="list-disc pl-6 space-y-2">
@@ -148,9 +150,9 @@ const BusinessCardPage = () => {
         </div>
       </div>
 
-      <div className="page-section">
-        <h2>Business Tools</h2>
-        
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Business Tools</h2>
+
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-indigo-50 to-pink-50 p-6 rounded-xl">
             <h3 className="text-xl font-semibold mb-3">Expense Management</h3>
@@ -165,7 +167,7 @@ const BusinessCardPage = () => {
               <li>Receipt matching and storage</li>
             </ul>
           </div>
-          
+
           <div className="bg-gradient-to-r from-indigo-50 to-pink-50 p-6 rounded-xl">
             <h3 className="text-xl font-semibold mb-3">Employee Card Management</h3>
             <p className="mb-4">
@@ -182,52 +184,52 @@ const BusinessCardPage = () => {
         </div>
       </div>
 
-      <div className="page-section">
-        <h2>How to Apply</h2>
-        
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">How to Apply</h2>
+
         <div className="relative">
           <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200 hidden md:block"></div>
-          
+
           <div className="space-y-12">
             <div className="relative flex flex-col md:flex-row">
               <div className="md:w-8 md:h-8 bg-primary rounded-full z-10 flex-shrink-0 mx-auto md:mx-0 mb-4 md:mb-0"></div>
               <div className="md:ml-12">
                 <h3 className="text-xl font-semibold mb-2">1. Check Eligibility</h3>
                 <p>
-                  To be eligible, you must have a registered business (LLC, corporation, sole proprietorship, etc.) 
+                  To be eligible, you must have a registered business (LLC, corporation, sole proprietorship, etc.)
                   with a valid EIN or SSN for business purposes.
                 </p>
               </div>
             </div>
-            
+
             <div className="relative flex flex-col md:flex-row">
               <div className="md:w-8 md:h-8 bg-primary rounded-full z-10 flex-shrink-0 mx-auto md:mx-0 mb-4 md:mb-0"></div>
               <div className="md:ml-12">
                 <h3 className="text-xl font-semibold mb-2">2. Complete Application</h3>
                 <p>
-                  Fill out the online application with your business and personal information. 
+                  Fill out the online application with your business and personal information.
                   The application typically takes less than 10 minutes to complete.
                 </p>
               </div>
             </div>
-            
+
             <div className="relative flex flex-col md:flex-row">
               <div className="md:w-8 md:h-8 bg-primary rounded-full z-10 flex-shrink-0 mx-auto md:mx-0 mb-4 md:mb-0"></div>
               <div className="md:ml-12">
                 <h3 className="text-xl font-semibold mb-2">3. Receive Decision</h3>
                 <p>
-                  Most applications receive an instant decision. In some cases, we may need 
+                  Most applications receive an instant decision. In some cases, we may need
                   additional information to process your application.
                 </p>
               </div>
             </div>
-            
+
             <div className="relative flex flex-col md:flex-row">
               <div className="md:w-8 md:h-8 bg-primary rounded-full z-10 flex-shrink-0 mx-auto md:mx-0 mb-4 md:mb-0"></div>
               <div className="md:ml-12">
                 <h3 className="text-xl font-semibold mb-2">4. Start Using Your Card</h3>
                 <p>
-                  Once approved, you'll receive your card within 7-10 business days. You can start 
+                  Once approved, you'll receive your card within 7-10 business days. You can start
                   using your card immediately for online purchases through your Luxify account.
                 </p>
               </div>
@@ -236,22 +238,17 @@ const BusinessCardPage = () => {
         </div>
       </div>
 
-      <div className="page-section">
-        <h2>Ready to Apply?</h2>
-        <p className="mb-6">
+      <div className="footer-cta-container">
+        <h3 className="footer-cta-title">Ready to Apply?</h3>
+        <p className="footer-cta-description">
           Take control of your business spending and start earning rewards with the Luxify Business Card.
         </p>
-        
-        <div className="flex flex-wrap gap-4">
-          <button className="cta-button">
-            Apply Now
-          </button>
-          <button className="secondary-button">
-            Learn More
-          </button>
-        </div>
+
+        <button className="footer-cta-button">
+          Apply Now
+        </button>
       </div>
-    </PageTemplate>
+    </FooterPageTemplate>
   );
 };
 

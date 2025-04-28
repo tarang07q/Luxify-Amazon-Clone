@@ -1,11 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes, FaShoppingBag } from 'react-icons/fa';
+import {
+  FaShoppingCart,
+  FaUser,
+  FaSearch,
+  FaBars,
+  FaTimes,
+  FaShoppingBag,
+  FaHome,
+  FaHeart,
+  FaSignOutAlt,
+  FaUserCircle,
+  FaClipboardList,
+  FaTachometerAlt,
+  FaBoxes,
+  FaShippingFast
+} from 'react-icons/fa';
 import { logout } from '../../slices/authSlice';
 import { useLogoutMutation } from '../../slices/services/authService';
 import { useTheme } from '../../context/ThemeContext';
 import ThemeToggler from '../ThemeToggler';
+import CubeIcon from '../3d/CubeIcon';
+import ModernCube from '../3d/ModernCube';
 import './Header.css';
 
 const Header = () => {
@@ -86,253 +103,244 @@ const Header = () => {
   };
 
   return (
-    <header className="header themed-nav" style={{ backgroundColor: theme.navBg, color: theme.navText, borderColor: theme.border }}>
+    <header className="header themed-nav">
       <div className="container">
         <div className="header-content">
           {/* Logo */}
-          <Link to="/" className="logo" style={{ color: theme.primary }}>
-            <FaShoppingBag className="logo-icon" />
+          <Link to="/" className="logo">
+            <div className="logo-cube">
+              <ModernCube size={40} />
+            </div>
             Luxify
           </Link>
 
-          {/* Search Bar - Hidden on mobile */}
-          <div className="search-bar">
-            <form onSubmit={submitHandler} style={{display: 'flex', width: '100%'}}>
+          {/* Desktop Navigation */}
+          <nav className="nav-links">
+            <Link to="/" className="nav-link">
+              <FaHome />
+              <span>Home</span>
+            </Link>
+            <Link to="/shop" className="nav-link">
+              <FaShoppingBag />
+              <span>Shop</span>
+            </Link>
+            <Link to="/cart" className="nav-link">
+              <FaShoppingCart />
+              <span>Cart</span>
+              {cartItems.length > 0 && (
+                <span className="cart-count">
+                  {cartItems.reduce((a, c) => a + c.qty, 0)}
+                </span>
+              )}
+            </Link>
+          </nav>
+
+          {/* Search Container */}
+          <div className="search-container">
+            <form onSubmit={submitHandler}>
               <input
                 type="text"
                 name="q"
                 onChange={(e) => setKeyword(e.target.value)}
                 value={keyword}
                 placeholder="Search products..."
-                className="search-input themed-input"
-                style={{
-                  backgroundColor: theme.background,
-                  color: theme.text,
-                  borderColor: theme.border
-                }}
+                className="search-input"
               />
-              <button
-                type="submit"
-                className="search-button"
-                style={{ backgroundColor: theme.primary, color: theme.buttonText }}
-              >
-                <FaSearch />
-              </button>
+              <FaSearch className="search-icon" />
             </form>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="nav-links" style={{ color: theme.navText }}>
-            <Link to="/shop" className="nav-link">
-              <FaShoppingBag className="mr-2" />
-              Shop
-            </Link>
-            <Link to="/cart" className="nav-link">
-              <FaShoppingCart className="cart-icon" />
-              Cart
-              {cartItems.length > 0 && (
-                <span className="cart-count">
-                  {cartItems.reduce((a, c) => a + c.qty, 0)}
-                </span>
-              )}
-            </Link>
-
+          {/* Right Side Actions */}
+          <div className="nav-links">
             <ThemeToggler />
 
             {user ? (
               <div className="user-dropdown" ref={dropdownRef}>
-                <button className="nav-link" onClick={toggleDropdown} style={{ color: theme.navText }}>
-                  <FaUser style={{marginRight: '5px'}} />
-                  {user.name}
-                </button>
+                <div className="dropdown-toggle" onClick={toggleDropdown}>
+                  <FaUserCircle size={20} />
+                  <span>{user.name}</span>
+                </div>
                 {isDropdownOpen && (
-                  <div className="dropdown-menu" style={{
-                    backgroundColor: theme.cardBg,
-                    color: theme.text,
-                    borderColor: theme.border,
-                    boxShadow: theme.shadow
-                  }}>
-                    <Link to="/profile" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Profile</Link>
-                    <Link to="/orderhistory" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Orders</Link>
+                  <div className="dropdown-menu">
+                    <Link to="/profile" className="dropdown-item" onClick={closeDropdown}>
+                      <FaUser />
+                      <span>Profile</span>
+                    </Link>
+                    <Link to="/orderhistory" className="dropdown-item" onClick={closeDropdown}>
+                      <FaClipboardList />
+                      <span>Orders</span>
+                    </Link>
+                    <Link to="/wishlist" className="dropdown-item" onClick={closeDropdown}>
+                      <FaHeart />
+                      <span>Wishlist</span>
+                    </Link>
+
                     {user.role === 'admin' && (
                       <>
-                        <Link to="/admin/dashboard" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Dashboard</Link>
-                        <Link to="/admin/products" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Products</Link>
-                        <Link to="/admin/orders" className="dropdown-item" onClick={closeDropdown} style={{ color: theme.text }}>Orders</Link>
+                        <div className="dropdown-divider"></div>
+                        <Link to="/admin/dashboard" className="dropdown-item" onClick={closeDropdown}>
+                          <FaTachometerAlt />
+                          <span>Dashboard</span>
+                        </Link>
+                        <Link to="/admin/products" className="dropdown-item" onClick={closeDropdown}>
+                          <FaBoxes />
+                          <span>Products</span>
+                        </Link>
+                        <Link to="/admin/orders" className="dropdown-item" onClick={closeDropdown}>
+                          <FaShippingFast />
+                          <span>Orders</span>
+                        </Link>
                       </>
                     )}
+
+                    <div className="dropdown-divider"></div>
                     <button
                       onClick={() => {
                         logoutHandler();
                         closeDropdown();
                       }}
                       className="dropdown-item"
-                      style={{ color: theme.error }}
                     >
-                      Logout
+                      <FaSignOutAlt />
+                      <span>Logout</span>
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <div className="auth-buttons">
-                <Link to="/login" className="signin-button" style={{
-                  backgroundColor: theme.buttonPrimary,
-                  color: theme.buttonText,
-                  boxShadow: theme.shadow
-                }}>
-                  <FaUser style={{marginRight: '5px'}} />
-                  Sign In
+                <Link to="/login" className="signin-button">
+                  <FaUser />
+                  <span>Sign In</span>
                 </Link>
-                <Link to="/register" className="register-button" style={{
-                  backgroundColor: 'transparent',
-                  color: theme.navText,
-                  borderColor: theme.navText
-                }}>Register</Link>
+                <Link to="/register" className="register-button">
+                  Register
+                </Link>
               </div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={toggleMenu} className="menu-button" style={{ color: theme.navText }}>
+          <button onClick={toggleMenu} className="menu-button">
             {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Search - Visible only on mobile */}
-        <div className="mobile-search">
-          <form onSubmit={submitHandler} style={{display: 'flex', width: '100%'}}>
-            <input
-              type="text"
-              name="q"
-              onChange={(e) => setKeyword(e.target.value)}
-              value={keyword}
-              placeholder="Search products..."
-              className="search-input themed-input"
-              style={{
-                backgroundColor: theme.background,
-                color: theme.text,
-                borderColor: theme.border
-              }}
-            />
-            <button
-              type="submit"
-              className="search-button"
-              style={{ backgroundColor: theme.primary, color: theme.buttonText }}
-            >
-              <FaSearch />
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="mobile-menu open">
+          <div className="mobile-menu-header">
+            <Link to="/" className="logo" onClick={toggleMenu}>
+              <div className="logo-cube">
+                <ModernCube size={40} />
+              </div>
+              Luxify
+            </Link>
+            <button onClick={toggleMenu} className="mobile-menu-close">
+              <FaTimes />
             </button>
-          </form>
-        </div>
+          </div>
 
-        {/* Mobile Menu */}
-        <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`} style={{
-          backgroundColor: theme.navBg,
-          color: theme.navText,
-          borderColor: theme.border,
-          boxShadow: theme.shadow
-        }}>
-          <Link
-            to="/shop"
-            className="mobile-nav-link"
-            onClick={toggleMenu}
-          >
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <FaShoppingBag style={{marginRight: '8px'}} />
-              Shop
-            </div>
-          </Link>
-          <Link
-            to="/cart"
-            className="mobile-nav-link"
-            onClick={toggleMenu}
-          >
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <FaShoppingCart style={{marginRight: '8px'}} />
-              Cart
+          {/* Mobile Search */}
+          <div className="search-container" style={{ width: '100%', marginBottom: '1.5rem' }}>
+            <form onSubmit={(e) => { submitHandler(e); toggleMenu(); }}>
+              <input
+                type="text"
+                name="q"
+                onChange={(e) => setKeyword(e.target.value)}
+                value={keyword}
+                placeholder="Search products..."
+                className="search-input"
+                style={{ width: '100%' }}
+              />
+              <FaSearch className="search-icon" />
+            </form>
+          </div>
+
+          <div className="mobile-nav-links">
+            <Link to="/" className="mobile-nav-link" onClick={toggleMenu}>
+              <FaHome />
+              <span>Home</span>
+            </Link>
+            <Link to="/shop" className="mobile-nav-link" onClick={toggleMenu}>
+              <FaShoppingBag />
+              <span>Shop</span>
+            </Link>
+            <Link to="/cart" className="mobile-nav-link" onClick={toggleMenu}>
+              <FaShoppingCart />
+              <span>Cart</span>
               {cartItems.length > 0 && (
                 <span className="cart-count">
                   {cartItems.reduce((a, c) => a + c.qty, 0)}
                 </span>
               )}
-            </div>
-          </Link>
+            </Link>
 
-          {user ? (
-            <>
-              <Link
-                to="/profile"
-                className="mobile-nav-link"
-                onClick={toggleMenu}
-              >
-                Profile
-              </Link>
-              <Link
-                to="/orderhistory"
-                className="mobile-nav-link"
-                onClick={toggleMenu}
-              >
-                Orders
-              </Link>
-              {user.role === 'admin' && (
-                <>
-                  <Link
-                    to="/admin/dashboard"
-                    className="mobile-nav-link"
-                    onClick={toggleMenu}
-                  >
-                    Dashboard
+            {user ? (
+              <>
+                <div className="dropdown-divider"></div>
+                <Link to="/profile" className="mobile-nav-link" onClick={toggleMenu}>
+                  <FaUser />
+                  <span>Profile</span>
+                </Link>
+                <Link to="/orderhistory" className="mobile-nav-link" onClick={toggleMenu}>
+                  <FaClipboardList />
+                  <span>Orders</span>
+                </Link>
+                <Link to="/wishlist" className="mobile-nav-link" onClick={toggleMenu}>
+                  <FaHeart />
+                  <span>Wishlist</span>
+                </Link>
+
+                {user.role === 'admin' && (
+                  <>
+                    <div className="dropdown-divider"></div>
+                    <Link to="/admin/dashboard" className="mobile-nav-link" onClick={toggleMenu}>
+                      <FaTachometerAlt />
+                      <span>Dashboard</span>
+                    </Link>
+                    <Link to="/admin/products" className="mobile-nav-link" onClick={toggleMenu}>
+                      <FaBoxes />
+                      <span>Products</span>
+                    </Link>
+                    <Link to="/admin/orders" className="mobile-nav-link" onClick={toggleMenu}>
+                      <FaShippingFast />
+                      <span>Orders</span>
+                    </Link>
+                  </>
+                )}
+
+                <div className="dropdown-divider"></div>
+                <button
+                  onClick={() => {
+                    logoutHandler();
+                    toggleMenu();
+                  }}
+                  className="mobile-nav-link"
+                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  <FaSignOutAlt />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="dropdown-divider"></div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '0.5rem' }}>
+                  <Link to="/login" className="signin-button" onClick={toggleMenu} style={{ justifyContent: 'center' }}>
+                    <FaUser />
+                    <span>Sign In</span>
                   </Link>
-                  <Link
-                    to="/admin/products"
-                    className="mobile-nav-link"
-                    onClick={toggleMenu}
-                  >
-                    Products
+                  <Link to="/register" className="register-button" onClick={toggleMenu} style={{ textAlign: 'center' }}>
+                    Register
                   </Link>
-                  <Link
-                    to="/admin/orders"
-                    className="mobile-nav-link"
-                    onClick={toggleMenu}
-                  >
-                    Orders
-                  </Link>
-                </>
-              )}
-              <button
-                onClick={() => {
-                  logoutHandler();
-                  toggleMenu();
-                }}
-                className="mobile-nav-link"
-                style={{background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer'}}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-              <Link
-                to="/login"
-                className="signin-button"
-                onClick={toggleMenu}
-                style={{justifyContent: 'center'}}
-              >
-                <FaUser style={{marginRight: '5px'}} />
-                Sign In
-              </Link>
-              <Link
-                to="/register"
-                className="register-button"
-                onClick={toggleMenu}
-                style={{justifyContent: 'center'}}
-              >
-                Register
-              </Link>
-            </div>
-          )}
+                </div>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };

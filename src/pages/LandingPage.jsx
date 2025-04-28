@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PresentationControls, useGLTF, Environment, Stars } from '@react-three/drei';
-import { FaShoppingBag, FaShoppingCart, FaTag, FaCreditCard, FaGift } from 'react-icons/fa';
+import { OrbitControls, PresentationControls, Environment, Stars, Html } from '@react-three/drei';
+import { FaShoppingBag, FaShoppingCart, FaTag, FaCreditCard, FaGift, FaSpinner } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
-import LargeCube from '../components/3d/LargeCube';
+import ModernCube from '../components/3d/ModernCube';
+import CubeIcon from '../components/3d/CubeIcon';
 
 // Shopping-related 3D Models for Hero Section
 const ShoppingBagModel = ({ position, color, scale = 1, rotation = [0, 0, 0] }) => {
@@ -106,7 +107,7 @@ const TagModel = ({ position, color, scale = 1, rotation = [0, 0, 0] }) => {
       </mesh>
       <mesh position={[0.3, 0.3, 0]} castShadow>
         <sphereGeometry args={[0.1, 32, 32]} />
-        <meshStandardMaterial color="#fff" metalness={0.5} roughness={0.1} emissive="#fff" emissiveIntensity={0.2} />
+        <meshStandardMaterial color="#fff" metalness={0.5} roughness={0.1} />
       </mesh>
     </group>
   );
@@ -137,7 +138,7 @@ const CreditCardModel = ({ position, color, scale = 1, rotation = [0, 0, 0] }) =
       </mesh>
       <mesh position={[-0.4, 0.2, 0.03]} castShadow>
         <boxGeometry args={[0.4, 0.2, 0.02]} />
-        <meshStandardMaterial color="#FFD700" metalness={0.9} roughness={0.05} emissive="#FFD700" emissiveIntensity={0.3} />
+        <meshStandardMaterial color="#FFD700" metalness={0.9} roughness={0.05} />
       </mesh>
     </group>
   );
@@ -184,11 +185,11 @@ const GiftModel = ({ position, color, scale = 1, rotation = [0, 0, 0] }) => {
       <group ref={ribbonRef}>
         <mesh position={[0, 0, 0]} rotation={[0, Math.PI / 4, 0]} castShadow>
           <cylinderGeometry args={[0.05, 0.05, 2, 16]} />
-          <meshStandardMaterial color="#FF6B6B" metalness={0.7} roughness={0.1} emissive="#FF6B6B" emissiveIntensity={0.2} />
+          <meshStandardMaterial color="#FF6B6B" metalness={0.7} roughness={0.1} />
         </mesh>
         <mesh position={[0, 0, 0]} rotation={[0, -Math.PI / 4, 0]} castShadow>
           <cylinderGeometry args={[0.05, 0.05, 2, 16]} />
-          <meshStandardMaterial color="#FF6B6B" metalness={0.7} roughness={0.1} emissive="#FF6B6B" emissiveIntensity={0.2} />
+          <meshStandardMaterial color="#FF6B6B" metalness={0.7} roughness={0.1} />
         </mesh>
       </group>
     </group>
@@ -261,12 +262,131 @@ const LandingPage = () => {
             </div>
             <div className="md:w-1/2 h-64 md:h-96">
               <div className="w-full h-full">
-                <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <LargeCube size={400} autoRotate={true} />
-                </div>
+                <Canvas camera={{ position: [0, 0, 6], fov: 45 }} shadows style={{ borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)' }}>
+                  <color attach="background" args={[currentTheme === 'light' ? 'transparent' : '#050A1C']} />
+                  <fog attach="fog" args={[currentTheme === 'light' ? 'transparent' : '#050A1C', 8, 15]} />
+
+                  <Suspense fallback={
+                    <Html center>
+                      <div className="loading-spinner">
+                        <FaSpinner className="animate-spin text-4xl" style={{ color: theme.primary }} />
+                      </div>
+                    </Html>
+                  }>
+                    <ambientLight intensity={0.7} />
+                    <spotLight
+                      position={[10, 10, 10]}
+                      angle={0.15}
+                      penumbra={1}
+                      intensity={1.8}
+                      castShadow
+                    />
+                    <pointLight position={[-10, -10, -10]} intensity={0.8} color={currentTheme === 'light' ? '#fff' : '#aaa'} />
+                    <directionalLight
+                      position={[-5, 5, 5]}
+                      intensity={0.8}
+                      castShadow
+                      color={currentTheme === 'light' ? '#fff' : '#aaa'}
+                    />
+                    {currentTheme === 'dark' && (
+                      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+                    )}
+                    <PresentationControls
+                      global
+                      zoom={0.9}
+                      rotation={[0, 0, 0]}
+                      polar={[-Math.PI / 4, Math.PI / 4]}
+                      azimuth={[-Math.PI / 4, Math.PI / 4]}
+                      config={{ mass: 2, tension: 500 }}
+                      snap={{ mass: 4, tension: 1500 }}
+                    >
+                      <group position={[0, 0, 0]}>
+                        <HeroModel />
+                      </group>
+                    </PresentationControls>
+                    <Environment preset={currentTheme === 'light' ? 'sunset' : 'night'} />
+                    <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2} />
+                  </Suspense>
+                </Canvas>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="features-section py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: theme.primary }}>Why Choose Luxify?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="feature-card p-6 rounded-lg" style={{
+              backgroundColor: theme.cardBg,
+              boxShadow: theme.shadow,
+              border: theme.cardBorder
+            }}>
+              <div className="mb-4 flex justify-center">
+                <div style={{ width: '80px', height: '80px' }} className="cube-container">
+                  <CubeIcon iconType="product" size={80} autoRotate={true} color={theme.primary} />
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-center" style={{ color: theme.primary }}>Premium Quality</h3>
+              <p className="text-center" style={{ color: theme.textLight }}>
+                We curate only the finest products that meet our strict quality standards.
+              </p>
+            </div>
+            <div className="feature-card p-6 rounded-lg" style={{
+              backgroundColor: theme.cardBg,
+              boxShadow: theme.shadow,
+              border: theme.cardBorder
+            }}>
+              <div className="mb-4 flex justify-center">
+                <div style={{ width: '80px', height: '80px' }} className="cube-container">
+                  <CubeIcon iconType="cart" size={80} autoRotate={true} color={theme.secondary} />
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-center" style={{ color: theme.secondary }}>Fast Delivery</h3>
+              <p className="text-center" style={{ color: theme.textLight }}>
+                Enjoy quick and reliable shipping options to get your products faster.
+              </p>
+            </div>
+            <div className="feature-card p-6 rounded-lg" style={{
+              backgroundColor: theme.cardBg,
+              boxShadow: theme.shadow,
+              border: theme.cardBorder
+            }}>
+              <div className="mb-4 flex justify-center">
+                <div style={{ width: '80px', height: '80px' }} className="cube-container">
+                  <CubeIcon iconType="order" size={80} autoRotate={true} color={theme.accent} />
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-center" style={{ color: theme.accent }}>24/7 Support</h3>
+              <p className="text-center" style={{ color: theme.textLight }}>
+                Our customer service team is always available to assist you with any questions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="cta-section py-16" style={{
+        background: currentTheme === 'light'
+          ? 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)'
+          : 'linear-gradient(135deg, #5B21B6 0%, #1E3A8A 100%)',
+        color: '#ffffff',
+        borderRadius: '20px 20px 0 0'
+      }}>
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Experience Luxify?</h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Join thousands of satisfied customers who have discovered the Luxify difference.
+          </p>
+          <Link to="/shop" className="inline-flex items-center font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1" style={{
+            backgroundColor: '#ffffff',
+            color: '#6366F1',
+          }}>
+            <FaShoppingCart className="mr-2" /> Shop Now
+          </Link>
         </div>
       </section>
     </div>

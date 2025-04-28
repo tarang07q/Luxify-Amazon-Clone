@@ -9,34 +9,19 @@ import Paginate from '../components/ui/Paginate';
 import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore } from 'react-icons/fa';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, PresentationControls } from '@react-three/drei';
+import LargeCube from '../components/3d/LargeCube';
+import ProductCube from '../components/3d/ProductCube';
+import CartCube from '../components/3d/CartCube';
+import OrderCube from '../components/3d/OrderCube';
+import AdminCube from '../components/3d/AdminCube';
+import ProfileCube from '../components/3d/ProfileCube';
 import './HomePage.css';
-
-// 3D Model for Hero Section
-const HeroModel = () => {
-  // This is a placeholder - in a real app, you'd use an actual model
-  return (
-    <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="#FF9900" />
-    </mesh>
-  );
-};
 
 const HomePage = () => {
   const { keyword, pageNumber = 1 } = useParams();
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
-
-  const { data, isLoading, error, refetch } = useGetProductsQuery({
-    keyword,
-    pageNumber,
-  });
-
-  useEffect(() => {
-    // Refetch data when component mounts
-    refetch();
-  }, [refetch]);
 
   // Categories for display
   const categories = [
@@ -48,7 +33,42 @@ const HomePage = () => {
     'Beauty & Personal Care',
     'Books',
     'Toys & Games',
+    'Sports & Outdoors',
+    'Grocery & Gourmet Food',
+    'Pet Supplies',
+    'Automotive',
+    'Tools & Home Improvement',
+    'Health & Household',
+    'Office Products',
+    'Gift Cards'
   ];
+
+  // Check if keyword is a category or "featured"
+  const isCategory = categories.includes(keyword);
+  const isFeatured = keyword === 'featured';
+
+  // Set up query parameters
+  const queryParams = {
+    pageNumber,
+  };
+
+  // If keyword is a category, use it as category filter
+  if (isCategory) {
+    queryParams.category = keyword;
+  }
+  // If keyword is "featured", we'll filter after fetching
+  else if (!isFeatured) {
+    queryParams.keyword = keyword;
+  }
+
+  const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams);
+
+  useEffect(() => {
+    // Refetch data when component mounts
+    refetch();
+  }, [refetch]);
+
+  // This categories array is now defined above
 
   return (
     <div className="home-container">
@@ -81,20 +101,10 @@ const HomePage = () => {
             </div>
             <div className="hero-3d">
               <div className="model-container">
-                <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-                  <ambientLight intensity={0.7} />
-                  <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={0.8} />
-                  <PresentationControls
-                    global
-                    zoom={0.8}
-                    rotation={[0, 0, 0]}
-                    polar={[-Math.PI / 4, Math.PI / 4]}
-                    azimuth={[-Math.PI / 4, Math.PI / 4]}
-                  >
-                    <HeroModel />
-                  </PresentationControls>
-                  <OrbitControls enableZoom={false} />
-                </Canvas>
+                <LargeCube
+                  size={800}
+                  autoRotate={true}
+                />
               </div>
             </div>
           </div>
@@ -122,7 +132,9 @@ const HomePage = () => {
       {/* Products Section */}
       <div className="products-section">
         <h2 className="section-title">
-          {keyword ? `Search Results for "${keyword}"` : 'Latest Products'}
+          {isCategory ? `Products in ${keyword}` :
+           isFeatured ? 'Featured Products' :
+           keyword ? `Search Results for "${keyword}"` : 'Latest Products'}
         </h2>
 
         {isLoading ? (
@@ -149,7 +161,7 @@ const HomePage = () => {
               Try Again
             </button>
           </div>
-        ) : !data || !data.data || data.data.length === 0 ? (
+        ) : !data || !data.data || (isFeatured && !data.data.some(product => product.featured)) || data.data.length === 0 ? (
           <div style={{padding: '40px 0', textAlign: 'center'}}>
             <Message>No products found</Message>
             <div style={{marginTop: '16px'}}>
@@ -159,9 +171,16 @@ const HomePage = () => {
         ) : (
           <>
             <div className="products-grid">
-              {data.data.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
+              {isFeatured
+                ? data.data
+                    .filter((product) => product.featured)
+                    .map((product) => (
+                      <ProductCard key={product._id} product={product} />
+                    ))
+                : data.data.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))
+              }
             </div>
             <div style={{marginTop: '32px'}}>
               <Paginate

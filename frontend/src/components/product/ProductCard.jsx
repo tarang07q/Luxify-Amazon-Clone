@@ -1,12 +1,36 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaStar, FaStarHalfAlt, FaRegStar, FaShoppingCart, FaEye } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import {
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+  FaShoppingCart,
+  FaEye,
+  FaImage,
+  FaHeart,
+  FaRegHeart,
+  FaCheck
+} from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../slices/cartSlice';
 import { toast } from 'react-toastify';
+import { useTheme } from '../../context/ThemeContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const { theme, currentTheme } = useTheme();
+  const [imageError, setImageError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const { cartItems } = useSelector((state) => state.cart);
+
+  // Check if product is already in cart
+  useEffect(() => {
+    const productInCart = cartItems.find(item => item._id === product._id);
+    setIsAddedToCart(!!productInCart);
+  }, [cartItems, product._id]);
 
   const addToCartHandler = () => {
     dispatch(
@@ -15,7 +39,23 @@ const ProductCard = ({ product }) => {
         qty: 1,
       })
     );
+    setIsAddedToCart(true);
     toast.success(`${product.title} added to cart!`);
+  };
+
+  const toggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsWishlisted(!isWishlisted);
+    toast.success(isWishlisted
+      ? `${product.title} removed from wishlist!`
+      : `${product.title} added to wishlist!`
+    );
+  };
+
+  // Handle image error
+  const handleImageError = () => {
+    setImageError(true);
   };
 
   // Calculate discount percentage
@@ -47,43 +87,106 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="product-card">
+    <div
+      className="product-card themed-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Discount Badge */}
       {product.discount > 0 && (
-        <div className="discount-badge">
+        <div className="discount-badge themed-badge">
           {discountPercentage.toFixed(0)}% OFF
         </div>
       )}
 
+      {/* Wishlist Button */}
+      <button
+        className={`wishlist-button ${isWishlisted ? 'wishlisted' : ''}`}
+        onClick={toggleWishlist}
+        aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+      >
+        {isWishlisted ? <FaHeart /> : <FaRegHeart />}
+      </button>
+
+      {/* Product Image */}
       <div className="product-image-container">
         <Link to={`/product/${product._id}`}>
-          <img
-            src={product.images[0]}
-            alt={product.title}
-            className="product-image"
-          />
+          {imageError ? (
+            <div className="fallback-image">
+              <FaImage size={50} />
+              <p>{product.title}</p>
+            </div>
+          ) : (
+            <div className="image-wrapper">
+              <img
+                src={product.images && product.images.length > 0 ?
+                  (product.images[0].startsWith('http') ? product.images[0] : `/api${product.images[0]}`)
+                  : '/placeholder.jpg'}
+                alt={product.title}
+                className="product-image"
+                onError={handleImageError}
+              />
+              {/* Second image for hover effect */}
+              {product.images && product.images.length > 1 && (
+                <img
+                  src={product.images[1].startsWith('http') ? product.images[1] : `/api${product.images[1]}`}
+                  alt={`${product.title} - alternate view`}
+                  className={`product-image-hover ${isHovered ? 'visible' : ''}`}
+                  onError={handleImageError}
+                />
+              )}
+            </div>
+          )}
         </Link>
-        <div className="image-overlay">
+
+        {/* Quick Action Buttons */}
+        <div className={`product-actions ${isHovered ? 'visible' : ''}`}>
           <Link
             to={`/product/${product._id}`}
-            className="quick-view-button"
+            className="action-button quick-view"
+            title="Quick View"
           >
             <FaEye />
           </Link>
+          <button
+            onClick={addToCartHandler}
+            disabled={product.stock === 0 || isAddedToCart}
+            className={`action-button add-cart ${isAddedToCart ? 'added' : ''}`}
+            title={isAddedToCart ? "Added to Cart" : "Add to Cart"}
+          >
+            {isAddedToCart ? <FaCheck /> : <FaShoppingCart />}
+          </button>
         </div>
       </div>
 
+      {/* Product Details */}
       <div className="product-details">
-        <div className="rating-container">
-          {renderRatingStars(product.rating)}
-          <span className="review-count">({product.numReviews})</span>
+        {/* Category */}
+        <div className="product-category">
+          <Link to={`/search/${product.category}`} className="category-link">
+            {product.category}
+          </Link>
         </div>
 
-        <Link to={`/product/${product._id}`}>
+        {/* Title */}
+        <Link to={`/product/${product._id}`} className="product-title-link">
           <h2 className="product-title">
-            {product.title}
+            {product.title.length > 40
+              ? `${product.title.substring(0, 40)}...`
+              : product.title
+            }
           </h2>
         </Link>
 
+        {/* Rating */}
+        <div className="rating-container">
+          <div className="stars">
+            {renderRatingStars(product.rating)}
+          </div>
+          <span className="review-count">({product.numReviews})</span>
+        </div>
+
+        {/* Price */}
         <div className="price-container">
           <span className="current-price">${product.price.toFixed(2)}</span>
           {product.discount > 0 && (
@@ -93,19 +196,31 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
+        {/* Stock Status */}
         <div className="product-meta">
           <span className={`stock-status ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
             {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
           </span>
-          <span className="brand">{product.brand}</span>
+          {product.brand && (
+            <span className="brand">{product.brand}</span>
+          )}
         </div>
 
+        {/* Add to Cart Button */}
         <button
           onClick={addToCartHandler}
-          disabled={product.stock === 0}
-          className={`add-to-cart-button ${product.stock > 0 ? 'enabled' : 'disabled'}`}
+          disabled={product.stock === 0 || isAddedToCart}
+          className={`add-to-cart-button ${isAddedToCart ? 'added' : product.stock > 0 ? 'enabled' : 'disabled'}`}
         >
-          <FaShoppingCart className="cart-icon" /> Add to Cart
+          {isAddedToCart ? (
+            <>
+              <FaCheck className="cart-icon" /> Added to Cart
+            </>
+          ) : (
+            <>
+              <FaShoppingCart className="cart-icon" /> Add to Cart
+            </>
+          )}
         </button>
       </div>
     </div>

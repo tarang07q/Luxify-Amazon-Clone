@@ -4,10 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaTrash, FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 import Message from '../components/ui/Message';
+import { useTheme } from '../context/ThemeContext';
+import CartCube from '../components/3d/CartCube';
 
 const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { theme, currentTheme } = useTheme();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -125,29 +128,51 @@ const CartPage = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+            <div className="bg-white rounded-lg shadow-md p-4" style={{
+              backgroundColor: theme.cardBg,
+              borderColor: theme.border,
+              boxShadow: theme.shadow
+            }}>
+              <h2 className="text-xl font-bold mb-4" style={{ color: theme.text }}>Order Summary</h2>
+
+              {/* 3D Cart Cube */}
+              <div className="flex justify-center mb-6">
+                <div className="flex justify-center items-center h-48 w-48 rounded-md" style={{
+                  backgroundColor: 'transparent',
+                  backgroundImage: `radial-gradient(circle, ${currentTheme === 'light' ? '#f8fafc, #e2e8f0' : '#1e293b, #0f172a'})`,
+                }}>
+                  <CartCube size={180} autoRotate={true} />
+                </div>
+              </div>
+
               <div className="space-y-3">
-                <div className="flex justify-between">
+                <div className="flex justify-between" style={{ color: theme.text }}>
                   <span>Items ({cartItems.reduce((a, c) => a + c.qty, 0)}):</span>
                   <span>${itemsPrice.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between" style={{ color: theme.text }}>
                   <span>Shipping:</span>
                   <span>${shippingPrice.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between" style={{ color: theme.text }}>
                   <span>Tax:</span>
                   <span>${taxPrice.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between font-bold">
+                <div className="flex justify-between font-bold" style={{ color: theme.text }}>
                   <span>Total:</span>
                   <span>${totalPrice}</span>
                 </div>
               </div>
               <button
                 type="button"
-                className="w-full btn-primary mt-4"
+                className="w-full mt-4"
+                style={{
+                  backgroundColor: cartItems.length === 0 ? theme.border : theme.buttonPrimary,
+                  color: cartItems.length === 0 ? theme.textLight : theme.buttonText,
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.25rem',
+                  fontWeight: 'bold'
+                }}
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >

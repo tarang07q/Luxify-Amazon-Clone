@@ -1,28 +1,36 @@
 :root {
   /* Default theme variables will be set by ThemeContext */
-  --primary: #4f46e5;
-  --secondary: #ec4899;
+  --primary: #5046e5;
+  --secondary: #f0338d;
   --accent: #8b5cf6;
+  --gradient: linear-gradient(135deg, #5046e5, #f0338d);
   --background: #ffffff;
   --cardBg: #f9fafb;
-  --text: #1f2937;
-  --textLight: #6b7280;
-  --border: #e5e7eb;
-  --buttonPrimary: #4f46e5;
-  --buttonSecondary: #ec4899;
+  --cardHoverBg: #f1f5f9;
+  --text: #1e293b;
+  --textLight: #64748b;
+  --border: #e2e8f0;
+  --buttonPrimary: #5046e5;
+  --buttonSecondary: #f0338d;
   --buttonText: #ffffff;
-  --navBg: #ffffff;
-  --navText: #1f2937;
-  --footerBg: #f3f4f6;
-  --footerText: #4b5563;
+  --navBg: rgba(255, 255, 255, 0.95);
+  --navText: #1e293b;
+  --navShadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --footerBg: #f8fafc;
+  --footerText: #475569;
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
   --info: #3b82f6;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadowHover: 0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.04);
   --canvas3dBg: #f8fafc;
   --canvas3dFog: #f1f5f9;
-  
+  --cardBorder: 1px solid rgba(226, 232, 240, 0.8);
+  --inputBg: #f8fafc;
+  --inputBorder: #e2e8f0;
+  --inputFocus: rgba(80, 70, 229, 0.2);
+
   /* Transition for smooth theme switching */
   --transition-speed: 0.3s;
 }
@@ -32,29 +40,49 @@ body {
   background-color: var(--background);
   color: var(--text);
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Themed button styles */
 .btn-primary {
   background-color: var(--buttonPrimary);
   color: var(--buttonText);
-  transition: background-color var(--transition-speed) ease;
+  transition: all var(--transition-speed) ease;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  border: none;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
   background-color: var(--primary);
   filter: brightness(110%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadowHover);
 }
 
 .btn-secondary {
   background-color: var(--buttonSecondary);
   color: var(--buttonText);
-  transition: background-color var(--transition-speed) ease;
+  transition: all var(--transition-speed) ease;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  border: none;
+  cursor: pointer;
 }
 
 .btn-secondary:hover {
   background-color: var(--secondary);
   filter: brightness(110%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadowHover);
 }
 
 .btn-outline {
@@ -62,20 +90,50 @@ body {
   color: var(--text);
   border: 2px solid var(--border);
   transition: all var(--transition-speed) ease;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .btn-outline:hover {
   border-color: var(--primary);
   color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-gradient {
+  background-image: var(--gradient);
+  color: var(--buttonText);
+  transition: all var(--transition-speed) ease;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gradient:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadowHover);
 }
 
 /* Card styles */
 .themed-card {
   background-color: var(--cardBg);
-  border: 1px solid var(--border);
+  border: var(--cardBorder);
   box-shadow: var(--shadow);
   color: var(--text);
   transition: all var(--transition-speed) ease;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.themed-card:hover {
+  box-shadow: var(--shadowHover);
+  transform: translateY(-5px);
 }
 
 /* Navigation styles */
@@ -84,6 +142,9 @@ body {
   color: var(--navText);
   border-bottom: 1px solid var(--border);
   transition: all var(--transition-speed) ease;
+  box-shadow: var(--navShadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Footer styles */
@@ -91,25 +152,64 @@ body {
   background-color: var(--footerBg);
   color: var(--footerText);
   transition: all var(--transition-speed) ease;
+  border-top: 1px solid var(--border);
 }
 
 /* Input styles */
 .themed-input {
-  background-color: var(--background);
-  border: 1px solid var(--border);
+  background-color: var(--inputBg);
+  border: 1px solid var(--inputBorder);
   color: var(--text);
   transition: all var(--transition-speed) ease;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
 }
 
 .themed-input:focus {
   border-color: var(--primary);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+  box-shadow: 0 0 0 3px var(--inputFocus);
+}
+
+.themed-input::placeholder {
+  color: var(--textLight);
+  opacity: 0.7;
+}
+
+/* Badge styles */
+.themed-badge {
+  background-color: var(--primary);
+  color: var(--buttonText);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.themed-badge-secondary {
+  background-color: var(--secondary);
+  color: var(--buttonText);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.themed-badge-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 /* Theme transition for all elements */
 * {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow, transform;
   transition-duration: var(--transition-speed);
   transition-timing-function: ease;
 }

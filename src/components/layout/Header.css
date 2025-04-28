@@ -46,6 +46,10 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  z-index: 10;
 }
 
 .logo:hover .logo-cube {
@@ -335,147 +339,7 @@
   }
 }
 
-.logo {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--primary);
-  text-decoration: none;
-  letter-spacing: -0.025em;
-  display: flex;
-  align-items: center;
-  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
-}
-
-.logo:hover {
-  transform: scale(1.05);
-}
-
-/* Logo cube styling is already defined above */
-
-.search-bar {
-  flex-grow: 1;
-  margin: 0 24px;
-  display: flex;
-  max-width: 600px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px 16px;
-  border: 1px solid var(--border);
-  border-right: none;
-  border-radius: 9999px 0 0 9999px;
-  background-color: var(--background);
-  color: var(--text);
-  font-size: 0.95rem;
-  transition: all var(--transition-speed) ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  background-color: var(--background);
-  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
-}
-
-.search-button {
-  background-color: var(--buttonPrimary);
-  color: var(--buttonText);
-  border: 1px solid var(--buttonPrimary);
-  padding: 10px 16px;
-  border-radius: 0 9999px 9999px 0;
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-button:hover {
-  filter: brightness(110%);
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-link {
-  color: var(--navText);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  transition: all var(--transition-speed) ease;
-  position: relative;
-  padding: 5px 0;
-}
-
-.nav-link:hover {
-  color: var(--primary);
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--primary);
-  transition: width var(--transition-speed) ease;
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.user-dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  width: 200px;
-  margin-top: 8px;
-  background-color: var(--cardBg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  box-shadow: var(--shadow);
-  display: none;
-  z-index: 10;
-  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
-}
-
-/* Removed hover effect in favor of click-based dropdown */
-.dropdown-menu {
-  /* display is now controlled by React state */
-  display: block;
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-item {
-  display: block;
-  padding: 8px 16px;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 14px;
-  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-}
-
-.dropdown-item:hover {
-  background-color: var(--primary);
-  color: var(--buttonText);
-}
-
+/* Additional styles for the logo and cart */
 .cart-icon {
   margin-right: 6px;
   font-size: 1.1rem;
@@ -581,76 +445,4 @@
 
 .register-button:hover::after {
   width: 100%;
-}
-
-.menu-button {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--navText);
-  cursor: pointer;
-  font-size: 1.25rem;
-  transition: color var(--transition-speed) ease;
-}
-
-.menu-button:hover {
-  color: var(--primary);
-}
-
-.mobile-search {
-  display: none;
-  margin-top: 15px;
-}
-
-.mobile-menu {
-  display: none;
-  margin-top: 15px;
-  background-color: var(--navBg);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-  .search-bar {
-    display: none;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .menu-button {
-    display: block;
-  }
-
-  .mobile-search {
-    display: flex;
-  }
-
-  .mobile-menu.open {
-    display: block;
-  }
-
-  .mobile-nav-link {
-    display: block;
-    padding: 12px 0;
-    color: var(--navText);
-    text-decoration: none;
-    font-weight: 500;
-    border-bottom: 1px solid var(--border);
-    transition: all var(--transition-speed) ease;
-  }
-
-  .mobile-nav-link:hover {
-    color: var(--primary);
-    padding-left: 5px;
-  }
-
-  .mobile-nav-link:last-child {
-    border-bottom: none;
-  }
 }

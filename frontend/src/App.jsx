@@ -17,6 +17,7 @@ import NewLoginPage from './pages/NewLoginPage';
 import NewRegisterPage from './pages/NewRegisterPage';
 import NewAdminRegistrationPage from './pages/NewAdminRegistrationPage';
 import ProfilePage from './pages/ProfilePage';
+import EnhancedProfilePage from './pages/EnhancedProfilePage';
 import ShippingPage from './pages/ShippingPage';
 import PaymentPage from './pages/PaymentPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
@@ -51,6 +52,7 @@ import HelpPage from './pages/HelpPage';
 
 // Admin Pages
 import AdminDashboardPage from './pages/admin/DashboardPage';
+import EnhancedDashboardPage from './pages/admin/EnhancedDashboardPage';
 import AdminProductListPage from './pages/admin/ProductListPage';
 import AdminProductEditPage from './pages/admin/ProductEditPage';
 import AdminProductCreatePage from './pages/admin/ProductCreatePage';
@@ -111,7 +113,7 @@ function App() {
 
             {/* Protected Routes */}
             <Route path="" element={<PrivateRoute />}>
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile" element={<EnhancedProfilePage />} />
               <Route path="/shipping" element={<ShippingPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/placeorder" element={<PlaceOrderPage />} />
@@ -122,8 +124,8 @@ function App() {
             {/* Admin Routes */}
             <Route path="" element={<AdminRoute />}>
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboardPage />} />
-                <Route path="dashboard" element={<AdminDashboardPage />} />
+                <Route index element={<EnhancedDashboardPage />} />
+                <Route path="dashboard" element={<EnhancedDashboardPage />} />
                 <Route path="products" element={<AdminProductListPage />} />
                 <Route path="products/new" element={<AdminProductCreatePage />} />
                 <Route path="product/:id/edit" element={<AdminProductEditPage />} />

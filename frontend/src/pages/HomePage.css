@@ -30,6 +30,7 @@
 .hero-content {
   display: flex;
   flex-direction: column;
+  min-height: 600px;
 }
 
 @media (min-width: 768px) {
@@ -142,15 +143,49 @@
 }
 
 .hero-3d {
-  flex: 1;
-  height: 250px;
-  padding: 15px;
+  flex: 1.5;
+  height: 500px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
 }
 
 .model-container {
-  background-color: rgba(35, 47, 62, 0.3);
-  border-radius: 8px;
+  background-color: transparent;
+  background-image: none;
+  border-radius: 16px;
   height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  transform: scale(0.6); /* Scale down to fit properly */
+}
+
+.model-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .categories-section {

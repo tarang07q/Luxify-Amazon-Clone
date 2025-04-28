@@ -3,52 +3,68 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 // Define theme colors
 export const themes = {
   light: {
-    primary: '#4f46e5', // indigo-600
-    secondary: '#ec4899', // pink-500
+    primary: '#5046e5', // Enhanced indigo
+    secondary: '#f0338d', // Enhanced pink
     accent: '#8b5cf6', // violet-500
+    gradient: 'linear-gradient(135deg, #5046e5, #f0338d)',
     background: '#ffffff',
     cardBg: '#f9fafb', // gray-50
-    text: '#1f2937', // gray-800
-    textLight: '#6b7280', // gray-500
-    border: '#e5e7eb', // gray-200
-    buttonPrimary: '#4f46e5', // indigo-600
-    buttonSecondary: '#ec4899', // pink-500
+    cardHoverBg: '#f1f5f9', // slate-100
+    text: '#1e293b', // slate-800
+    textLight: '#64748b', // slate-500
+    border: '#e2e8f0', // slate-200
+    buttonPrimary: '#5046e5', // Enhanced indigo
+    buttonSecondary: '#f0338d', // Enhanced pink
     buttonText: '#ffffff',
-    navBg: '#ffffff',
-    navText: '#1f2937',
-    footerBg: '#f3f4f6', // gray-100
-    footerText: '#4b5563', // gray-600
+    navBg: 'rgba(255, 255, 255, 0.95)',
+    navText: '#1e293b',
+    navShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+    footerBg: '#f8fafc', // slate-50
+    footerText: '#475569', // slate-600
     success: '#10b981', // emerald-500
     error: '#ef4444', // red-500
     warning: '#f59e0b', // amber-500
     info: '#3b82f6', // blue-500
-    shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    shadow: '0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02)',
+    shadowHover: '0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.04)',
     canvas3dBg: '#f8fafc', // slate-50
     canvas3dFog: '#f1f5f9', // slate-100
+    cardBorder: '1px solid rgba(226, 232, 240, 0.8)',
+    inputBg: '#f8fafc', // slate-50
+    inputBorder: '#e2e8f0', // slate-200
+    inputFocus: 'rgba(80, 70, 229, 0.2)', // primary with opacity
   },
   dark: {
     primary: '#818cf8', // indigo-400
     secondary: '#f472b6', // pink-400
     accent: '#a78bfa', // violet-400
-    background: '#111827', // gray-900
-    cardBg: '#1f2937', // gray-800
-    text: '#f9fafb', // gray-50
-    textLight: '#d1d5db', // gray-300
-    border: '#374151', // gray-700
-    buttonPrimary: '#6366f1', // indigo-500
-    buttonSecondary: '#ec4899', // pink-500
+    gradient: 'linear-gradient(135deg, #818cf8, #f472b6)',
+    background: '#0f172a', // slate-900
+    cardBg: '#1e293b', // slate-800
+    cardHoverBg: '#334155', // slate-700
+    text: '#f8fafc', // slate-50
+    textLight: '#cbd5e1', // slate-300
+    border: '#334155', // slate-700
+    buttonPrimary: '#818cf8', // indigo-400
+    buttonSecondary: '#f472b6', // pink-400
     buttonText: '#ffffff',
-    navBg: '#111827', // gray-900
-    navText: '#f9fafb', // gray-50
-    footerBg: '#1f2937', // gray-800
-    footerText: '#d1d5db', // gray-300
+    navBg: 'rgba(15, 23, 42, 0.95)', // slate-900 with opacity
+    navText: '#f8fafc', // slate-50
+    navShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+    footerBg: '#1e293b', // slate-800
+    footerText: '#cbd5e1', // slate-300
     success: '#10b981', // emerald-500
     error: '#ef4444', // red-500
     warning: '#f59e0b', // amber-500
     info: '#3b82f6', // blue-500
-    shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
+    shadow: '0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2)',
+    shadowHover: '0 10px 25px rgba(0, 0, 0, 0.4), 0 5px 10px rgba(0, 0, 0, 0.3)',
     canvas3dBg: '#0f172a', // slate-900
     canvas3dFog: '#1e293b', // slate-800
+    cardBorder: '1px solid rgba(51, 65, 85, 0.8)', // slate-700 with opacity
+    inputBg: '#1e293b', // slate-800
+    inputBorder: '#334155', // slate-700
+    inputFocus: 'rgba(129, 140, 248, 0.2)', // primary with opacity
   }
 };
 
@@ -64,8 +80,8 @@ export const ThemeProvider = ({ children }) => {
       return savedTheme;
     }
     // Check user's system preference
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches 
-      ? 'dark' 
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
       : 'light';
   };
 
@@ -81,20 +97,20 @@ export const ThemeProvider = ({ children }) => {
   // Update localStorage and apply theme when it changes
   useEffect(() => {
     if (!themeLoaded) return;
-    
+
     localStorage.setItem('theme', currentTheme);
-    
+
     // Apply theme to document
     const root = document.documentElement;
     const theme = themes[currentTheme];
-    
+
     Object.entries(theme).forEach(([property, value]) => {
       root.style.setProperty(`--${property}`, value);
     });
-    
+
     // Set data-theme attribute for components that use it
     document.body.setAttribute('data-theme', currentTheme);
-    
+
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {

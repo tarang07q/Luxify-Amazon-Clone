@@ -5,6 +5,7 @@ import { useGetMeQuery } from '../slices/services/authService';
 import { setCredentials } from '../slices/authSlice';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
+import ProfileIcon3D from '../components/3d/ProfileIcon3D';
 import { FaUser, FaEdit } from 'react-icons/fa';
 
 const ProfilePage = () => {
@@ -67,6 +68,10 @@ const ProfilePage = () => {
                 >
                   <FaEdit size={20} />
                 </button>
+              </div>
+
+              <div className="flex justify-center mb-6">
+                <ProfileIcon3D size={150} autoRotate={true} />
               </div>
 
               {isEditing ? (

@@ -35,36 +35,46 @@ export const themes = {
     inputFocus: 'rgba(80, 70, 229, 0.2)', // primary with opacity
   },
   dark: {
-    primary: '#818cf8', // indigo-400
-    secondary: '#f472b6', // pink-400
-    accent: '#a78bfa', // violet-400
-    gradient: 'linear-gradient(135deg, #818cf8, #f472b6)',
-    background: '#0f172a', // slate-900
-    cardBg: '#1e293b', // slate-800
-    cardHoverBg: '#334155', // slate-700
-    text: '#f8fafc', // slate-50
-    textLight: '#cbd5e1', // slate-300
-    border: '#334155', // slate-700
-    buttonPrimary: '#818cf8', // indigo-400
-    buttonSecondary: '#f472b6', // pink-400
+    // Futuristic cyberpunk-inspired color scheme
+    primary: '#00f2ff', // Bright cyan
+    secondary: '#ff00e4', // Neon magenta
+    accent: '#7928ca', // Electric purple
+    gradient: 'linear-gradient(135deg, #00f2ff, #ff00e4)',
+    background: '#0a0b1e', // Deep space blue
+    cardBg: '#141539', // Dark blue with slight purple tint
+    cardHoverBg: '#1c1c4d', // Slightly lighter blue-purple
+    text: '#e2e8f0', // Soft white
+    textLight: '#a0aec0', // Muted silver
+    border: '#2d3748', // Dark slate
+    buttonPrimary: '#00f2ff', // Bright cyan
+    buttonSecondary: '#ff00e4', // Neon magenta
     buttonText: '#ffffff',
-    navBg: 'rgba(15, 23, 42, 0.95)', // slate-900 with opacity
-    navText: '#f8fafc', // slate-50
-    navShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-    footerBg: '#1e293b', // slate-800
-    footerText: '#cbd5e1', // slate-300
-    success: '#10b981', // emerald-500
-    error: '#ef4444', // red-500
-    warning: '#f59e0b', // amber-500
-    info: '#3b82f6', // blue-500
-    shadow: '0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2)',
-    shadowHover: '0 10px 25px rgba(0, 0, 0, 0.4), 0 5px 10px rgba(0, 0, 0, 0.3)',
-    canvas3dBg: '#0f172a', // slate-900
-    canvas3dFog: '#1e293b', // slate-800
-    cardBorder: '1px solid rgba(51, 65, 85, 0.8)', // slate-700 with opacity
-    inputBg: '#1e293b', // slate-800
-    inputBorder: '#334155', // slate-700
-    inputFocus: 'rgba(129, 140, 248, 0.2)', // primary with opacity
+    navBg: 'rgba(10, 11, 30, 0.85)', // Deep space blue with opacity
+    navText: '#e2e8f0', // Soft white
+    navShadow: '0 4px 20px rgba(0, 242, 255, 0.15)', // Cyan glow
+    footerBg: '#0d102b', // Slightly lighter than background
+    footerText: '#a0aec0', // Muted silver
+    success: '#01ffc3', // Neon teal
+    error: '#ff3d71', // Neon red
+    warning: '#ffaa00', // Bright amber
+    info: '#0095ff', // Bright blue
+    shadow: '0 4px 12px rgba(0, 242, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3)',
+    shadowHover: '0 10px 25px rgba(0, 242, 255, 0.2), 0 5px 10px rgba(0, 0, 0, 0.4)',
+    canvas3dBg: '#0a0b1e', // Deep space blue
+    canvas3dFog: '#141539', // Dark blue with slight purple tint
+    cardBorder: '1px solid rgba(0, 242, 255, 0.1)', // Cyan border with low opacity
+    inputBg: '#141539', // Dark blue with slight purple tint
+    inputBorder: '#2d3748', // Dark slate
+    inputFocus: 'rgba(0, 242, 255, 0.2)', // Cyan with opacity
+    // Additional futuristic properties
+    glowAccent: '0 0 10px rgba(0, 242, 255, 0.5)', // Cyan glow
+    glowSecondary: '0 0 10px rgba(255, 0, 228, 0.5)', // Magenta glow
+    glassBg: 'rgba(20, 21, 57, 0.7)', // Semi-transparent card background
+    glassBorder: '1px solid rgba(0, 242, 255, 0.2)', // Subtle cyan border
+    gridLines: 'rgba(0, 242, 255, 0.1)', // Subtle grid lines
+    neonHighlight: '#00f2ff', // Bright cyan for highlights
+    neonShadow: '0 0 8px rgba(0, 242, 255, 0.8), 0 0 20px rgba(0, 242, 255, 0.5)', // Layered cyan glow
+    darkOverlay: 'rgba(10, 11, 30, 0.7)' // Overlay for modals and drawers
   }
 };
 
@@ -85,7 +95,7 @@ export const ThemeProvider = ({ children }) => {
       : 'light';
   };
 
-  const [currentTheme, setCurrentTheme] = useState('light'); // Default to light for SSR
+  const [currentTheme, setCurrentTheme] = useState('dark'); // Default to dark for futuristic look
   const [themeLoaded, setThemeLoaded] = useState(false);
 
   // Set theme on initial load (client-side only)

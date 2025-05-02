@@ -29,6 +29,7 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import CubeIcon from '../3d/CubeIcon';
 import './Footer.css';
 
 const Footer = () => {
@@ -81,8 +82,10 @@ const Footer = () => {
           {/* Company Info */}
           <div className="footer-column">
             <Link to="/" className="footer-logo">
-              <FaShoppingBag className="footer-logo-icon" />
-              Luxify
+              <div className="footer-logo-icon" style={{ width: '40px', height: '40px' }}>
+                <CubeIcon size={40} autoRotate={true} />
+              </div>
+              <span className="futuristic-title">Luxify</span>
             </Link>
             <p className="footer-description">
               Premium shopping experience with curated products and exceptional service.

@@ -5,7 +5,7 @@ import { FaTrash, FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 import Message from '../components/ui/Message';
 import { useTheme } from '../context/ThemeContext';
-import CartCube from '../components/3d/CartCube';
+import ShoppingIcon3D from '../components/3d/ShoppingIcon3D';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -141,7 +141,7 @@ const CartPage = () => {
                   backgroundColor: 'transparent',
                   backgroundImage: `radial-gradient(circle, ${currentTheme === 'light' ? '#f8fafc, #e2e8f0' : '#1e293b, #0f172a'})`,
                 }}>
-                  <CartCube size={180} autoRotate={true} />
+                  <ShoppingIcon3D type="cart" size={180} autoRotate={true} />
                 </div>
               </div>
 

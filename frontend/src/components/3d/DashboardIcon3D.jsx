@@ -1,8 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useTheme } from '../../context/ThemeContext';
 import * as THREE from 'three';
+import Dashboard3D from './Dashboard3D';
 import LargeCube from './LargeCube';
+import SimpleCube from './SimpleCube';
+import '../../styles/3d.css';
 
 // Base 3D Icon component that will be used for all dashboard icons
 const Icon3D = ({
@@ -249,17 +252,159 @@ const DashboardIcon3D = ({
   scale = 1,
 }) => {
   const { theme } = useTheme();
+  const [hasError, setHasError] = useState(false);
 
   // Use theme colors if not explicitly provided
   const iconColor = color || theme.primary;
   const iconHoverColor = hoverColor || theme.secondary;
 
-  // Use the new LargeCube component for all icons
-  return (
-    <div style={{ width: `${width}px`, height: `${height}px` }}>
-      <LargeCube size={Math.max(width, height)} autoRotate={true} />
-    </div>
-  );
+  // Check for WebGL support
+  const checkWebGLSupport = () => {
+    try {
+      const canvas = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext &&
+        (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    } catch (e) {
+      return false;
+    }
+  };
+
+  // If WebGL is not supported or we've had errors, use the CSS cube
+  if (!checkWebGLSupport() || hasError) {
+    return (
+      <div style={{ width: `${width}px`, height: `${height}px` }}>
+        <SimpleCube size={Math.min(width, height)} />
+      </div>
+    );
+  }
+
+  // Use the appropriate 3D component based on the type
+  switch (type) {
+    case 'sales':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <SalesIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'orders':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <OrdersIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'products':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <ProductsIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'lowstock':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <LowStockIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'chart':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <ChartIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'piechart':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <PieChartIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'add':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <AddIcon
+              color={iconColor}
+              hoverColor={iconHoverColor}
+              isHovered={isHovered}
+              scale={scale * 0.8}
+            />
+          </Canvas>
+        </div>
+      );
+    case 'dashboard':
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <Dashboard3D
+            size={Math.max(width, height)}
+            autoRotate={true}
+          />
+        </div>
+      );
+    default:
+      return (
+        <div style={{ width: `${width}px`, height: `${height}px` }}>
+          <LargeCube
+            size={Math.max(width, height)}
+            autoRotate={true}
+            onError={() => setHasError(true)}
+          />
+        </div>
+      );
+  }
 };
 
 export default DashboardIcon3D;

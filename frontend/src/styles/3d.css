@@ -1,0 +1,167 @@
+/* 3D Cube Animations */
+@keyframes simple-cube-spin {
+  0% {
+    transform: rotateX(-30deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(-30deg) rotateY(360deg);
+  }
+}
+
+.simple-cube-container {
+  perspective: 600px;
+}
+
+.simple-cube {
+  transform-style: preserve-3d;
+  animation: simple-cube-spin 8s infinite linear;
+}
+
+.simple-cube:hover {
+  animation-play-state: paused;
+}
+
+.simple-cube-face {
+  backface-visibility: visible;
+  transition: all 0.3s ease;
+}
+
+/* Cube container styling */
+.cube-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.cube-title {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+/* CSS Fallback cube styling */
+.css-cube-container {
+  perspective: 800px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.css-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(15deg) rotateY(45deg);
+  transition: transform 0.5s ease;
+}
+
+.css-cube:hover {
+  transform: rotateX(5deg) rotateY(35deg) scale(1.05);
+}
+
+.css-cube.css-cube-animate {
+  animation: css-cube-spin 10s infinite linear;
+}
+
+.css-cube-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  backface-visibility: visible;
+}
+
+.css-cube-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(1px);
+  color: white;
+  font-size: 2rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* CSS cube animation */
+@keyframes css-cube-spin {
+  from { transform: rotateX(15deg) rotateY(45deg); }
+  to { transform: rotateX(15deg) rotateY(405deg); }
+}
+
+@keyframes css-cube-pulse {
+  0% { box-shadow: 0 0 5px rgba(68, 102, 170, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(68, 102, 170, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(68, 102, 170, 0.5); }
+}
+
+/* Fallback styling for when WebGL is not available */
+.fallback-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+  color: var(--primary);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
+  }
+}
+
+/* Loading indicator for 3D components */
+.cube-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.cube-loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border: 2px solid var(--text-secondary);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+}
+
+@keyframes loading-spin {
+  to { transform: rotate(360deg); }
+}

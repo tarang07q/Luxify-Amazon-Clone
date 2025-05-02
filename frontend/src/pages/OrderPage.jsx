@@ -8,6 +8,7 @@ import {
 } from '../slices/services/orderService';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
+import OrderIcon3D from '../components/3d/OrderIcon3D';
 import {
   FaShoppingCart,
   FaMapMarkerAlt,
@@ -368,6 +369,12 @@ const OrderPage = () => {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-md p-4 sticky top-4">
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+
+            {/* 3D Order Icon */}
+            <div className="flex justify-center mb-6">
+              <OrderIcon3D size={180} autoRotate={true} />
+            </div>
+
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span>Items:</span>

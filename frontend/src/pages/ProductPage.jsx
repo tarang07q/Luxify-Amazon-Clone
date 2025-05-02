@@ -13,7 +13,7 @@ import { FaArrowLeft, FaShoppingCart, FaRegHeart, FaImage } from 'react-icons/fa
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PresentationControls } from '@react-three/drei';
 import { useTheme } from '../context/ThemeContext';
-import ProductCube from '../components/3d/ProductCube';
+import ShoppingIcon3D from '../components/3d/ShoppingIcon3D';
 
 // 3D Product Model Component
 const ProductModel = ({ color = '#ff9900' }) => {
@@ -276,7 +276,7 @@ const ProductPage = () => {
                   backgroundColor: 'transparent',
                   backgroundImage: `radial-gradient(circle, ${currentTheme === 'light' ? '#f8fafc, #e2e8f0' : '#1e293b, #0f172a'})`,
                 }}>
-                  <ProductCube size={240} autoRotate={true} />
+                  <ShoppingIcon3D type="product" size={240} autoRotate={true} />
                 </div>
                 <p className="text-sm text-gray-500 text-center mt-2">
                   Click to pause rotation, drag to interact

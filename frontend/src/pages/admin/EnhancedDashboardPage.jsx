@@ -5,7 +5,13 @@ import { useGetAllOrdersQuery } from '../../slices/services/orderService';
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
 import DashboardCards from '../../components/admin/DashboardCards';
-import LargeCube from '../../components/3d/LargeCube';
+import Dashboard3D from '../../components/3d/Dashboard3D';
+import Order3D from '../../components/3d/Order3D';
+import DashboardIcon3D from '../../components/3d/DashboardIcon3D';
+import ShoppingIcon3D from '../../components/3d/ShoppingIcon3D';
+import OrderIcon3D from '../../components/3d/OrderIcon3D';
+import ProfileIcon3D from '../../components/3d/ProfileIcon3D';
+import ShoppingCart3D from '../../components/3d/ShoppingCart3D';
 import { useTheme } from '../../context/ThemeContext';
 import {
   FaBox,
@@ -123,7 +129,7 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <LargeCube size={120} autoRotate={true} />
+                  <Dashboard3D size={120} autoRotate={true} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Sales</p>
@@ -147,7 +153,7 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <LargeCube size={120} autoRotate={true} />
+                  <Order3D size={120} autoRotate={true} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Orders</p>
@@ -171,7 +177,7 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <LargeCube size={120} autoRotate={true} />
+                  <DashboardIcon3D type="dashboard" size={120} autoRotate={true} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Products</p>
@@ -195,7 +201,7 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <LargeCube size={120} autoRotate={true} />
+                  <ShoppingIcon3D type="cart" size={120} autoRotate={true} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Low Stock Items</p>

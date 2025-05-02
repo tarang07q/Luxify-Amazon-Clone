@@ -54,8 +54,27 @@ const ProductCard = ({ product }) => {
   };
 
   // Handle image error
-  const handleImageError = () => {
+  const handleImageError = (e) => {
+    console.error("Image failed to load:", e.target.src);
     setImageError(true);
+  };
+
+  // Get optimized image URL
+  const getImageUrl = (imagePath, index = 0) => {
+    if (!imagePath) return '/placeholder.jpg';
+
+    // If it's already a full URL
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+
+    // If it's a relative path from the API
+    if (imagePath.startsWith('/')) {
+      return `/api${imagePath}`;
+    }
+
+    // Fallback
+    return '/placeholder.jpg';
   };
 
   // Calculate discount percentage
@@ -113,26 +132,33 @@ const ProductCard = ({ product }) => {
         <Link to={`/product/${product._id}`}>
           {imageError ? (
             <div className="fallback-image">
-              <FaImage size={50} />
-              <p>{product.title}</p>
+              <div className="fallback-icon">
+                <FaImage size={50} />
+              </div>
+              <p className="fallback-title">{product.title.length > 30
+                ? `${product.title.substring(0, 30)}...`
+                : product.title}
+              </p>
+              <p className="fallback-category">{product.category}</p>
             </div>
           ) : (
             <div className="image-wrapper">
               <img
                 src={product.images && product.images.length > 0 ?
-                  (product.images[0].startsWith('http') ? product.images[0] : `/api${product.images[0]}`)
-                  : '/placeholder.jpg'}
+                  getImageUrl(product.images[0]) : '/placeholder.jpg'}
                 alt={product.title}
                 className="product-image"
                 onError={handleImageError}
+                loading="lazy"
               />
               {/* Second image for hover effect */}
               {product.images && product.images.length > 1 && (
                 <img
-                  src={product.images[1].startsWith('http') ? product.images[1] : `/api${product.images[1]}`}
+                  src={getImageUrl(product.images[1])}
                   alt={`${product.title} - alternate view`}
                   className={`product-image-hover ${isHovered ? 'visible' : ''}`}
                   onError={handleImageError}
+                  loading="lazy"
                 />
               )}
             </div>

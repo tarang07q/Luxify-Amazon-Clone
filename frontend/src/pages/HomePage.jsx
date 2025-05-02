@@ -9,12 +9,11 @@ import Paginate from '../components/ui/Paginate';
 import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore } from 'react-icons/fa';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, PresentationControls } from '@react-three/drei';
-import LargeCube from '../components/3d/LargeCube';
-import ProductCube from '../components/3d/ProductCube';
-import CartCube from '../components/3d/CartCube';
-import OrderCube from '../components/3d/OrderCube';
-import AdminCube from '../components/3d/AdminCube';
-import ProfileCube from '../components/3d/ProfileCube';
+import CubeIcon from '../components/3d/CubeIcon';
+import ShoppingCart3D from '../components/3d/ShoppingCart3D';
+import Order3D from '../components/3d/Order3D';
+import Dashboard3D from '../components/3d/Dashboard3D';
+import Profile3D from '../components/3d/Profile3D';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -101,7 +100,7 @@ const HomePage = () => {
             </div>
             <div className="hero-3d">
               <div className="model-container">
-                <LargeCube
+                <CubeIcon
                   size={800}
                   autoRotate={true}
                 />

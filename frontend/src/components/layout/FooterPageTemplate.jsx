@@ -2,15 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaChevronRight } from 'react-icons/fa';
 import { useTheme } from '../../context/ThemeContext';
+import CubeIcon from '../3d/CubeIcon';
 import '../../styles/footerPages.css';
 
 const FooterPageTemplate = ({ title, subtitle, icon, children, breadcrumbs = [] }) => {
   const { theme } = useTheme();
 
   return (
-    <div 
+    <div
       className="footer-page-container"
-      style={{ 
+      style={{
         backgroundColor: theme.background,
         color: theme.text
       }}
@@ -21,13 +22,13 @@ const FooterPageTemplate = ({ title, subtitle, icon, children, breadcrumbs = [] 
           <FaHome className="mr-1" />
           <span>Home</span>
         </Link>
-        
+
         {breadcrumbs.map((crumb, index) => (
           <React.Fragment key={index}>
             <FaChevronRight className="mx-2 text-xs" style={{ color: theme.textLight }} />
             {crumb.link ? (
-              <Link 
-                to={crumb.link} 
+              <Link
+                to={crumb.link}
                 className="hover:text-primary transition-colors"
                 style={{ color: theme.textLight }}
               >
@@ -42,18 +43,25 @@ const FooterPageTemplate = ({ title, subtitle, icon, children, breadcrumbs = [] 
 
       {/* Page Header */}
       <div className="mb-10">
-        <div className="flex items-center mb-4">
-          {icon && <div className="mr-4 text-4xl" style={{ color: theme.primary }}>{icon}</div>}
-          <h1 className="footer-page-title" style={{ color: theme.text }}>
-            {title}
-          </h1>
+        <div className="footer-page-header">
+          <div className="footer-page-icon-container">
+            <div className="footer-page-3d-icon">
+              <CubeIcon size={60} autoRotate={true} />
+            </div>
+            {icon && <div className="footer-page-icon" style={{ color: theme.primary }}>{icon}</div>}
+          </div>
+          <div>
+            <h1 className="footer-page-title" style={{ color: theme.text }}>
+              {title}
+            </h1>
+
+            {subtitle && (
+              <p className="footer-page-subtitle-text" style={{ color: theme.textLight }}>
+                {subtitle}
+              </p>
+            )}
+          </div>
         </div>
-        
-        {subtitle && (
-          <p className="text-xl" style={{ color: theme.textLight }}>
-            {subtitle}
-          </p>
-        )}
       </div>
 
       {/* Page Content */}

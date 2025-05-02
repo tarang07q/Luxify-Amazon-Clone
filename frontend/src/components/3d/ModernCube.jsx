@@ -1,15 +1,40 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { useTheme } from '../../context/ThemeContext';
+import SimpleCube from './SimpleCube';
+import '../../styles/3d.css';
 
-const ModernCube = ({ size = 120, autoRotate = true, faceColors = null }) => {
+const ModernCube = ({ size = 120, autoRotate = true, faceColors = null, onError }) => {
   const mountRef = useRef(null);
   const { theme, currentTheme } = useTheme();
+  const [renderMode, setRenderMode] = useState('3d');
+  const [errorOccurred, setErrorOccurred] = useState(false);
 
   useEffect(() => {
-    // Scene setup
-    const scene = new THREE.Scene();
-    scene.background = null; // Transparent background
+    // Check for WebGL support
+    const checkWebGLSupport = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+        if (!gl) {
+          return false;
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    if (!checkWebGLSupport()) {
+      setRenderMode('css');
+      return;
+    }
+
+    try {
+      // Scene setup
+      const scene = new THREE.Scene();
+      scene.background = null; // Transparent background
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
@@ -235,8 +260,20 @@ const ModernCube = ({ size = 120, autoRotate = true, faceColors = null }) => {
 
       renderer.dispose();
     };
-  }, [size, autoRotate, theme, currentTheme, faceColors]);
+    } catch (error) {
+      console.error("Error in 3D rendering:", error);
+      setErrorOccurred(true);
+      setRenderMode('css');
+      if (onError) onError(error);
+    }
+  }, [size, autoRotate, theme, currentTheme, faceColors, onError]);
 
+  // If we're using CSS mode or had an error, render the SimpleCube
+  if (renderMode === 'css' || errorOccurred) {
+    return <SimpleCube size={size} />;
+  }
+
+  // Otherwise render the 3D component
   return (
     <div
       ref={mountRef}

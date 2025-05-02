@@ -1,6 +1,6 @@
-# Amazer - E-Commerce Platform
+# Luxify - Premium E-Commerce Platform
 
-Amazer is a full-stack e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js). It features a modern, responsive UI with 3D product visualization using Three.js.
+Luxify (formerly Amazer) is a full-stack e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js). It features a modern, responsive UI with 3D product visualization using Three.js.
 
 ## Features
 
@@ -30,6 +30,60 @@ Amazer is a full-stack e-commerce platform built with the MERN stack (MongoDB, E
 - JWT Authentication
 - Multer for file uploads
 
+## Project Structure
+
+The project is organized into two main directories:
+
+### Frontend (React)
+
+```
+frontend/
+├── public/                 # Static assets
+├── src/
+│   ├── assets/             # Images, fonts, and other static assets
+│   ├── components/         # Reusable UI components
+│   │   ├── 3d/             # Three.js 3D components
+│   │   ├── admin/          # Admin-specific components
+│   │   ├── layout/         # Layout components (header, footer, etc.)
+│   │   ├── product/        # Product-related components
+│   │   └── ui/             # Generic UI components
+│   ├── config/             # Configuration files
+│   ├── constants/          # Application constants
+│   ├── context/            # React context providers
+│   ├── hooks/              # Custom React hooks
+│   ├── layouts/            # Page layout templates
+│   ├── pages/              # Page components
+│   │   └── admin/          # Admin pages
+│   ├── services/           # API services
+│   ├── slices/             # Redux slices and RTK Query services
+│   ├── styles/             # Global styles and theme
+│   ├── utils/              # Utility functions
+│   ├── App.jsx             # Main application component
+│   ├── index.css           # Global CSS
+│   ├── main.jsx            # Application entry point
+│   └── store.js            # Redux store configuration
+├── .gitignore              # Git ignore file
+├── package.json            # NPM package configuration
+└── vite.config.js          # Vite configuration
+```
+
+### Backend (Node.js/Express)
+
+```
+backend/
+├── config/                 # Configuration files
+├── controllers/            # Route controllers
+├── data/                   # Seed data
+├── middleware/             # Express middleware
+├── models/                 # Mongoose models
+├── routes/                 # API routes
+├── uploads/                # Uploaded files
+├── utils/                  # Utility functions
+├── .env                    # Environment variables
+├── package.json            # NPM package configuration
+└── server.js               # Server entry point
+```
+
 ## Getting Started
 
 ### Prerequisites
@@ -40,8 +94,8 @@ Amazer is a full-stack e-commerce platform built with the MERN stack (MongoDB, E
 
 1. Clone the repository
 ```
-git clone https://github.com/yourusername/amazer.git
-cd amazer
+git clone https://github.com/tarang07q/Luxify-Amazon-Clone.git
+cd Luxify-Amazon-Clone
 ```
 
 2. Install backend dependencies
@@ -119,6 +173,16 @@ npm run dev
 
 ### File Upload
 - `POST /api/upload` - Upload product image (Admin)
+
+## Development Guidelines
+
+- Follow the established project structure
+- Use consistent naming conventions
+- Write clean, maintainable code with proper comments
+- Create reusable components and hooks
+- Use TypeScript for type safety
+- Write tests for critical functionality
+- Follow ESLint and Prettier configurations
 
 ## License
 

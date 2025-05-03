@@ -5,8 +5,9 @@ import { useGetMeQuery } from '../slices/services/authService';
 import { setCredentials } from '../slices/authSlice';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
-import ProfileIcon3D from '../components/3d/ProfileIcon3D';
+import ProfileCard3D from '../components/3d/ProfileCard3D';
 import { FaUser, FaEdit } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
 
 const ProfilePage = () => {
   const [name, setName] = useState('');
@@ -16,6 +17,7 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const dispatch = useDispatch();
+  const { theme, currentTheme } = useTheme();
 
   const { user } = useSelector((state) => state.auth);
 
@@ -71,7 +73,13 @@ const ProfilePage = () => {
               </div>
 
               <div className="flex justify-center mb-6">
-                <ProfileIcon3D size={150} autoRotate={true} />
+                <ProfileCard3D
+                  size={180}
+                  color={currentTheme === 'dark' ? '#01ffc3' : '#10b981'}
+                  floatingAnimation={true}
+                  glowEffect={true}
+                  userName={data.data.name.toUpperCase()}
+                />
               </div>
 
               {isEditing ? (

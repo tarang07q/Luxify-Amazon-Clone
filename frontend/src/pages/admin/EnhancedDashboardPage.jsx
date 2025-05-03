@@ -5,13 +5,11 @@ import { useGetAllOrdersQuery } from '../../slices/services/orderService';
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
 import DashboardCards from '../../components/admin/DashboardCards';
-import Dashboard3D from '../../components/3d/Dashboard3D';
-import Order3D from '../../components/3d/Order3D';
-import DashboardIcon3D from '../../components/3d/DashboardIcon3D';
-import ShoppingIcon3D from '../../components/3d/ShoppingIcon3D';
-import OrderIcon3D from '../../components/3d/OrderIcon3D';
-import ProfileIcon3D from '../../components/3d/ProfileIcon3D';
-import ShoppingCart3D from '../../components/3d/ShoppingCart3D';
+import DashboardPanel3D from '../../components/3d/DashboardPanel3D';
+import OrderDoc3D from '../../components/3d/OrderDoc3D';
+import ProductBox3D from '../../components/3d/ProductBox3D';
+import ShoppingBag3D from '../../components/3d/ShoppingBag3D';
+import ProfileCard3D from '../../components/3d/ProfileCard3D';
 import { useTheme } from '../../context/ThemeContext';
 import {
   FaBox,
@@ -25,12 +23,13 @@ import {
   FaEdit,
   FaTags,
   FaExclamationTriangle,
-  FaArrowRight
+  FaArrowRight,
+  FaFileInvoiceDollar
 } from 'react-icons/fa';
 import './EnhancedDashboard.css';
 
 const EnhancedDashboardPage = () => {
-  const { theme } = useTheme();
+  const { theme, currentTheme } = useTheme();
   const { data: productsData, isLoading: productsLoading, error: productsError } =
     useGetProductsQuery({ limit: 100 });
 
@@ -129,7 +128,13 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <Dashboard3D size={120} autoRotate={true} />
+                  <DashboardPanel3D
+                    size={100}
+                    color={currentTheme === 'dark' ? '#ffaa00' : '#f59e0b'}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                    icon={<FaChartBar size={25} />}
+                  />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Sales</p>
@@ -153,7 +158,13 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <Order3D size={120} autoRotate={true} />
+                  <OrderDoc3D
+                    size={100}
+                    color={currentTheme === 'dark' ? '#7928ca' : '#8b5cf6'}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                    icon={<FaFileInvoiceDollar size={25} />}
+                  />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Orders</p>
@@ -177,7 +188,13 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <DashboardIcon3D type="dashboard" size={120} autoRotate={true} />
+                  <ProductBox3D
+                    size={100}
+                    color={currentTheme === 'dark' ? '#ff00e4' : '#f0338d'}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                    icon={<FaBox size={25} />}
+                  />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Products</p>
@@ -201,7 +218,13 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <ShoppingIcon3D type="cart" size={120} autoRotate={true} />
+                  <ShoppingBag3D
+                    size={100}
+                    color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                    icon={<FaShoppingCart size={25} />}
+                  />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Low Stock Items</p>
@@ -240,13 +263,12 @@ const EnhancedDashboardPage = () => {
                 }}
               >
                 <div className="enhanced-action-icon">
-                  <DashboardIcon3D
-                    type="products"
-                    width={40}
-                    height={40}
+                  <ProductBox3D
+                    size={60}
                     color="#ffffff"
-                    isHovered={hoveredCard === 'actionProducts'}
-                    scale={0.8}
+                    floatingAnimation={false}
+                    glowEffect={true}
+                    icon={<FaBox size={20} />}
                   />
                 </div>
                 <div className="enhanced-action-text">
@@ -266,13 +288,12 @@ const EnhancedDashboardPage = () => {
                 }}
               >
                 <div className="enhanced-action-icon">
-                  <DashboardIcon3D
-                    type="orders"
-                    width={40}
-                    height={40}
+                  <OrderDoc3D
+                    size={60}
                     color="#ffffff"
-                    isHovered={hoveredCard === 'actionOrders'}
-                    scale={0.8}
+                    floatingAnimation={false}
+                    glowEffect={true}
+                    icon={<FaFileInvoiceDollar size={20} />}
                   />
                 </div>
                 <div className="enhanced-action-text">
@@ -292,13 +313,12 @@ const EnhancedDashboardPage = () => {
                 }}
               >
                 <div className="enhanced-action-icon">
-                  <DashboardIcon3D
-                    type="add"
-                    width={40}
-                    height={40}
+                  <ProductBox3D
+                    size={60}
                     color="#ffffff"
-                    isHovered={hoveredCard === 'actionAdd'}
-                    scale={0.8}
+                    floatingAnimation={false}
+                    glowEffect={true}
+                    icon={<FaPlus size={20} />}
                   />
                 </div>
                 <div className="enhanced-action-text">
@@ -327,13 +347,12 @@ const EnhancedDashboardPage = () => {
               >
                 <div className="enhanced-card-title-container">
                   <div className="enhanced-card-title-icon">
-                    <DashboardIcon3D
-                      type="pieChart"
-                      width={40}
-                      height={40}
+                    <DashboardPanel3D
+                      size={40}
                       color={theme.primary}
-                      isHovered={hoveredCard === 'pieChart'}
-                      scale={0.8}
+                      floatingAnimation={false}
+                      glowEffect={true}
+                      icon={<FaChartPie size={15} />}
                     />
                   </div>
                   <h2 className="enhanced-card-title" style={{ color: theme.text }}>
@@ -417,13 +436,12 @@ const EnhancedDashboardPage = () => {
               >
                 <div className="enhanced-card-title-container">
                   <div className="enhanced-card-title-icon">
-                    <DashboardIcon3D
-                      type="chart"
-                      width={40}
-                      height={40}
+                    <DashboardPanel3D
+                      size={40}
                       color={theme.primary}
-                      isHovered={hoveredCard === 'chart'}
-                      scale={0.8}
+                      floatingAnimation={false}
+                      glowEffect={true}
+                      icon={<FaChartBar size={15} />}
                     />
                   </div>
                   <h2 className="enhanced-card-title" style={{ color: theme.text }}>
@@ -504,13 +522,12 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-card-title-container">
                 <div className="enhanced-card-title-icon">
-                  <DashboardIcon3D
-                    type="lowStock"
-                    width={40}
-                    height={40}
+                  <ShoppingBag3D
+                    size={40}
                     color="#EF4444"
-                    isHovered={hoveredCard === 'lowStockTable'}
-                    scale={0.8}
+                    floatingAnimation={false}
+                    glowEffect={true}
+                    icon={<FaExclamationTriangle size={15} />}
                   />
                 </div>
                 <h2 className="enhanced-card-title" style={{ color: theme.text }}>

@@ -9,28 +9,19 @@ import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
 import Rating from '../components/ui/Rating';
 import ProductReviews from '../components/product/ProductReviews';
-import { FaArrowLeft, FaShoppingCart, FaRegHeart, FaImage } from 'react-icons/fa';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PresentationControls } from '@react-three/drei';
+import { FaArrowLeft, FaShoppingCart, FaRegHeart, FaImage, FaBox } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
-import ShoppingIcon3D from '../components/3d/ShoppingIcon3D';
+import usePriceFormatter from '../hooks/usePriceFormatter';
+import ProductBox3D from '../components/3d/ProductBox3D';
 
-// 3D Product Model Component
-const ProductModel = ({ color = '#ff9900' }) => {
-  // This is a placeholder - in a real app, you'd use an actual model based on the product
-  return (
-    <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={color} />
-    </mesh>
-  );
-};
+
 
 const ProductPage = () => {
   const { id: productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { theme, currentTheme } = useTheme();
+  const { formatPrice } = usePriceFormatter();
 
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
@@ -134,12 +125,12 @@ const ProductPage = () => {
               </div>
               <div className="mb-4">
                 <span className="text-2xl font-bold" style={{ color: theme.primary }}>
-                  ${product.data.price.toFixed(2)}
+                  {formatPrice(product.data.price)}
                 </span>
                 {product.data.discount > 0 && (
                   <>
                     <span className="ml-2 text-sm text-gray-500 line-through">
-                      ${product.data.mrp.toFixed(2)}
+                      {formatPrice(product.data.mrp)}
                     </span>
                     <span className="ml-2 text-sm text-green-600">
                       {Math.round(
@@ -188,7 +179,7 @@ const ProductPage = () => {
                     <span style={{ color: theme.textLight }}>Price:</span>
                   </div>
                   <div>
-                    <span className="font-bold" style={{ color: theme.primary }}>${product.data.price.toFixed(2)}</span>
+                    <span className="font-bold" style={{ color: theme.primary }}>{formatPrice(product.data.price)}</span>
                   </div>
                 </div>
 
@@ -263,7 +254,7 @@ const ProductPage = () => {
                 </button>
               </div>
 
-              {/* 3D Product Cube Viewer */}
+              {/* 3D Product Box Viewer */}
               <div className="rounded-lg shadow-md p-4 mb-6" style={{
                 backgroundColor: theme.cardBg,
                 borderColor: theme.border,
@@ -276,10 +267,16 @@ const ProductPage = () => {
                   backgroundColor: 'transparent',
                   backgroundImage: `radial-gradient(circle, ${currentTheme === 'light' ? '#f8fafc, #e2e8f0' : '#1e293b, #0f172a'})`,
                 }}>
-                  <ShoppingIcon3D type="product" size={240} autoRotate={true} />
+                  <ProductBox3D
+                    size={240}
+                    color={currentTheme === 'dark' ? '#ff00e4' : '#f0338d'}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                    icon={<FaBox size={60} />}
+                  />
                 </div>
                 <p className="text-sm text-gray-500 text-center mt-2">
-                  Click to pause rotation, drag to interact
+                  Interactive 3D product visualization
                 </p>
               </div>
             </div>

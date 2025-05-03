@@ -4,6 +4,7 @@
 
 /**
  * Format a price with currency symbol
+ * This is a fallback function when the currency context is not available
  * @param {number} price - The price to format
  * @param {string} currency - The currency symbol (default: $)
  * @returns {string} Formatted price with currency symbol
@@ -19,12 +20,12 @@ export const formatPrice = (price, currency = '$') => {
  * @returns {string} Formatted date string
  */
 export const formatDate = (date, options = {}) => {
-  const defaultOptions = { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  const defaultOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   };
-  
+
   const dateObj = date instanceof Date ? date : new Date(date);
   return new Intl.DateTimeFormat('en-US', { ...defaultOptions, ...options }).format(dateObj);
 };

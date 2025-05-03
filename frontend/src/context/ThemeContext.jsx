@@ -4,10 +4,15 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 export const themes = {
   light: {
     primary: '#5046e5', // Enhanced indigo
+    'primary-rgb': '80, 70, 229',
     secondary: '#f0338d', // Enhanced pink
+    'secondary-rgb': '240, 51, 141',
     accent: '#8b5cf6', // violet-500
+    'accent-rgb': '139, 92, 246',
     gradient: 'linear-gradient(135deg, #5046e5, #f0338d)',
     background: '#ffffff',
+    'bg-primary-rgb': '255, 255, 255',
+    'bg-secondary-rgb': '249, 250, 251',
     cardBg: '#f9fafb', // gray-50
     cardHoverBg: '#f1f5f9', // slate-100
     text: '#1e293b', // slate-800
@@ -22,9 +27,13 @@ export const themes = {
     footerBg: '#f8fafc', // slate-50
     footerText: '#475569', // slate-600
     success: '#10b981', // emerald-500
+    'success-rgb': '16, 185, 129',
     error: '#ef4444', // red-500
+    'error-rgb': '239, 68, 68',
     warning: '#f59e0b', // amber-500
+    'warning-rgb': '245, 158, 11',
     info: '#3b82f6', // blue-500
+    'info-rgb': '59, 130, 246',
     shadow: '0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02)',
     shadowHover: '0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.04)',
     canvas3dBg: '#f8fafc', // slate-50
@@ -37,10 +46,15 @@ export const themes = {
   dark: {
     // Futuristic cyberpunk-inspired color scheme
     primary: '#00f2ff', // Bright cyan
+    'primary-rgb': '0, 242, 255',
     secondary: '#ff00e4', // Neon magenta
+    'secondary-rgb': '255, 0, 228',
     accent: '#7928ca', // Electric purple
+    'accent-rgb': '121, 40, 202',
     gradient: 'linear-gradient(135deg, #00f2ff, #ff00e4)',
     background: '#0a0b1e', // Deep space blue
+    'bg-primary-rgb': '10, 11, 30',
+    'bg-secondary-rgb': '20, 21, 57',
     cardBg: '#141539', // Dark blue with slight purple tint
     cardHoverBg: '#1c1c4d', // Slightly lighter blue-purple
     text: '#e2e8f0', // Soft white
@@ -55,9 +69,13 @@ export const themes = {
     footerBg: '#0d102b', // Slightly lighter than background
     footerText: '#a0aec0', // Muted silver
     success: '#01ffc3', // Neon teal
+    'success-rgb': '1, 255, 195',
     error: '#ff3d71', // Neon red
+    'error-rgb': '255, 61, 113',
     warning: '#ffaa00', // Bright amber
+    'warning-rgb': '255, 170, 0',
     info: '#0095ff', // Bright blue
+    'info-rgb': '0, 149, 255',
     shadow: '0 4px 12px rgba(0, 242, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3)',
     shadowHover: '0 10px 25px rgba(0, 242, 255, 0.2), 0 5px 10px rgba(0, 0, 0, 0.4)',
     canvas3dBg: '#0a0b1e', // Deep space blue

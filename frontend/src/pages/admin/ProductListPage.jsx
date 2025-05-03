@@ -9,6 +9,7 @@ import {
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
 import Paginate from '../../components/ui/Paginate';
+import { useTheme } from '../../context/ThemeContext';
 import {
   FaEdit,
   FaTrash,
@@ -21,6 +22,7 @@ import {
 
 const ProductListPage = () => {
   const navigate = useNavigate();
+  const { theme, currentTheme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState('createdAt');
@@ -113,7 +115,11 @@ const ProductListPage = () => {
       </div>
 
       {/* Search and Filter */}
-      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div className="rounded-lg shadow-md p-4 mb-6" style={{
+        backgroundColor: theme.cardBg,
+        borderColor: theme.border,
+        boxShadow: theme.shadow
+      }}>
         <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
@@ -123,13 +129,25 @@ const ProductListPage = () => {
                 className="input-field pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  backgroundColor: theme.inputBg,
+                  borderColor: theme.inputBorder,
+                  color: theme.text
+                }}
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
+                <FaSearch style={{ color: theme.textLight }} />
               </div>
             </div>
           </div>
-          <button type="submit" className="btn-primary">
+          <button
+            type="submit"
+            className="btn-primary"
+            style={{
+              backgroundColor: theme.buttonPrimary,
+              color: theme.buttonText
+            }}
+          >
             Search
           </button>
         </form>
@@ -144,15 +162,20 @@ const ProductListPage = () => {
         </Message>
       ) : (
         <>
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="rounded-lg shadow-md overflow-hidden" style={{
+            backgroundColor: theme.cardBg,
+            borderColor: theme.border,
+            boxShadow: theme.shadow
+          }}>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y" style={{ borderColor: theme.border }}>
+                <thead style={{ backgroundColor: currentTheme === 'dark' ? theme.background : theme.cardBg }}>
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort('_id')}
+                      style={{ color: theme.textLight }}
                     >
                       <div className="flex items-center">
                         ID {getSortIcon('_id')}
@@ -160,8 +183,9 @@ const ProductListPage = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort('title')}
+                      style={{ color: theme.textLight }}
                     >
                       <div className="flex items-center">
                         Name {getSortIcon('title')}
@@ -169,8 +193,9 @@ const ProductListPage = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort('price')}
+                      style={{ color: theme.textLight }}
                     >
                       <div className="flex items-center">
                         Price {getSortIcon('price')}
@@ -178,8 +203,9 @@ const ProductListPage = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort('category')}
+                      style={{ color: theme.textLight }}
                     >
                       <div className="flex items-center">
                         Category {getSortIcon('category')}
@@ -187,8 +213,9 @@ const ProductListPage = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort('brand')}
+                      style={{ color: theme.textLight }}
                     >
                       <div className="flex items-center">
                         Brand {getSortIcon('brand')}
@@ -196,8 +223,9 @@ const ProductListPage = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort('stock')}
+                      style={{ color: theme.textLight }}
                     >
                       <div className="flex items-center">
                         Stock {getSortIcon('stock')}
@@ -205,52 +233,63 @@ const ProductListPage = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider"
+                      style={{ color: theme.textLight }}
                     >
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y" style={{ backgroundColor: theme.cardBg, borderColor: theme.border }}>
                   {data.data.map((product) => (
-                    <tr key={product._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <tr key={product._id} className="hover:bg-opacity-50" style={{
+                      borderColor: theme.border,
+                      ':hover': { backgroundColor: currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }
+                    }}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.text }}>
                         {product._id.substring(0, 8)}...
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="h-10 w-10 flex-shrink-0">
                             <img
-                              className="h-10 w-10 object-cover"
+                              className="h-10 w-10 object-cover rounded"
                               src={product.images[0]}
                               alt={product.title}
+                              style={{ borderColor: theme.border }}
                             />
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium" style={{ color: theme.text }}>
                               {product.title}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.primary }}>
                         ${product.price.toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.text }}>
                         {product.category}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.text }}>
                         {product.brand}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            product.stock === 0
-                              ? 'bg-red-100 text-red-800'
+                          className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                          style={{
+                            backgroundColor: product.stock === 0
+                              ? currentTheme === 'dark' ? 'rgba(255, 61, 113, 0.2)' : 'rgba(239, 68, 68, 0.1)'
                               : product.stock < 5
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-green-100 text-green-800'
-                          }`}
+                              ? currentTheme === 'dark' ? 'rgba(255, 170, 0, 0.2)' : 'rgba(245, 158, 11, 0.1)'
+                              : currentTheme === 'dark' ? 'rgba(1, 255, 195, 0.2)' : 'rgba(16, 185, 129, 0.1)',
+                            color: product.stock === 0
+                              ? theme.error
+                              : product.stock < 5
+                              ? theme.warning
+                              : theme.success
+                          }}
                         >
                           {product.stock}
                         </span>
@@ -259,13 +298,15 @@ const ProductListPage = () => {
                         <div className="flex justify-end space-x-2">
                           <Link
                             to={`/admin/product/${product._id}/edit`}
-                            className="text-blue-600 hover:text-blue-900"
+                            style={{ color: theme.primary }}
+                            className="hover:opacity-80"
                           >
                             <FaEdit />
                           </Link>
                           <button
                             onClick={() => deleteHandler(product._id)}
-                            className="text-red-600 hover:text-red-900"
+                            style={{ color: theme.error }}
+                            className="hover:opacity-80"
                           >
                             <FaTrash />
                           </button>

@@ -25,15 +25,19 @@ import {
   FaClipboardList,
   FaTruck,
   FaUndo,
-  FaQuestionCircle
+  FaQuestionCircle,
+  FaGlobeAmericas
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import { useCurrency } from '../../context/CurrencyContext';
+import CurrencySelector from '../currency/CurrencySelector';
 import CubeIcon from '../3d/CubeIcon';
 import './Footer.css';
 
 const Footer = () => {
   const { theme } = useTheme();
+  const { currency } = useCurrency();
 
   const linkGroups = [
     {
@@ -138,22 +142,32 @@ const Footer = () => {
         <div className="footer-divider"></div>
 
         <div className="footer-bottom">
-          <div className="social-links">
-            <a href="#" className="social-link">
-              <FaFacebook />
-            </a>
-            <a href="#" className="social-link">
-              <FaTwitter />
-            </a>
-            <a href="#" className="social-link">
-              <FaInstagram />
-            </a>
-            <a href="#" className="social-link">
-              <FaYoutube />
-            </a>
-            <a href="#" className="social-link">
-              <FaLinkedin />
-            </a>
+          <div className="footer-bottom-left">
+            <div className="social-links">
+              <a href="#" className="social-link">
+                <FaFacebook />
+              </a>
+              <a href="#" className="social-link">
+                <FaTwitter />
+              </a>
+              <a href="#" className="social-link">
+                <FaInstagram />
+              </a>
+              <a href="#" className="social-link">
+                <FaYoutube />
+              </a>
+              <a href="#" className="social-link">
+                <FaLinkedin />
+              </a>
+            </div>
+
+            <div className="footer-currency-selector">
+              <div className="footer-currency-label">
+                <FaGlobeAmericas className="footer-link-icon" />
+                <span>Currency:</span>
+              </div>
+              <CurrencySelector variant="minimal" />
+            </div>
           </div>
 
           <p className="copyright">

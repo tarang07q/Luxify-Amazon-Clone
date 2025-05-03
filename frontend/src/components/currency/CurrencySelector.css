@@ -1,0 +1,218 @@
+.currency-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.currency-selector-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.2s ease;
+}
+
+/* Default variant */
+.currency-selector-btn-default {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+}
+
+.currency-selector-btn-default:hover {
+  background-color: var(--bg-hover);
+}
+
+/* Minimal variant */
+.currency-selector-btn-minimal {
+  padding: 0.25rem 0.5rem;
+  color: var(--text-primary);
+  opacity: 0.8;
+}
+
+.currency-selector-btn-minimal:hover {
+  opacity: 1;
+}
+
+/* Header variant */
+.currency-selector-btn-header {
+  padding: 0.25rem 0.5rem;
+  color: var(--text-inverse);
+  opacity: 0.9;
+}
+
+.currency-selector-btn-header:hover {
+  opacity: 1;
+}
+
+.currency-selector-icon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+.currency-selector-code {
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.currency-selector-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.currency-selector-arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.currency-selector-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 250px;
+  background-color: var(--bg-primary);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  overflow: hidden;
+  animation: dropdown-fade 0.2s ease;
+}
+
+.currency-selector-dropdown-header {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.currency-selector-dropdown-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.currency-selector-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: var(--text-primary);
+}
+
+.currency-selector-option:last-child {
+  border-bottom: none;
+}
+
+.currency-selector-option:hover {
+  background-color: var(--bg-hover);
+}
+
+.currency-selector-option.active {
+  background-color: var(--bg-active);
+  font-weight: 600;
+}
+
+.currency-selector-option-symbol {
+  width: 30px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.currency-selector-option-code {
+  width: 50px;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.currency-selector-option-name {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+@keyframes dropdown-fade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode adjustments */
+.dark .currency-selector-btn-default {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .currency-selector-btn-default:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark .currency-selector-dropdown {
+  background-color: var(--dark-bg-primary);
+  border: 1px solid var(--dark-border-color);
+}
+
+.dark .currency-selector-dropdown-header {
+  background-color: var(--dark-bg-secondary);
+  border-bottom: 1px solid var(--dark-border-color);
+}
+
+.dark .currency-selector-option {
+  border-bottom: 1px solid var(--dark-border-color);
+}
+
+.dark .currency-selector-option:hover {
+  background-color: var(--dark-bg-hover);
+}
+
+.dark .currency-selector-option.active {
+  background-color: var(--dark-bg-active);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .currency-selector-dropdown {
+    width: 220px;
+  }
+  
+  .currency-selector-option-name {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .currency-selector-dropdown {
+    width: 200px;
+    right: -50px;
+  }
+  
+  .currency-selector-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 60px;
+    width: 16px;
+    height: 16px;
+    background-color: var(--bg-primary);
+    transform: rotate(45deg);
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+  }
+  
+  .dark .currency-selector-dropdown::before {
+    background-color: var(--dark-bg-primary);
+    border-top: 1px solid var(--dark-border-color);
+    border-left: 1px solid var(--dark-border-color);
+  }
+}

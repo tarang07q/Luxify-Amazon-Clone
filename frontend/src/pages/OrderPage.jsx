@@ -8,7 +8,8 @@ import {
 } from '../slices/services/orderService';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
-import OrderIcon3D from '../components/3d/OrderIcon3D';
+import OrderDoc3D from '../components/3d/OrderDoc3D';
+import { useTheme } from '../context/ThemeContext';
 import {
   FaShoppingCart,
   FaMapMarkerAlt,
@@ -17,10 +18,12 @@ import {
   FaTruck,
   FaBox,
   FaBoxOpen,
+  FaFileInvoiceDollar,
 } from 'react-icons/fa';
 
 const OrderPage = () => {
   const { id: orderId } = useParams();
+  const { theme, currentTheme } = useTheme();
 
   const {
     data: order,
@@ -370,9 +373,16 @@ const OrderPage = () => {
           <div className="bg-white rounded-lg shadow-md p-4 sticky top-4">
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
-            {/* 3D Order Icon */}
+            {/* 3D Order Document */}
             <div className="flex justify-center mb-6">
-              <OrderIcon3D size={180} autoRotate={true} />
+              <OrderDoc3D
+                size={180}
+                color={currentTheme === 'dark' ? '#7928ca' : '#8b5cf6'}
+                floatingAnimation={true}
+                glowEffect={true}
+                icon={<FaFileInvoiceDollar size={45} />}
+                status={order.data.status}
+              />
             </div>
 
             <div className="space-y-3">

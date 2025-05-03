@@ -6,7 +6,7 @@ import ProductCard from '../components/product/ProductCard';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
 import Paginate from '../components/ui/Paginate';
-import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore } from 'react-icons/fa';
+import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore, FaBox, FaLaptop, FaHome, FaBook, FaTshirt, FaSprayCan, FaGamepad, FaRunning, FaShoppingBasket, FaPaw, FaCar, FaTools, FaFirstAid, FaBriefcase, FaGift } from 'react-icons/fa';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, PresentationControls } from '@react-three/drei';
 import CubeIcon from '../components/3d/CubeIcon';
@@ -14,6 +14,8 @@ import ShoppingCart3D from '../components/3d/ShoppingCart3D';
 import Order3D from '../components/3d/Order3D';
 import Dashboard3D from '../components/3d/Dashboard3D';
 import Profile3D from '../components/3d/Profile3D';
+import ProductBox3D from '../components/3d/ProductBox3D';
+import ShoppingBag3D from '../components/3d/ShoppingBag3D';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -88,14 +90,13 @@ const HomePage = () => {
                 >
                   <FaStore style={{marginRight: '8px'}} /> Shop Now
                 </Link>
-                {!user && (
-                  <Link
-                    to="/login"
-                    className="hero-button secondary-button"
-                  >
-                    <FaUser style={{marginRight: '8px'}} /> Sign In / Register
-                  </Link>
-                )}
+                <div className="hero-3d-icon">
+                  <ShoppingBag3D
+                    size={120}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                  />
+                </div>
               </div>
             </div>
             <div className="hero-3d">
@@ -115,15 +116,99 @@ const HomePage = () => {
         <div className="categories-section">
           <h2 className="section-title">Shop by Category</h2>
           <div className="categories-grid">
-            {categories.map((category) => (
-              <Link
-                key={category}
-                to={`/search/${category}`}
-                className="category-card"
-              >
-                <div className="category-name">{category}</div>
-              </Link>
-            ))}
+            {categories.map((category) => {
+              // Get appropriate icon for each category
+              let icon;
+              let color;
+              switch(category) {
+                case 'Electronics':
+                  icon = <FaBox size={24} />;
+                  color = '#00c3ff';
+                  break;
+                case 'Computers':
+                  icon = <FaLaptop size={24} />;
+                  color = '#4ecdc4';
+                  break;
+                case 'Smart Home':
+                  icon = <FaHome size={24} />;
+                  color = '#6a0572';
+                  break;
+                case 'Home & Kitchen':
+                  icon = <FaHome size={24} />;
+                  color = '#ff6b6b';
+                  break;
+                case 'Clothing':
+                  icon = <FaTshirt size={24} />;
+                  color = '#f7b801';
+                  break;
+                case 'Beauty & Personal Care':
+                  icon = <FaSprayCan size={24} />;
+                  color = '#ff00e4';
+                  break;
+                case 'Books':
+                  icon = <FaBook size={24} />;
+                  color = '#5046e5';
+                  break;
+                case 'Toys & Games':
+                  icon = <FaGamepad size={24} />;
+                  color = '#ff9900';
+                  break;
+                case 'Sports & Outdoors':
+                  icon = <FaRunning size={24} />;
+                  color = '#00f2ff';
+                  break;
+                case 'Grocery & Gourmet Food':
+                  icon = <FaShoppingBasket size={24} />;
+                  color = '#4caf50';
+                  break;
+                case 'Pet Supplies':
+                  icon = <FaPaw size={24} />;
+                  color = '#ff5722';
+                  break;
+                case 'Automotive':
+                  icon = <FaCar size={24} />;
+                  color = '#607d8b';
+                  break;
+                case 'Tools & Home Improvement':
+                  icon = <FaTools size={24} />;
+                  color = '#795548';
+                  break;
+                case 'Health & Household':
+                  icon = <FaFirstAid size={24} />;
+                  color = '#e91e63';
+                  break;
+                case 'Office Products':
+                  icon = <FaBriefcase size={24} />;
+                  color = '#3f51b5';
+                  break;
+                case 'Gift Cards':
+                  icon = <FaGift size={24} />;
+                  color = '#9c27b0';
+                  break;
+                default:
+                  icon = <FaBox size={24} />;
+                  color = '#00f2ff';
+              }
+
+              return (
+                <Link
+                  key={category}
+                  to={`/search/${category}`}
+                  className="category-card"
+                >
+                  <div className="category-icon">
+                    <ProductBox3D
+                      size={80}
+                      color={color}
+                      icon={icon}
+                      floatingAnimation={true}
+                      glowEffect={true}
+                    />
+                  </div>
+                  <div className="category-name">{category}</div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

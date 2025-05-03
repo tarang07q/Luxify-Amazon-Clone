@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { useGetAllOrdersQuery } from '../../slices/services/orderService';
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
+import { useTheme } from '../../context/ThemeContext';
 import { FaEye, FaSearch, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const OrderListPage = () => {
+  const { theme, currentTheme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('createdAt');
   const [sortDirection, setSortDirection] = useState('desc');
@@ -30,16 +32,16 @@ const OrderListPage = () => {
   // Filter and sort orders
   const getFilteredOrders = () => {
     if (!orders) return [];
-    
+
     let filteredOrders = [...orders.data];
-    
+
     // Apply status filter
     if (filterStatus) {
       filteredOrders = filteredOrders.filter(
         (order) => order.status === filterStatus
       );
     }
-    
+
     // Apply search filter
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
@@ -50,11 +52,11 @@ const OrderListPage = () => {
           order.user.email.toLowerCase().includes(search)
       );
     }
-    
+
     // Apply sorting
     filteredOrders.sort((a, b) => {
       let aValue, bValue;
-      
+
       switch (sortField) {
         case 'createdAt':
           aValue = new Date(a.createdAt);
@@ -76,12 +78,12 @@ const OrderListPage = () => {
           aValue = a[sortField];
           bValue = b[sortField];
       }
-      
+
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
       if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
-    
+
     return filteredOrders;
   };
 
@@ -108,7 +110,11 @@ const OrderListPage = () => {
       <h1 className="text-2xl font-bold mb-6">Orders</h1>
 
       {/* Search and Filter */}
-      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div className="rounded-lg shadow-md p-4 mb-6" style={{
+        backgroundColor: theme.cardBg,
+        borderColor: theme.border,
+        boxShadow: theme.shadow
+      }}>
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
@@ -118,9 +124,14 @@ const OrderListPage = () => {
                 className="input-field pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  backgroundColor: theme.inputBg,
+                  borderColor: theme.inputBorder,
+                  color: theme.text
+                }}
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
+                <FaSearch style={{ color: theme.textLight }} />
               </div>
             </div>
           </div>
@@ -129,6 +140,11 @@ const OrderListPage = () => {
               className="input-field"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
+              style={{
+                backgroundColor: theme.inputBg,
+                borderColor: theme.inputBorder,
+                color: theme.text
+              }}
             >
               <option value="">All Statuses</option>
               <option value="Pending">Pending</option>
@@ -148,15 +164,20 @@ const OrderListPage = () => {
           {error?.data?.error || error.error || 'An error occurred'}
         </Message>
       ) : (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="rounded-lg shadow-md overflow-hidden" style={{
+          backgroundColor: theme.cardBg,
+          borderColor: theme.border,
+          boxShadow: theme.shadow
+        }}>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y" style={{ borderColor: theme.border }}>
+              <thead style={{ backgroundColor: currentTheme === 'dark' ? theme.background : theme.cardBg }}>
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                     onClick={() => handleSort('_id')}
+                    style={{ color: theme.textLight }}
                   >
                     <div className="flex items-center">
                       ID {getSortIcon('_id')}
@@ -164,8 +185,9 @@ const OrderListPage = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                     onClick={() => handleSort('user.name')}
+                    style={{ color: theme.textLight }}
                   >
                     <div className="flex items-center">
                       Customer {getSortIcon('user.name')}
@@ -173,8 +195,9 @@ const OrderListPage = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                     onClick={() => handleSort('createdAt')}
+                    style={{ color: theme.textLight }}
                   >
                     <div className="flex items-center">
                       Date {getSortIcon('createdAt')}
@@ -182,8 +205,9 @@ const OrderListPage = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                     onClick={() => handleSort('totalPrice')}
+                    style={{ color: theme.textLight }}
                   >
                     <div className="flex items-center">
                       Total {getSortIcon('totalPrice')}
@@ -191,8 +215,9 @@ const OrderListPage = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                     onClick={() => handleSort('isPaid')}
+                    style={{ color: theme.textLight }}
                   >
                     <div className="flex items-center">
                       Paid {getSortIcon('isPaid')}
@@ -200,8 +225,9 @@ const OrderListPage = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer"
                     onClick={() => handleSort('status')}
+                    style={{ color: theme.textLight }}
                   >
                     <div className="flex items-center">
                       Status {getSortIcon('status')}
@@ -209,46 +235,76 @@ const OrderListPage = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider"
+                    style={{ color: theme.textLight }}
                   >
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y" style={{ backgroundColor: theme.cardBg, borderColor: theme.border }}>
                 {getFilteredOrders().map((order) => (
-                  <tr key={order._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <tr key={order._id} className="hover:bg-opacity-50" style={{
+                    borderColor: theme.border,
+                    ':hover': { backgroundColor: currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }
+                  }}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.text }}>
                       {order._id.substring(0, 8)}...
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium" style={{ color: theme.text }}>
                         {order.user.name}
                       </div>
-                      <div className="text-sm text-gray-500">{order.user.email}</div>
+                      <div className="text-sm" style={{ color: theme.textLight }}>{order.user.email}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.text }}>
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.primary }}>
                       ${order.totalPrice.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       {order.isPaid ? (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" style={{
+                          backgroundColor: currentTheme === 'dark' ? 'rgba(1, 255, 195, 0.2)' : 'rgba(16, 185, 129, 0.1)',
+                          color: theme.success
+                        }}>
                           {new Date(order.paidAt).toLocaleDateString()}
                         </span>
                       ) : (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" style={{
+                          backgroundColor: currentTheme === 'dark' ? 'rgba(255, 61, 113, 0.2)' : 'rgba(239, 68, 68, 0.1)',
+                          color: theme.error
+                        }}>
                           Not Paid
                         </span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeColor(
-                          order.status
-                        )}`}
+                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                        style={{
+                          backgroundColor: currentTheme === 'dark'
+                            ? order.status === 'Delivered'
+                              ? 'rgba(1, 255, 195, 0.2)'
+                              : order.status === 'Shipped'
+                                ? 'rgba(0, 149, 255, 0.2)'
+                                : order.status === 'Packed'
+                                  ? 'rgba(139, 92, 246, 0.2)'
+                                  : order.status === 'Cancelled'
+                                    ? 'rgba(255, 61, 113, 0.2)'
+                                    : 'rgba(255, 170, 0, 0.2)'
+                            : getStatusBadgeColor(order.status),
+                          color: order.status === 'Delivered'
+                            ? theme.success
+                            : order.status === 'Shipped'
+                              ? theme.info
+                              : order.status === 'Packed'
+                                ? theme.accent
+                                : order.status === 'Cancelled'
+                                  ? theme.error
+                                  : theme.warning
+                        }}
                       >
                         {order.status}
                       </span>
@@ -256,7 +312,8 @@ const OrderListPage = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link
                         to={`/order/${order._id}`}
-                        className="text-primary hover:text-primary-dark flex items-center justify-end"
+                        style={{ color: theme.primary }}
+                        className="hover:opacity-80 flex items-center justify-end"
                       >
                         <FaEye className="mr-1" /> Details
                       </Link>

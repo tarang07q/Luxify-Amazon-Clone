@@ -3,6 +3,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import GlobalErrorDisplay from './components/ui/GlobalErrorDisplay';
+import { ThemeProvider } from './context/ThemeContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 // Layout Components
 import Header from './components/layout/Header';
@@ -57,6 +59,8 @@ import AdminProductListPage from './pages/admin/ProductListPage';
 import AdminProductEditPage from './pages/admin/ProductEditPage';
 import AdminProductCreatePage from './pages/admin/ProductCreatePage';
 import AdminOrderListPage from './pages/admin/OrderListPage';
+import AnalyticsPage from './pages/admin/AnalyticsPage';
+import SettingsPage from './pages/admin/SettingsPage';
 import AdminLayout from './components/admin/AdminLayout';
 
 // Route Protection
@@ -66,12 +70,14 @@ import AdminRoute from './components/routes/AdminRoute';
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <div className="flex flex-col min-h-screen">
-          <GlobalErrorDisplay />
-          <ToastContainer position="top-right" autoClose={3000} />
-          <Header />
-          <main className="flex-grow py-3">
+      <ThemeProvider>
+        <CurrencyProvider>
+          <Router>
+            <div className="flex flex-col min-h-screen">
+              <GlobalErrorDisplay />
+              <ToastContainer position="top-right" autoClose={3000} />
+              <Header />
+              <main className="flex-grow py-3">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/shop" element={<HomePage />} />
@@ -130,13 +136,17 @@ function App() {
                 <Route path="products/new" element={<AdminProductCreatePage />} />
                 <Route path="product/:id/edit" element={<AdminProductEditPage />} />
                 <Route path="orders" element={<AdminOrderListPage />} />
+                <Route path="analytics" element={<AnalyticsPage />} />
+                <Route path="settings" element={<SettingsPage />} />
               </Route>
             </Route>
           </Routes>
         </main>
-        <Footer />
-      </div>
-    </Router>
+              <Footer />
+            </div>
+          </Router>
+        </CurrencyProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

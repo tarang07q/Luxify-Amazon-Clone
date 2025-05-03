@@ -15,12 +15,15 @@ import {
   FaClipboardList,
   FaTachometerAlt,
   FaBoxes,
-  FaShippingFast
+  FaShippingFast,
+  FaGlobeAmericas
 } from 'react-icons/fa';
 import { logout } from '../../slices/authSlice';
 import { useLogoutMutation } from '../../slices/services/authService';
 import { useTheme } from '../../context/ThemeContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import ThemeToggler from '../ThemeToggler';
+import CurrencySelector from '../currency/CurrencySelector';
 import CubeIcon from '../3d/CubeIcon';
 import ModernCube from '../3d/ModernCube';
 import './Header.css';
@@ -33,6 +36,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { theme, currentTheme } = useTheme();
+  const { currency } = useCurrency();
 
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
@@ -153,6 +157,8 @@ const Header = () => {
           {/* Right Side Actions */}
           <div className="nav-links">
             <ThemeToggler />
+
+            <CurrencySelector variant="header" />
 
             {user ? (
               <div className="user-dropdown" ref={dropdownRef}>
@@ -276,6 +282,14 @@ const Header = () => {
                 </span>
               )}
             </Link>
+
+            <div className="mobile-nav-link">
+              <FaGlobeAmericas />
+              <span>Currency: {currency.code}</span>
+              <div className="mobile-currency-selector">
+                <CurrencySelector variant="minimal" />
+              </div>
+            </div>
 
             {user ? (
               <>

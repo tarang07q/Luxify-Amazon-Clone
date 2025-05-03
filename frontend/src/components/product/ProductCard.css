@@ -7,7 +7,7 @@
   position: relative;
   border: var(--cardBorder);
   height: 100%;
-  min-height: 500px;
+  min-height: 580px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -129,8 +129,8 @@
 .product-image-container {
   position: relative;
   overflow: hidden;
-  flex: 0 0 320px;
-  height: 320px;
+  flex: 0 0 380px;
+  height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,6 +169,10 @@
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
 }
 
 .product-card:hover .image-wrapper {
@@ -176,8 +180,10 @@
 }
 
 .product-image {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   transition: transform 0.5s ease;
   display: block;
@@ -189,8 +195,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -529,12 +537,12 @@
 /* Responsive Styles */
 @media (max-width: 768px) {
   .product-card {
-    min-height: 450px;
+    min-height: 520px;
   }
 
   .product-image-container {
-    flex: 0 0 250px;
-    height: 250px;
+    flex: 0 0 300px;
+    height: 300px;
   }
 
   .product-details {
@@ -548,12 +556,12 @@
 
 @media (max-width: 480px) {
   .product-card {
-    min-height: 400px;
+    min-height: 450px;
   }
 
   .product-image-container {
-    flex: 0 0 200px;
-    height: 200px;
+    flex: 0 0 250px;
+    height: 250px;
   }
 
   .add-to-cart-button {

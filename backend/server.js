@@ -34,6 +34,8 @@ const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
 const reviewRoutes = require('./routes/reviews');
 const uploadRoutes = require('./routes/upload');
+const analyticsRoutes = require('./routes/analytics');
+const settingsRoutes = require('./routes/settings');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -42,6 +44,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/reviews/:productId', reviewRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Root route
 app.get('/', (req, res) => {

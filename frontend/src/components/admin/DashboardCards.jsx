@@ -8,14 +8,21 @@ import {
   FaChartLine,
   FaTag,
   FaComments,
-  FaCog
+  FaCog,
+  FaBox,
+  FaFileInvoiceDollar,
+  FaUser,
+  FaChartBar
 } from 'react-icons/fa';
-import LargeCube from '../3d/LargeCube';
+import ProductBox3D from '../3d/ProductBox3D';
+import OrderDoc3D from '../3d/OrderDoc3D';
+import ProfileCard3D from '../3d/ProfileCard3D';
+import DashboardPanel3D from '../3d/DashboardPanel3D';
 import { useTheme } from '../../context/ThemeContext';
 import './DashboardCards.css';
 
 const DashboardCards = () => {
-  const { theme } = useTheme();
+  const { theme, currentTheme } = useTheme();
 
   const dashboardItems = [
     {
@@ -70,7 +77,43 @@ const DashboardCards = () => {
               </div>
             </div>
             <div className="dashboard-card-icon">
-              <LargeCube size={180} autoRotate={true} />
+              {item.icon === 'product' && (
+                <ProductBox3D
+                  size={100}
+                  color={currentTheme === 'dark' ? '#ff00e4' : '#f0338d'}
+                  floatingAnimation={true}
+                  glowEffect={true}
+                  icon={<FaBox size={25} />}
+                />
+              )}
+              {item.icon === 'order' && (
+                <OrderDoc3D
+                  size={100}
+                  color={currentTheme === 'dark' ? '#7928ca' : '#8b5cf6'}
+                  floatingAnimation={true}
+                  glowEffect={true}
+                  icon={<FaFileInvoiceDollar size={25} />}
+                />
+              )}
+              {item.icon === 'user' && (
+                <ProfileCard3D
+                  size={100}
+                  color={currentTheme === 'dark' ? '#01ffc3' : '#10b981'}
+                  floatingAnimation={true}
+                  glowEffect={true}
+                  userName="ADMIN"
+                  icon={<FaUser size={25} />}
+                />
+              )}
+              {item.icon === 'dashboard' && (
+                <DashboardPanel3D
+                  size={100}
+                  color={currentTheme === 'dark' ? '#ffaa00' : '#f59e0b'}
+                  floatingAnimation={true}
+                  glowEffect={true}
+                  icon={<FaChartBar size={25} />}
+                />
+              )}
             </div>
           </div>
         </Link>

@@ -1,0 +1,216 @@
+/* Resend-style 3D Cube Styling */
+
+.resend-cube-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+  z-index: 1;
+}
+
+.resend-cube-container {
+  perspective: 1000px;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+}
+
+.resend-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(15deg) rotateY(45deg);
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+.resend-cube-hover {
+  transition: transform 0.1s ease-out;
+}
+
+.resend-cube-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.95;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  backface-visibility: visible;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Add subtle patterns to faces */
+.resend-cube-face::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 20%);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* Add shine effect */
+.resend-cube-face::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: shine 8s infinite linear;
+  z-index: 2;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.resend-cube-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 3rem;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  pointer-events: none;
+  animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.resend-cube-title {
+  margin-top: 1.5rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text-primary);
+  opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .resend-cube-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .resend-cube-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .resend-cube-container {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Octagon shape variation */
+.resend-cube-face.octagon {
+  clip-path: polygon(
+    30% 0%,
+    70% 0%,
+    100% 30%,
+    100% 70%,
+    70% 100%,
+    30% 100%,
+    0% 70%,
+    0% 30%
+  );
+}
+
+/* Hexagon shape variation */
+.resend-cube-face.hexagon {
+  clip-path: polygon(
+    25% 0%,
+    75% 0%,
+    100% 50%,
+    75% 100%,
+    25% 100%,
+    0% 50%
+  );
+}
+
+/* Animation for cube rotation */
+@keyframes resend-cube-rotate {
+  0% { transform: rotateX(15deg) rotateY(45deg); }
+  100% { transform: rotateX(15deg) rotateY(405deg); }
+}
+
+.resend-cube-animate {
+  animation: resend-cube-rotate 10s infinite linear;
+}
+
+/* Animation for floating effect */
+@keyframes resend-cube-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.resend-cube-container.floating {
+  animation: resend-cube-float 6s ease-in-out infinite;
+}
+
+/* Background glow effect */
+.resend-cube-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.2) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: -1;
+  opacity: 0.7;
+  transform: translateY(20px) scale(1.2);
+}

@@ -101,12 +101,22 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  align-items: center;
 }
 
 @media (min-width: 640px) {
   .hero-buttons {
     flex-direction: row;
   }
+}
+
+.hero-3d-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  transform: scale(1.2);
+  z-index: 20;
 }
 
 .hero-button {
@@ -307,6 +317,11 @@
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
 }
 
 .category-card::before {
@@ -346,6 +361,21 @@
 .category-card:hover::before,
 .category-card:hover::after {
   opacity: 1;
+}
+
+.category-icon {
+  margin-bottom: 15px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+  transform: scale(1.1);
 }
 
 .category-name {

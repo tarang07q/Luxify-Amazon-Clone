@@ -7,10 +7,12 @@ import {
 } from '../../slices/services/productService';
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
+import { useTheme } from '../../context/ThemeContext';
 import { FaArrowLeft, FaUpload, FaTrash, FaPlus } from 'react-icons/fa';
 
 const ProductCreatePage = () => {
   const navigate = useNavigate();
+  const { theme, currentTheme } = useTheme();
 
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState(0);
@@ -133,13 +135,17 @@ const ProductCreatePage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="rounded-lg shadow-md p-6" style={{
+        backgroundColor: theme.cardBg,
+        borderColor: theme.border,
+        boxShadow: theme.shadow
+      }}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <Link to="/admin/products" className="text-primary hover:text-primary-dark mr-4">
+            <Link to="/admin/products" style={{ color: theme.primary }} className="hover:opacity-80 mr-4">
               <FaArrowLeft /> Back to Products
             </Link>
-            <h1 className="text-2xl font-bold">Create New Product</h1>
+            <h1 className="text-2xl font-bold" style={{ color: theme.text }}>Create New Product</h1>
           </div>
         </div>
 
@@ -147,11 +153,14 @@ const ProductCreatePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Basic Information */}
             <div className="md:col-span-2">
-              <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
+              <div className="p-4 rounded-lg mb-6" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : theme.inputBg,
+                borderColor: theme.border
+              }}>
+                <h2 className="text-xl font-semibold mb-4" style={{ color: theme.text }}>Basic Information</h2>
                 <div className="mb-4">
-                  <label htmlFor="title" className="block text-gray-700 font-medium mb-2">
-                    Product Title <span className="text-red-500">*</span>
+                  <label htmlFor="title" className="block font-medium mb-2" style={{ color: theme.text }}>
+                    Product Title <span style={{ color: theme.error }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -161,12 +170,17 @@ const ProductCreatePage = () => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
+                    style={{
+                      backgroundColor: theme.inputBg,
+                      borderColor: theme.inputBorder,
+                      color: theme.text
+                    }}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label htmlFor="description" className="block text-gray-700 font-medium mb-2">
-                    Description <span className="text-red-500">*</span>
+                  <label htmlFor="description" className="block font-medium mb-2" style={{ color: theme.text }}>
+                    Description <span style={{ color: theme.error }}>*</span>
                   </label>
                   <textarea
                     id="description"
@@ -176,13 +190,18 @@ const ProductCreatePage = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
+                    style={{
+                      backgroundColor: theme.inputBg,
+                      borderColor: theme.inputBorder,
+                      color: theme.text
+                    }}
                   ></textarea>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="mb-4">
-                    <label htmlFor="brand" className="block text-gray-700 font-medium mb-2">
-                      Brand <span className="text-red-500">*</span>
+                    <label htmlFor="brand" className="block font-medium mb-2" style={{ color: theme.text }}>
+                      Brand <span style={{ color: theme.error }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -192,12 +211,17 @@ const ProductCreatePage = () => {
                       value={brand}
                       onChange={(e) => setBrand(e.target.value)}
                       required
+                      style={{
+                        backgroundColor: theme.inputBg,
+                        borderColor: theme.inputBorder,
+                        color: theme.text
+                      }}
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="category" className="block text-gray-700 font-medium mb-2">
-                      Category <span className="text-red-500">*</span>
+                    <label htmlFor="category" className="block font-medium mb-2" style={{ color: theme.text }}>
+                      Category <span style={{ color: theme.error }}>*</span>
                     </label>
                     <select
                       id="category"
@@ -205,6 +229,11 @@ const ProductCreatePage = () => {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       required
+                      style={{
+                        backgroundColor: theme.inputBg,
+                        borderColor: theme.inputBorder,
+                        color: theme.text
+                      }}
                     >
                       <option value="">Select Category</option>
                       {categories.map((cat) => (
@@ -217,7 +246,7 @@ const ProductCreatePage = () => {
                 </div>
 
                 <div className="mb-4">
-                  <label htmlFor="subCategory" className="block text-gray-700 font-medium mb-2">
+                  <label htmlFor="subCategory" className="block font-medium mb-2" style={{ color: theme.text }}>
                     Sub Category
                   </label>
                   <input
@@ -227,20 +256,28 @@ const ProductCreatePage = () => {
                     placeholder="Enter sub category (optional)"
                     value={subCategory}
                     onChange={(e) => setSubCategory(e.target.value)}
+                    style={{
+                      backgroundColor: theme.inputBg,
+                      borderColor: theme.inputBorder,
+                      color: theme.text
+                    }}
                   />
                 </div>
               </div>
 
               {/* Pricing & Inventory */}
-              <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                <h2 className="text-xl font-semibold mb-4">Pricing & Inventory</h2>
+              <div className="p-4 rounded-lg mb-6" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : theme.inputBg,
+                borderColor: theme.border
+              }}>
+                <h2 className="text-xl font-semibold mb-4" style={{ color: theme.text }}>Pricing & Inventory</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="mb-4">
-                    <label htmlFor="price" className="block text-gray-700 font-medium mb-2">
-                      Selling Price <span className="text-red-500">*</span>
+                    <label htmlFor="price" className="block font-medium mb-2" style={{ color: theme.text }}>
+                      Selling Price <span style={{ color: theme.error }}>*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center" style={{ color: theme.textLight }}>
                         $
                       </span>
                       <input
@@ -253,16 +290,21 @@ const ProductCreatePage = () => {
                         min="0"
                         step="0.01"
                         required
+                        style={{
+                          backgroundColor: theme.inputBg,
+                          borderColor: theme.inputBorder,
+                          color: theme.text
+                        }}
                       />
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="mrp" className="block text-gray-700 font-medium mb-2">
-                      MRP <span className="text-red-500">*</span>
+                    <label htmlFor="mrp" className="block font-medium mb-2" style={{ color: theme.text }}>
+                      MRP <span style={{ color: theme.error }}>*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center" style={{ color: theme.textLight }}>
                         $
                       </span>
                       <input
@@ -275,13 +317,18 @@ const ProductCreatePage = () => {
                         min="0"
                         step="0.01"
                         required
+                        style={{
+                          backgroundColor: theme.inputBg,
+                          borderColor: theme.inputBorder,
+                          color: theme.text
+                        }}
                       />
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="stock" className="block text-gray-700 font-medium mb-2">
-                      Stock <span className="text-red-500">*</span>
+                    <label htmlFor="stock" className="block font-medium mb-2" style={{ color: theme.text }}>
+                      Stock <span style={{ color: theme.error }}>*</span>
                     </label>
                     <input
                       type="number"
@@ -292,6 +339,11 @@ const ProductCreatePage = () => {
                       onChange={(e) => setStock(e.target.value)}
                       min="0"
                       required
+                      style={{
+                        backgroundColor: theme.inputBg,
+                        borderColor: theme.inputBorder,
+                        color: theme.text
+                      }}
                     />
                   </div>
                 </div>
@@ -304,8 +356,11 @@ const ProductCreatePage = () => {
                       className="mr-2"
                       checked={deliveryAvailable}
                       onChange={(e) => setDeliveryAvailable(e.target.checked)}
+                      style={{
+                        accentColor: currentTheme === 'dark' ? theme.primary : theme.primary
+                      }}
                     />
-                    <label htmlFor="deliveryAvailable" className="text-gray-700">
+                    <label htmlFor="deliveryAvailable" style={{ color: theme.text }}>
                       Delivery Available
                     </label>
                   </div>
@@ -317,8 +372,11 @@ const ProductCreatePage = () => {
                       className="mr-2"
                       checked={featured}
                       onChange={(e) => setFeatured(e.target.checked)}
+                      style={{
+                        accentColor: currentTheme === 'dark' ? theme.primary : theme.primary
+                      }}
                     />
-                    <label htmlFor="featured" className="text-gray-700">
+                    <label htmlFor="featured" style={{ color: theme.text }}>
                       Featured Product
                     </label>
                   </div>
@@ -326,22 +384,31 @@ const ProductCreatePage = () => {
               </div>
 
               {/* Specifications */}
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h2 className="text-xl font-semibold mb-4">Specifications</h2>
+              <div className="p-4 rounded-lg" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : theme.inputBg,
+                borderColor: theme.border
+              }}>
+                <h2 className="text-xl font-semibold mb-4" style={{ color: theme.text }}>Specifications</h2>
 
                 {Object.keys(specifications).length > 0 && (
-                  <div className="mb-4 bg-white p-3 rounded border border-gray-200">
-                    <h3 className="font-medium mb-2">Current Specifications:</h3>
+                  <div className="mb-4 p-3 rounded border" style={{
+                    backgroundColor: currentTheme === 'dark' ? 'rgba(30, 41, 59, 0.8)' : 'white',
+                    borderColor: theme.border
+                  }}>
+                    <h3 className="font-medium mb-2" style={{ color: theme.text }}>Current Specifications:</h3>
                     <div className="space-y-2">
                       {Object.entries(specifications).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                          <div>
+                        <div key={key} className="flex justify-between items-center p-2 rounded" style={{
+                          backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : theme.inputBg
+                        }}>
+                          <div style={{ color: theme.text }}>
                             <span className="font-medium">{key}:</span> {value}
                           </div>
                           <button
                             type="button"
                             onClick={() => removeSpecificationHandler(key)}
-                            className="text-red-500 hover:text-red-700"
+                            style={{ color: theme.error }}
+                            className="hover:opacity-80"
                           >
                             <FaTrash />
                           </button>
@@ -358,6 +425,11 @@ const ProductCreatePage = () => {
                     className="input-field"
                     value={specKey}
                     onChange={(e) => setSpecKey(e.target.value)}
+                    style={{
+                      backgroundColor: theme.inputBg,
+                      borderColor: theme.inputBorder,
+                      color: theme.text
+                    }}
                   />
                   <input
                     type="text"
@@ -365,12 +437,21 @@ const ProductCreatePage = () => {
                     className="input-field"
                     value={specValue}
                     onChange={(e) => setSpecValue(e.target.value)}
+                    style={{
+                      backgroundColor: theme.inputBg,
+                      borderColor: theme.inputBorder,
+                      color: theme.text
+                    }}
                   />
                 </div>
                 <button
                   type="button"
                   onClick={addSpecificationHandler}
-                  className="bg-secondary text-white px-3 py-1 rounded hover:bg-secondary-light flex items-center"
+                  className="px-3 py-1 rounded flex items-center"
+                  style={{
+                    backgroundColor: theme.secondary,
+                    color: theme.buttonText
+                  }}
                 >
                   <FaPlus className="mr-1" /> Add Specification
                 </button>
@@ -379,21 +460,27 @@ const ProductCreatePage = () => {
 
             {/* Images */}
             <div className="md:col-span-1">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h2 className="text-xl font-semibold mb-4">Product Images</h2>
+              <div className="p-4 rounded-lg" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : theme.inputBg,
+                borderColor: theme.border
+              }}>
+                <h2 className="text-xl font-semibold mb-4" style={{ color: theme.text }}>Product Images</h2>
 
                 <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Upload Images <span className="text-red-500">*</span>
+                  <label className="block font-medium mb-2" style={{ color: theme.text }}>
+                    Upload Images <span style={{ color: theme.error }}>*</span>
                   </label>
                   <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-opacity-50" style={{
+                      backgroundColor: currentTheme === 'dark' ? 'rgba(30, 41, 59, 0.5)' : theme.inputBg,
+                      borderColor: theme.border
+                    }}>
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <FaUpload className="w-8 h-8 mb-3 text-gray-400" />
-                        <p className="mb-2 text-sm text-gray-500">
+                        <FaUpload className="w-8 h-8 mb-3" style={{ color: theme.textLight }} />
+                        <p className="mb-2 text-sm" style={{ color: theme.textLight }}>
                           <span className="font-semibold">Click to upload</span> or drag and drop
                         </p>
-                        <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 2MB)</p>
+                        <p className="text-xs" style={{ color: theme.textLight }}>PNG, JPG or JPEG (MAX. 2MB)</p>
                       </div>
                       <input
                         type="file"
@@ -408,19 +495,26 @@ const ProductCreatePage = () => {
 
                 {images.length > 0 && (
                   <div className="mb-4">
-                    <h3 className="font-medium mb-2">Product Images:</h3>
+                    <h3 className="font-medium mb-2" style={{ color: theme.text }}>Product Images:</h3>
                     <div className="grid grid-cols-2 gap-2">
                       {images.map((img, index) => (
                         <div key={index} className="relative group">
                           <img
-                            src={img}
+                            src={img.startsWith('/uploads/') ? `http://localhost:5000${img}` : img}
                             alt={`Product ${index + 1}`}
-                            className="w-full h-24 object-cover rounded border border-gray-200"
+                            className="w-full h-24 object-cover rounded border"
+                            style={{ borderColor: theme.border }}
+                            onError={(e) => {
+                              console.error("Image failed to load:", e.target.src);
+                              e.target.onerror = null;
+                              e.target.src = '/placeholder.jpg';
+                            }}
                           />
                           <button
                             type="button"
                             onClick={() => removeImageHandler(img)}
-                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-1 right-1 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            style={{ backgroundColor: theme.error, color: 'white' }}
                           >
                             <FaTrash size={12} />
                           </button>
@@ -438,6 +532,11 @@ const ProductCreatePage = () => {
               type="submit"
               className="btn-primary"
               disabled={loadingCreate || loadingUpload}
+              style={{
+                backgroundColor: theme.buttonPrimary,
+                color: theme.buttonText,
+                opacity: (loadingCreate || loadingUpload) ? 0.7 : 1
+              }}
             >
               {loadingCreate ? <Loader size="small" /> : 'Create Product'}
             </button>

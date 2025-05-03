@@ -1,0 +1,213 @@
+/* Specialized Icons Global Styling */
+
+/* Common styles for all specialized icons */
+.specialized-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+/* Card styling for specialized icons */
+.specialized-icon-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.specialized-icon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.specialized-icon-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.specialized-icon-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Grid layout for specialized icons */
+.specialized-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .specialized-icon-card {
+    max-width: 100%;
+  }
+  
+  .specialized-icons-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .specialized-icons-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Dark mode adjustments */
+.dark .specialized-icon-card {
+  background-color: var(--dark-card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .specialized-icon-title {
+  color: var(--dark-text-primary);
+}
+
+.dark .specialized-icon-description {
+  color: var(--dark-text-secondary);
+}
+
+/* Glow effects for dark mode */
+.dark .specialized-icon-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.dark .specialized-icon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.15) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Animation for floating effect */
+@keyframes specialized-icon-float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.specialized-icon-floating {
+  animation: specialized-icon-float 6s ease-in-out infinite;
+}
+
+/* Animation for pulse effect */
+@keyframes specialized-icon-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.specialized-icon-pulse {
+  animation: specialized-icon-pulse 3s ease-in-out infinite;
+}
+
+/* Animation for rotate effect */
+@keyframes specialized-icon-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.specialized-icon-rotate {
+  animation: specialized-icon-rotate 10s linear infinite;
+}
+
+/* Specialized icon sections */
+.specialized-icon-section {
+  padding: 3rem 0;
+  width: 100%;
+}
+
+.specialized-icon-section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.specialized-icon-section-description {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+/* Specialized icon features */
+.specialized-icon-feature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.specialized-icon-feature-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.75rem;
+  color: var(--primary);
+}
+
+.specialized-icon-feature-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Specialized icon buttons */
+.specialized-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.specialized-icon-button-primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+}
+
+.specialized-icon-button-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.specialized-icon-button-secondary {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.specialized-icon-button-secondary:hover {
+  background-color: rgba(var(--primary-rgb), 0.1);
+  transform: translateY(-2px);
+}

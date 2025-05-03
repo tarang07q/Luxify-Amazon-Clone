@@ -15,11 +15,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../slices/cartSlice';
 import { toast } from 'react-toastify';
 import { useTheme } from '../../context/ThemeContext';
+import usePriceFormatter from '../../hooks/usePriceFormatter';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const { theme, currentTheme } = useTheme();
+  const { formatPrice } = usePriceFormatter();
   const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -69,13 +71,31 @@ const ProductCard = ({ product }) => {
     }
 
     // If it's a relative path from the API
-    if (imagePath.startsWith('/')) {
-      return `/api${imagePath}`;
+    if (imagePath.startsWith('/uploads/')) {
+      return `http://localhost:5000${imagePath}`;
+    }
+
+    // If it's a relative path from the API with /api prefix
+    if (imagePath.startsWith('/api/uploads/')) {
+      return `http://localhost:5000${imagePath.substring(4)}`;
     }
 
     // Fallback
     return '/placeholder.jpg';
   };
+
+  // Preload images to ensure they're loaded before displaying
+  useEffect(() => {
+    if (product.images && product.images.length > 0) {
+      const preloadImages = () => {
+        product.images.forEach((imgPath) => {
+          const img = new Image();
+          img.src = getImageUrl(imgPath);
+        });
+      };
+      preloadImages();
+    }
+  }, [product.images]);
 
   // Calculate discount percentage
   const discountPercentage = ((product.mrp - product.price) / product.mrp) * 100;
@@ -149,7 +169,14 @@ const ProductCard = ({ product }) => {
                 alt={product.title}
                 className="product-image"
                 onError={handleImageError}
-                loading="lazy"
+                loading="eager"
+                style={{
+                  maxWidth: '95%',
+                  maxHeight: '95%',
+                  objectFit: 'contain',
+                  margin: 'auto',
+                  padding: '10px'
+                }}
               />
               {/* Second image for hover effect */}
               {product.images && product.images.length > 1 && (
@@ -158,7 +185,14 @@ const ProductCard = ({ product }) => {
                   alt={`${product.title} - alternate view`}
                   className={`product-image-hover ${isHovered ? 'visible' : ''}`}
                   onError={handleImageError}
-                  loading="lazy"
+                  loading="eager"
+                  style={{
+                    maxWidth: '95%',
+                    maxHeight: '95%',
+                    objectFit: 'contain',
+                    margin: 'auto',
+                    padding: '10px'
+                  }}
                 />
               )}
             </div>
@@ -214,10 +248,10 @@ const ProductCard = ({ product }) => {
 
         {/* Price */}
         <div className="price-container">
-          <span className="current-price">${product.price.toFixed(2)}</span>
+          <span className="current-price">{formatPrice(product.price)}</span>
           {product.discount > 0 && (
             <span className="original-price">
-              ${product.mrp.toFixed(2)}
+              {formatPrice(product.mrp)}
             </span>
           )}
         </div>

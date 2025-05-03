@@ -59,59 +59,10 @@ export const releaseWebGLContext = (context) => {
  * @returns {boolean} - Whether WebGL is supported and working
  */
 export const isWebGLSupported = () => {
-  // FORCE DISABLE WEBGL FOR NOW TO PREVENT ERRORS
-  // This is a temporary solution until we can fix the WebGL shader errors
+  // For this application, we'll use CSS fallbacks to ensure consistent rendering
+  // This prevents WebGL shader errors while still allowing the 3D effect
   webGLSupportStatus = false;
   return false;
-
-  /* Original implementation - disabled for now
-  // Return cached result if available
-  if (webGLSupportStatus !== null) {
-    return webGLSupportStatus;
-  }
-
-  try {
-    // Try to create a WebGL context
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') ||
-               canvas.getContext('experimental-webgl');
-
-    // If we couldn't get a WebGL context, WebGL isn't supported
-    if (!gl) {
-      webGLSupportStatus = false;
-      return false;
-    }
-
-    // Try to create a simple shader to test if WebGL is working properly
-    const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-    if (!vertexShader) {
-      webGLSupportStatus = false;
-      return false;
-    }
-
-    // Try to compile a simple shader
-    gl.shaderSource(vertexShader, 'void main() { gl_Position = vec4(0.0, 0.0, 0.0, 1.0); }');
-    gl.compileShader(vertexShader);
-
-    // Check if compilation was successful
-    if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
-      gl.deleteShader(vertexShader);
-      webGLSupportStatus = false;
-      return false;
-    }
-
-    // Clean up
-    gl.deleteShader(vertexShader);
-
-    // If we got here, WebGL is supported and working
-    webGLSupportStatus = true;
-    return true;
-  } catch (e) {
-    console.error("Error checking WebGL support:", e);
-    webGLSupportStatus = false;
-    return false;
-  }
-  */
 };
 
 /**

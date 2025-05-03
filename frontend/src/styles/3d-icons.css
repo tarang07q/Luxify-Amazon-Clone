@@ -1,0 +1,693 @@
+/* Specialized 3D Icons CSS */
+
+/* Specialized Icon Showcase */
+.specialized-icon-showcase {
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.specialized-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.specialized-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  height: 250px;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+.specialized-icon-item:hover {
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+/* Responsive adjustments for showcase */
+@media (max-width: 1024px) {
+  .specialized-icon-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .specialized-icon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .specialized-icon-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Common styles for all 3D icons */
+.icon3d-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  z-index: 1;
+}
+
+.icon3d-container {
+  perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+  overflow: visible;
+  position: relative;
+  z-index: 25 !important;
+  visibility: visible !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+}
+
+.icon3d-container.floating {
+  animation: icon3d-float 6s ease-in-out infinite;
+}
+
+.icon3d-title {
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text-primary);
+  opacity: 0.9;
+}
+
+.icon3d-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 25;
+}
+
+/* Shopping Bag 3D Icon */
+.shopping-bag-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d !important;
+  transform: rotateX(15deg) rotateY(45deg);
+  animation: shopping-bag-rotate 10s infinite linear;
+  z-index: 25;
+  visibility: visible !important;
+  backface-visibility: visible !important;
+}
+
+.shopping-bag-body {
+  position: absolute;
+  width: 80%;
+  height: 70%;
+  bottom: 0;
+  left: 10%;
+  transform-style: preserve-3d !important;
+  border-radius: 8px;
+  z-index: 20;
+}
+
+.shopping-bag-front,
+.shopping-bag-back,
+.shopping-bag-bottom,
+.shopping-bag-left,
+.shopping-bag-right {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.shopping-bag-front,
+.shopping-bag-back {
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.shopping-bag-front {
+  transform: translateZ(40px);
+  border-radius: 8px;
+}
+
+.shopping-bag-back {
+  transform: translateZ(-40px) rotateY(180deg);
+  border-radius: 8px;
+}
+
+.shopping-bag-bottom {
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+  transform: rotateX(90deg) translateZ(40px);
+}
+
+.shopping-bag-left,
+.shopping-bag-right {
+  width: 80px;
+  height: 100%;
+  top: 0;
+}
+
+.shopping-bag-left {
+  left: 0;
+  transform: rotateY(-90deg) translateZ(40px);
+  border-radius: 8px;
+}
+
+.shopping-bag-right {
+  right: 0;
+  transform: rotateY(90deg) translateZ(40px);
+  border-radius: 8px;
+}
+
+.shopping-bag-handle-left,
+.shopping-bag-handle-right {
+  position: absolute;
+  width: 10px;
+  height: 40%;
+  top: -20%;
+  border-radius: 5px;
+}
+
+.shopping-bag-handle-left {
+  left: 25%;
+  transform: translateZ(0) rotateX(-20deg);
+}
+
+.shopping-bag-handle-right {
+  right: 25%;
+  transform: translateZ(0) rotateX(-20deg);
+}
+
+.shopping-bag-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(41px);
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 30;
+  animation: icon-pulse 3s infinite ease-in-out;
+  font-size: 1.5em;
+}
+
+/* Product Box 3D Icon */
+.product-box-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d !important;
+  transform: rotateX(15deg) rotateY(45deg);
+  animation: product-box-rotate 12s infinite linear;
+  z-index: 25;
+  visibility: visible !important;
+  backface-visibility: visible !important;
+  pointer-events: auto !important;
+  display: block !important;
+}
+
+.product-box-body {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  transform-style: preserve-3d !important;
+  border-radius: 8px;
+  z-index: 20;
+  pointer-events: auto !important;
+  display: block !important;
+}
+
+.product-box-face {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.product-box-top {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  transform: translateZ(40px);
+  border-radius: 8px 8px 0 0;
+}
+
+.product-box-bottom {
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  transform: translateZ(-40px) rotateY(180deg);
+  border-radius: 0 0 8px 8px;
+}
+
+.product-box-front,
+.product-box-back,
+.product-box-left,
+.product-box-right {
+  width: 80px;
+  height: 100%;
+}
+
+.product-box-front {
+  transform: rotateY(0deg) translateZ(40px);
+}
+
+.product-box-back {
+  transform: rotateY(180deg) translateZ(40px);
+}
+
+.product-box-left {
+  transform: rotateY(-90deg) translateZ(40px);
+}
+
+.product-box-right {
+  transform: rotateY(90deg) translateZ(40px);
+}
+
+.product-box-lid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -5px;
+  left: 0;
+  transform-origin: top;
+  transform: rotateX(-30deg);
+  animation: product-box-lid 8s infinite ease-in-out;
+}
+
+.product-box-lid-top {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  border-radius: 8px 8px 0 0;
+}
+
+.product-box-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(41px);
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 30;
+  animation: icon-pulse 3s infinite ease-in-out;
+  font-size: 1.5em;
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+}
+
+/* Order Document 3D Icon */
+.order-doc-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(15deg) rotateY(45deg);
+  animation: order-doc-rotate 10s infinite linear;
+  z-index: 2;
+}
+
+.order-doc-body {
+  position: absolute;
+  width: 80%;
+  height: 90%;
+  top: 5%;
+  left: 10%;
+  transform-style: preserve-3d;
+  border-radius: 8px;
+}
+
+.order-doc-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.order-doc-page-1 {
+  transform: translateZ(2px);
+}
+
+.order-doc-page-2 {
+  transform: translateZ(1px);
+  top: -3px;
+  left: -3px;
+  opacity: 0.9;
+}
+
+.order-doc-page-3 {
+  transform: translateZ(0);
+  top: -6px;
+  left: -6px;
+  opacity: 0.8;
+}
+
+.order-doc-line {
+  position: absolute;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.1);
+  left: 10%;
+  width: 80%;
+}
+
+.order-doc-line-1 {
+  top: 20%;
+}
+
+.order-doc-line-2 {
+  top: 30%;
+}
+
+.order-doc-line-3 {
+  top: 40%;
+}
+
+.order-doc-line-4 {
+  top: 50%;
+}
+
+.order-doc-line-5 {
+  top: 60%;
+}
+
+.order-doc-icon {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  animation: icon-pulse 3s infinite ease-in-out;
+}
+
+.order-doc-status {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Profile Card 3D Icon */
+.profile-card-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(15deg) rotateY(45deg);
+  animation: profile-card-rotate 10s infinite linear;
+  z-index: 2;
+}
+
+.profile-card-body {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.profile-card-chip {
+  position: absolute;
+  width: 20%;
+  height: 15%;
+  top: 30%;
+  left: 10%;
+  background-color: rgba(255, 215, 0, 0.8);
+  border-radius: 4px;
+  transform: translateZ(1px);
+}
+
+.profile-card-logo {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  transform: translateZ(1px);
+}
+
+.profile-card-number {
+  position: absolute;
+  bottom: 30%;
+  left: 10%;
+  color: white;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  transform: translateZ(1px);
+}
+
+.profile-card-name {
+  position: absolute;
+  bottom: 15%;
+  left: 10%;
+  color: white;
+  font-size: 0.7rem;
+  transform: translateZ(1px);
+}
+
+.profile-card-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(1px);
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  animation: icon-pulse 3s infinite ease-in-out;
+}
+
+/* Dashboard 3D Icon */
+.dashboard-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(15deg) rotateY(45deg);
+  animation: dashboard-rotate 12s infinite linear;
+  z-index: 25;
+  visibility: visible;
+}
+
+.dashboard-panel {
+  position: absolute;
+  width: 80%;
+  height: 70%;
+  top: 15%;
+  left: 10%;
+  transform-style: preserve-3d;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateZ(0);
+}
+
+.dashboard-chart {
+  position: absolute;
+  width: 60%;
+  height: 40%;
+  top: 20%;
+  left: 20%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  transform: translateZ(1px);
+}
+
+.dashboard-chart-bar {
+  position: absolute;
+  bottom: 0;
+  width: 15%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2px 2px 0 0;
+}
+
+.dashboard-chart-bar-1 {
+  height: 40%;
+  left: 10%;
+}
+
+.dashboard-chart-bar-2 {
+  height: 70%;
+  left: 30%;
+}
+
+.dashboard-chart-bar-3 {
+  height: 50%;
+  left: 50%;
+}
+
+.dashboard-chart-bar-4 {
+  height: 80%;
+  left: 70%;
+}
+
+.dashboard-stats {
+  position: absolute;
+  width: 80%;
+  height: 20%;
+  bottom: 15%;
+  left: 10%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateZ(1px);
+}
+
+.dashboard-stat {
+  width: 20%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.dashboard-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(2px);
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  animation: icon-pulse 3s infinite ease-in-out;
+}
+
+/* Animations */
+@keyframes shopping-bag-rotate {
+  0% { transform: rotateX(15deg) rotateY(0deg); }
+  100% { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes product-box-rotate {
+  0% { transform: rotateX(15deg) rotateY(0deg); }
+  100% { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes product-box-lid {
+  0% { transform: rotateX(-5deg); }
+  40% { transform: rotateX(-30deg); }
+  60% { transform: rotateX(-30deg); }
+  100% { transform: rotateX(-5deg); }
+}
+
+@keyframes order-doc-rotate {
+  0% { transform: rotateX(15deg) rotateY(0deg); }
+  100% { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes profile-card-rotate {
+  0% { transform: rotateX(15deg) rotateY(0deg); }
+  100% { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes dashboard-rotate {
+  0% { transform: rotateX(15deg) rotateY(0deg); }
+  100% { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes icon3d-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes icon-pulse {
+  0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1) translateZ(41px); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) translateZ(41px); }
+  100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1) translateZ(41px); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .icon3d-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .icon3d-title {
+    font-size: 0.9rem;
+  }
+}
+
+/* Z-index helpers for 3D components */
+.z-index-10 {
+  z-index: 10 !important;
+}
+
+.z-index-20 {
+  z-index: 20 !important;
+}
+
+.z-index-30 {
+  z-index: 30 !important;
+}
+
+/* Ensure 3D components are visible */
+.dashboard-3d,
+.shopping-bag-3d,
+.product-box-3d,
+.order-doc-3d,
+.profile-card-3d,
+.css-cube,
+.css-cube-container,
+.css-cube-face {
+  z-index: 25 !important;
+  visibility: visible !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  position: relative;
+}
+
+/* Add glow effect to all 3D components */
+.dashboard-3d,
+.shopping-bag-3d,
+.product-box-3d,
+.order-doc-3d,
+.profile-card-3d,
+.css-cube-container {
+  filter: drop-shadow(0 0 15px rgba(var(--primary-rgb), 0.3));
+}

@@ -387,6 +387,11 @@
   color: var(--primary);
 }
 
+.mobile-currency-selector {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
 /* Media queries */
 @media (max-width: 768px) {
   .nav-links {

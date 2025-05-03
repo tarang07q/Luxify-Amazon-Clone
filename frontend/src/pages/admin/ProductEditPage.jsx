@@ -313,9 +313,14 @@ const ProductEditPage = () => {
                     {images.map((img, index) => (
                       <div key={index} className="relative">
                         <img
-                          src={img}
+                          src={img.startsWith('/uploads/') ? `http://localhost:5000${img}` : img}
                           alt={`Product ${index + 1}`}
                           className="w-full h-24 object-contain border rounded"
+                          onError={(e) => {
+                            console.error("Image failed to load:", e.target.src);
+                            e.target.onerror = null;
+                            e.target.src = '/placeholder.jpg';
+                          }}
                         />
                         <button
                           type="button"

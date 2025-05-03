@@ -8,11 +8,11 @@ import './styles/footerPages.css';
 import App from './App.jsx';
 import { ThemeProvider } from './context/ThemeContext';
 
-// Completely disable Three.js and WebGL to prevent shader errors
-console.log('WebGL/Three.js disabled - Using CSS-only 3D components');
+// Use CSS fallbacks for 3D components but don't completely disable WebGL
+console.log('Using CSS fallbacks for 3D components');
 
 // Add WebGL support status to window for debugging
-window.webGLSupported = false;
+window.webGLSupported = true;
 
 // Add error handler for uncaught errors
 window.addEventListener('error', (event) => {

@@ -5,12 +5,14 @@ import { FaTrash, FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 import Message from '../components/ui/Message';
 import { useTheme } from '../context/ThemeContext';
-import ShoppingIcon3D from '../components/3d/ShoppingIcon3D';
+import usePriceFormatter from '../hooks/usePriceFormatter';
+import ShoppingBag3D from '../components/3d/ShoppingBag3D';
 
 const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { theme, currentTheme } = useTheme();
+  const { formatPrice } = usePriceFormatter();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -81,7 +83,7 @@ const CartPage = () => {
                             {item.title}
                           </Link>
                           <div className="mt-2 sm:mt-0 text-gray-800 font-bold">
-                            ${(item.price * item.qty).toFixed(2)}
+                            {formatPrice(item.price * item.qty)}
                           </div>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-2">
@@ -135,32 +137,37 @@ const CartPage = () => {
             }}>
               <h2 className="text-xl font-bold mb-4" style={{ color: theme.text }}>Order Summary</h2>
 
-              {/* 3D Cart Cube */}
+              {/* 3D Shopping Bag */}
               <div className="flex justify-center mb-6">
                 <div className="flex justify-center items-center h-48 w-48 rounded-md" style={{
                   backgroundColor: 'transparent',
                   backgroundImage: `radial-gradient(circle, ${currentTheme === 'light' ? '#f8fafc, #e2e8f0' : '#1e293b, #0f172a'})`,
                 }}>
-                  <ShoppingIcon3D type="cart" size={180} autoRotate={true} />
+                  <ShoppingBag3D
+                    size={180}
+                    color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
+                    floatingAnimation={true}
+                    glowEffect={true}
+                  />
                 </div>
               </div>
 
               <div className="space-y-3">
                 <div className="flex justify-between" style={{ color: theme.text }}>
                   <span>Items ({cartItems.reduce((a, c) => a + c.qty, 0)}):</span>
-                  <span>${itemsPrice.toFixed(2)}</span>
+                  <span>{formatPrice(itemsPrice)}</span>
                 </div>
                 <div className="flex justify-between" style={{ color: theme.text }}>
                   <span>Shipping:</span>
-                  <span>${shippingPrice.toFixed(2)}</span>
+                  <span>{formatPrice(shippingPrice)}</span>
                 </div>
                 <div className="flex justify-between" style={{ color: theme.text }}>
                   <span>Tax:</span>
-                  <span>${taxPrice.toFixed(2)}</span>
+                  <span>{formatPrice(taxPrice)}</span>
                 </div>
                 <div className="flex justify-between font-bold" style={{ color: theme.text }}>
                   <span>Total:</span>
-                  <span>${totalPrice}</span>
+                  <span>{formatPrice(parseFloat(totalPrice))}</span>
                 </div>
               </div>
               <button

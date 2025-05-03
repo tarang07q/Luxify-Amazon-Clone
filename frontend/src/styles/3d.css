@@ -60,6 +60,8 @@
   transform-style: preserve-3d;
   transform: rotateX(15deg) rotateY(45deg);
   transition: transform 0.5s ease;
+  z-index: 25;
+  visibility: visible;
 }
 
 .css-cube:hover {
@@ -74,7 +76,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0.9;
+  opacity: 0.95;
   border: 1px solid rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
@@ -82,9 +84,10 @@
   font-weight: bold;
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   backface-visibility: visible;
+  border-radius: 8px;
 }
 
 .css-cube-icon {

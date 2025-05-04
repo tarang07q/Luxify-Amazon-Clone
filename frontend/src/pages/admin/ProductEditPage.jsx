@@ -8,7 +8,8 @@ import {
 } from '../../slices/services/productService';
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
-import { FaArrowLeft, FaUpload, FaTrash } from 'react-icons/fa';
+import { FaArrowLeft, FaUpload, FaTrash, FaMagic } from 'react-icons/fa';
+import { generateRelevantProductImages } from '../../utils/updateProductImages';
 
 const ProductEditPage = () => {
   const { id: productId } = useParams();
@@ -121,6 +122,18 @@ const ProductEditPage = () => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
     setImages(updatedImages);
+  };
+
+  // Generate relevant images based on product category
+  const generateRelevantImagesHandler = () => {
+    if (!category) {
+      toast.warning('Please select a category first');
+      return;
+    }
+
+    const relevantImages = generateRelevantProductImages({ category }, 3);
+    setImages(relevantImages);
+    toast.success('Generated relevant images for this product');
   };
 
   const addSpecificationHandler = () => {
@@ -332,7 +345,7 @@ const ProductEditPage = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-3">
                     <label className="flex flex-col items-center px-4 py-2 bg-white text-primary rounded-lg shadow-lg border border-primary cursor-pointer hover:bg-primary hover:text-white">
                       <FaUpload className="mr-2" />
                       <span>Upload Image</span>
@@ -343,6 +356,14 @@ const ProductEditPage = () => {
                         accept="image/*"
                       />
                     </label>
+                    <button
+                      type="button"
+                      onClick={generateRelevantImagesHandler}
+                      className="flex flex-col items-center px-4 py-2 bg-white text-secondary rounded-lg shadow-lg border border-secondary cursor-pointer hover:bg-secondary hover:text-white"
+                    >
+                      <FaMagic className="mr-2" />
+                      <span>Generate Relevant Images</span>
+                    </button>
                     {loadingUpload && <Loader size="small" className="ml-2" />}
                   </div>
                 </div>

@@ -8,7 +8,8 @@ import {
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
 import { useTheme } from '../../context/ThemeContext';
-import { FaArrowLeft, FaUpload, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaArrowLeft, FaUpload, FaTrash, FaPlus, FaMagic } from 'react-icons/fa';
+import { generateRelevantProductImages } from '../../utils/updateProductImages';
 
 const ProductCreatePage = () => {
   const navigate = useNavigate();
@@ -62,6 +63,18 @@ const ProductCreatePage = () => {
 
   const removeImageHandler = (imageToRemove) => {
     setImages(images.filter((img) => img !== imageToRemove));
+  };
+
+  // Generate relevant images based on product category
+  const generateRelevantImagesHandler = () => {
+    if (!category) {
+      toast.warning('Please select a category first');
+      return;
+    }
+
+    const relevantImages = generateRelevantProductImages({ category }, 3);
+    setImages(relevantImages);
+    toast.success('Generated relevant images for this product');
   };
 
   const addSpecificationHandler = () => {
@@ -470,27 +483,42 @@ const ProductCreatePage = () => {
                   <label className="block font-medium mb-2" style={{ color: theme.text }}>
                     Upload Images <span style={{ color: theme.error }}>*</span>
                   </label>
-                  <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-opacity-50" style={{
-                      backgroundColor: currentTheme === 'dark' ? 'rgba(30, 41, 59, 0.5)' : theme.inputBg,
-                      borderColor: theme.border
-                    }}>
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <FaUpload className="w-8 h-8 mb-3" style={{ color: theme.textLight }} />
-                        <p className="mb-2 text-sm" style={{ color: theme.textLight }}>
-                          <span className="font-semibold">Click to upload</span> or drag and drop
-                        </p>
-                        <p className="text-xs" style={{ color: theme.textLight }}>PNG, JPG or JPEG (MAX. 2MB)</p>
-                      </div>
-                      <input
-                        type="file"
-                        className="hidden"
-                        onChange={uploadFileHandler}
-                        accept="image/*"
-                      />
-                    </label>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-center w-full">
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-opacity-50" style={{
+                        backgroundColor: currentTheme === 'dark' ? 'rgba(30, 41, 59, 0.5)' : theme.inputBg,
+                        borderColor: theme.border
+                      }}>
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <FaUpload className="w-8 h-8 mb-3" style={{ color: theme.textLight }} />
+                          <p className="mb-2 text-sm" style={{ color: theme.textLight }}>
+                            <span className="font-semibold">Click to upload</span> or drag and drop
+                          </p>
+                          <p className="text-xs" style={{ color: theme.textLight }}>PNG, JPG or JPEG (MAX. 2MB)</p>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          onChange={uploadFileHandler}
+                          accept="image/*"
+                        />
+                      </label>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={generateRelevantImagesHandler}
+                      className="flex items-center justify-center px-4 py-2 rounded"
+                      style={{
+                        backgroundColor: theme.secondary,
+                        color: theme.buttonText
+                      }}
+                    >
+                      <FaMagic className="mr-2" /> Generate Relevant Images
+                    </button>
+
+                    {loadingUpload && <Loader />}
                   </div>
-                  {loadingUpload && <Loader />}
                 </div>
 
                 {images.length > 0 && (

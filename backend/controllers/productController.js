@@ -10,7 +10,10 @@ exports.getProducts = async (req, res, next) => {
     const reqQuery = { ...req.query };
 
     // Fields to exclude
-    const removeFields = ['select', 'sort', 'page', 'limit', 'q'];
+    const removeFields = ['select', 'sort', 'page', 'limit', 'q', 'featured'];
+
+    // Check for featured parameter
+    const featured = req.query.featured === 'true';
 
     // Loop over removeFields and delete them from reqQuery
     removeFields.forEach(param => delete reqQuery[param]);
@@ -21,8 +24,16 @@ exports.getProducts = async (req, res, next) => {
     // Create operators ($gt, $gte, etc)
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
+    // Parse the query
+    const parsedQuery = JSON.parse(queryStr);
+
+    // Add featured filter if requested
+    if (featured) {
+      parsedQuery.featured = true;
+    }
+
     // Finding resource
-    let query = Product.find(JSON.parse(queryStr));
+    let query = Product.find(parsedQuery);
 
     // Search functionality
     if (req.query.q) {

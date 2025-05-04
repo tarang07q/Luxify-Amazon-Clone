@@ -171,11 +171,12 @@ const ProductCard = ({ product }) => {
                 onError={handleImageError}
                 loading="eager"
                 style={{
-                  maxWidth: '95%',
-                  maxHeight: '95%',
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'contain',
                   margin: 'auto',
-                  padding: '10px'
+                  padding: '15px',
+                  transition: 'transform 0.5s ease'
                 }}
               />
               {/* Second image for hover effect */}
@@ -187,11 +188,12 @@ const ProductCard = ({ product }) => {
                   onError={handleImageError}
                   loading="eager"
                   style={{
-                    maxWidth: '95%',
-                    maxHeight: '95%',
+                    width: '100%',
+                    height: '100%',
                     objectFit: 'contain',
                     margin: 'auto',
-                    padding: '10px'
+                    padding: '15px',
+                    transition: 'transform 0.5s ease'
                   }}
                 />
               )}

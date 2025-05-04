@@ -21,6 +21,8 @@ import './HomePage.css';
 const HomePage = () => {
   const { keyword, pageNumber = 1 } = useParams();
   const navigate = useNavigate();
+  const location = window.location.pathname;
+  const isShopPage = location === '/shop';
 
   const { user } = useSelector((state) => state.auth);
 
@@ -57,12 +59,19 @@ const HomePage = () => {
   if (isCategory) {
     queryParams.category = keyword;
   }
-  // If keyword is "featured", we'll filter after fetching
-  else if (!isFeatured) {
+  // If keyword is "featured", set featured parameter
+  else if (isFeatured) {
+    queryParams.featured = true;
+  }
+  // Otherwise use keyword for search
+  else if (keyword) {
     queryParams.keyword = keyword;
   }
 
   const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams);
+
+  // Fetch featured products for homepage
+  const { data: featuredData, isLoading: featuredLoading } = useGetProductsQuery({ featured: true, pageNumber: 1 }, { skip: !!keyword });
 
   useEffect(() => {
     // Refetch data when component mounts
@@ -74,39 +83,57 @@ const HomePage = () => {
   return (
     <div className="home-container">
       {/* Hero Section with 3D Element */}
-      {!keyword && (
-        <div className="hero-section">
+      {(!keyword || isShopPage) && (
+        <div className={`hero-section ${isShopPage ? 'shop-hero' : ''}`}>
           <div className="hero-content">
             <div className="hero-text">
-              <h1 className="hero-title">Discover <span>Premium</span> Products at Luxify</h1>
+              <h1 className="hero-title">
+                {isShopPage ? (
+                  <>Explore Our <span>Premium</span> Collection</>
+                ) : (
+                  <>Discover <span>Premium</span> Products at Luxify</>
+                )}
+              </h1>
               <p className="hero-description">
                 Experience luxury shopping with our curated collection of high-quality products.
                 Explore exclusive items with immersive 3D visualization technology.
               </p>
               <div className="hero-buttons">
                 <Link
-                  to="/search/featured"
+                  to={isShopPage ? "/search/featured" : "/search/featured"}
                   className="hero-button primary-button"
                 >
-                  <FaStore style={{marginRight: '8px'}} /> Shop Now
+                  <FaStore style={{marginRight: '8px'}} /> {isShopPage ? 'View Featured' : 'Shop Now'}
                 </Link>
+              </div>
+            </div>
+            {isShopPage ? (
+              <div className="shop-3d-icon">
+                <ShoppingBag3D
+                  size={200}
+                  floatingAnimation={true}
+                  glowEffect={true}
+                />
+              </div>
+            ) : (
+              <>
                 <div className="hero-3d-icon">
                   <ShoppingBag3D
-                    size={120}
+                    size={150}
                     floatingAnimation={true}
                     glowEffect={true}
                   />
                 </div>
-              </div>
-            </div>
-            <div className="hero-3d">
-              <div className="model-container">
-                <CubeIcon
-                  size={800}
-                  autoRotate={true}
-                />
-              </div>
-            </div>
+                <div className="hero-3d">
+                  <div className="model-container">
+                    <CubeIcon
+                      size={800}
+                      autoRotate={true}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -278,13 +305,12 @@ const HomePage = () => {
       </div>
 
       {/* Featured Products Section */}
-      {!keyword && !isLoading && !error && data?.data && data.data.some(product => product.featured) && (
-        <div className="featured-section">
+      {(!keyword || isShopPage) && !featuredLoading && featuredData?.data && featuredData.data.length > 0 && (
+        <div className={`featured-section ${isShopPage ? 'shop-featured' : ''}`}>
           <h2 className="featured-title">Featured Products</h2>
           <div className="products-grid">
-            {data.data
-              .filter((product) => product.featured)
-              .slice(0, 4)
+            {featuredData.data
+              .slice(0, isShopPage ? 8 : 4)
               .map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}

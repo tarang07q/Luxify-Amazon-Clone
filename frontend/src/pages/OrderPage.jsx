@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
   useGetOrderDetailsQuery,
   useUpdateOrderStatusMutation,
+  useUpdateOrderPaymentMutation,
 } from '../slices/services/orderService';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
 import OrderDoc3D from '../components/3d/OrderDoc3D';
+import PaymentProcessor from '../components/payment/PaymentProcessor';
 import { useTheme } from '../context/ThemeContext';
+import { useCurrency } from '../context/CurrencyContext';
 import {
   FaShoppingCart,
   FaMapMarkerAlt,
@@ -19,25 +22,41 @@ import {
   FaBox,
   FaBoxOpen,
   FaFileInvoiceDollar,
+  FaMoneyBill,
 } from 'react-icons/fa';
 
 const OrderPage = () => {
   const { id: orderId } = useParams();
   const { theme, currentTheme } = useTheme();
+  const { formatPrice } = useCurrency();
+  const [showPaymentProcessor, setShowPaymentProcessor] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  console.log('OrderPage - Rendering with orderId:', orderId);
 
   const {
     data: order,
     refetch,
     isLoading,
     error,
-  } = useGetOrderDetailsQuery(orderId);
+  } = useGetOrderDetailsQuery(orderId, {
+    // Add error handling for the query
+    onError: (err) => {
+      console.error('Error fetching order details:', err);
+      setErrorMessage(err?.data?.error || err.error || 'Failed to load order details');
+    }
+  });
 
   const [updateOrderStatus, { isLoading: loadingUpdate }] =
     useUpdateOrderStatusMutation();
 
+  const [updateOrderPayment, { isLoading: loadingPayment }] =
+    useUpdateOrderPaymentMutation();
+
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    console.log('OrderPage - useEffect triggered', { isLoading, error, order });
     if (!isLoading && !error) {
       refetch();
     }
@@ -56,6 +75,24 @@ const OrderPage = () => {
     }
   };
 
+  const handlePaymentSuccess = async (paymentResult) => {
+    try {
+      await updateOrderPayment({
+        orderId,
+        paymentResult,
+      }).unwrap();
+      setShowPaymentProcessor(false);
+      toast.success('Payment completed successfully!');
+      refetch();
+    } catch (err) {
+      toast.error(err?.data?.error || err.error || 'An error occurred');
+    }
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPaymentProcessor(false);
+  };
+
   // Status icon mapping
   const getStatusIcon = (status) => {
     switch (status) {
@@ -72,150 +109,186 @@ const OrderPage = () => {
     }
   };
 
-  return isLoading ? (
-    <Loader />
-  ) : error ? (
-    <Message variant="danger">
-      {error?.data?.error || error.error || 'An error occurred'}
-    </Message>
-  ) : (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-2">
+  // Check if order data is available
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error || errorMessage) {
+    return (
+      <Message variant="danger">
+        {errorMessage || error?.data?.error || error.error || 'An error occurred'}
+      </Message>
+    );
+  }
+
+  if (!order || !order.data) {
+    return (
+      <Message variant="danger">
+        Order data not available. Please try again later.
+      </Message>
+    );
+  }
+
+  console.log('OrderPage - Rendering order data:', order);
+
+  return (
+    <div className="container mx-auto px-4 py-6" style={{ color: theme.text }}>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: theme.text }}>
         Order {order.data._id}
       </h1>
-      <p className="text-gray-600 mb-6">
+      <p style={{ color: theme.textLight }} className="mb-6">
         Placed on {new Date(order.data.createdAt).toLocaleDateString()}
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           {/* Order Status */}
-          <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-            <h2 className="text-lg font-semibold mb-4">Order Status</h2>
+          <div className="rounded-lg shadow-md p-4 mb-4" style={{
+            backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+            border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+            boxShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.1)' : 'none'
+          }}>
+            <h2 className="text-lg font-semibold mb-4" style={{ color: theme.text }}>Order Status</h2>
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    order.data.status === 'Pending' ||
-                    order.data.status === 'Packed' ||
-                    order.data.status === 'Shipped' ||
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-100'
-                      : 'bg-gray-100'
-                  }`}
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: order.data.status === 'Pending' ||
+                      order.data.status === 'Packed' ||
+                      order.data.status === 'Shipped' ||
+                      order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(16, 185, 129, 0.1)')
+                      : (currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)')
+                  }}
                 >
                   <FaBox
-                    className={
-                      order.data.status === 'Pending' ||
-                      order.data.status === 'Packed' ||
-                      order.data.status === 'Shipped' ||
-                      order.data.status === 'Delivered'
-                        ? 'text-green-500'
-                        : 'text-gray-400'
-                    }
+                    style={{
+                      color: order.data.status === 'Pending' ||
+                        order.data.status === 'Packed' ||
+                        order.data.status === 'Shipped' ||
+                        order.data.status === 'Delivered'
+                        ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                        : (currentTheme === 'dark' ? '#4b5563' : '#9ca3af')
+                    }}
                   />
                 </div>
-                <span className="mt-2 text-sm">Pending</span>
+                <span className="mt-2 text-sm" style={{ color: theme.text }}>Pending</span>
               </div>
-              <div className="flex-1 h-1 mx-2 bg-gray-200">
+              <div className="flex-1 h-1 mx-2" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)'
+              }}>
                 <div
-                  className={`h-full ${
-                    order.data.status === 'Packed' ||
-                    order.data.status === 'Shipped' ||
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-500'
-                      : 'bg-gray-200'
-                  }`}
+                  className="h-full"
+                  style={{
+                    backgroundColor: order.data.status === 'Packed' ||
+                      order.data.status === 'Shipped' ||
+                      order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                      : 'transparent'
+                  }}
                 ></div>
               </div>
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    order.data.status === 'Packed' ||
-                    order.data.status === 'Shipped' ||
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-100'
-                      : 'bg-gray-100'
-                  }`}
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: order.data.status === 'Packed' ||
+                      order.data.status === 'Shipped' ||
+                      order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(16, 185, 129, 0.1)')
+                      : (currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)')
+                  }}
                 >
                   <FaBoxOpen
-                    className={
-                      order.data.status === 'Packed' ||
-                      order.data.status === 'Shipped' ||
-                      order.data.status === 'Delivered'
-                        ? 'text-green-500'
-                        : 'text-gray-400'
-                    }
+                    style={{
+                      color: order.data.status === 'Packed' ||
+                        order.data.status === 'Shipped' ||
+                        order.data.status === 'Delivered'
+                        ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                        : (currentTheme === 'dark' ? '#4b5563' : '#9ca3af')
+                    }}
                   />
                 </div>
-                <span className="mt-2 text-sm">Packed</span>
+                <span className="mt-2 text-sm" style={{ color: theme.text }}>Packed</span>
               </div>
-              <div className="flex-1 h-1 mx-2 bg-gray-200">
+              <div className="flex-1 h-1 mx-2" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)'
+              }}>
                 <div
-                  className={`h-full ${
-                    order.data.status === 'Shipped' ||
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-500'
-                      : 'bg-gray-200'
-                  }`}
+                  className="h-full"
+                  style={{
+                    backgroundColor: order.data.status === 'Shipped' ||
+                      order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                      : 'transparent'
+                  }}
                 ></div>
               </div>
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    order.data.status === 'Shipped' ||
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-100'
-                      : 'bg-gray-100'
-                  }`}
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: order.data.status === 'Shipped' ||
+                      order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(16, 185, 129, 0.1)')
+                      : (currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)')
+                  }}
                 >
                   <FaTruck
-                    className={
-                      order.data.status === 'Shipped' ||
-                      order.data.status === 'Delivered'
-                        ? 'text-green-500'
-                        : 'text-gray-400'
-                    }
+                    style={{
+                      color: order.data.status === 'Shipped' ||
+                        order.data.status === 'Delivered'
+                        ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                        : (currentTheme === 'dark' ? '#4b5563' : '#9ca3af')
+                    }}
                   />
                 </div>
-                <span className="mt-2 text-sm">Shipped</span>
+                <span className="mt-2 text-sm" style={{ color: theme.text }}>Shipped</span>
               </div>
-              <div className="flex-1 h-1 mx-2 bg-gray-200">
+              <div className="flex-1 h-1 mx-2" style={{
+                backgroundColor: currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)'
+              }}>
                 <div
-                  className={`h-full ${
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-500'
-                      : 'bg-gray-200'
-                  }`}
+                  className="h-full"
+                  style={{
+                    backgroundColor: order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                      : 'transparent'
+                  }}
                 ></div>
               </div>
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    order.data.status === 'Delivered'
-                      ? 'bg-green-100'
-                      : 'bg-gray-100'
-                  }`}
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: order.data.status === 'Delivered'
+                      ? (currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(16, 185, 129, 0.1)')
+                      : (currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.5)')
+                  }}
                 >
                   <FaCheck
-                    className={
-                      order.data.status === 'Delivered'
-                        ? 'text-green-500'
-                        : 'text-gray-400'
-                    }
+                    style={{
+                      color: order.data.status === 'Delivered'
+                        ? (currentTheme === 'dark' ? '#00f2ff' : '#10b981')
+                        : (currentTheme === 'dark' ? '#4b5563' : '#9ca3af')
+                    }}
                   />
                 </div>
-                <span className="mt-2 text-sm">Delivered</span>
+                <span className="mt-2 text-sm" style={{ color: theme.text }}>Delivered</span>
               </div>
             </div>
 
             <div className="mt-4 text-center">
-              <p className="text-lg font-medium flex items-center justify-center">
-                {getStatusIcon(order.data.status)}
+              <p className="text-lg font-medium flex items-center justify-center" style={{ color: theme.text }}>
+                <span style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#10b981', marginRight: '8px' }}>
+                  {getStatusIcon(order.data.status)}
+                </span>
                 <span className="ml-2">Current Status: {order.data.status}</span>
               </p>
               {order.data.deliveredAt && (
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm mt-1" style={{ color: theme.textLight }}>
                   Delivered on{' '}
                   {new Date(order.data.deliveredAt).toLocaleDateString()}
                 </p>
@@ -225,7 +298,7 @@ const OrderPage = () => {
             {/* Admin Controls */}
             {user && user.role === 'admin' && (
               <div className="mt-6 border-t pt-4">
-                <h3 className="text-md font-semibold mb-2">Admin Controls</h3>
+                <h3 className="text-md font-semibold mb-2" style={{ color: theme.text }}>Admin Controls</h3>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => updateStatusHandler('Packed')}
@@ -289,23 +362,27 @@ const OrderPage = () => {
           </div>
 
           {/* Shipping */}
-          <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <div className="rounded-lg shadow-md p-4 mb-4" style={{
+            backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+            border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+            boxShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.1)' : 'none'
+          }}>
             <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <FaMapMarkerAlt className="mr-2 text-primary" /> Shipping
+              <FaMapMarkerAlt className="mr-2" style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} /> Shipping
             </h2>
-            <p className="text-gray-700 mb-2">
+            <p className="mb-2" style={{ color: theme.text }}>
               <strong>Name:</strong> {order.data.user.name}
             </p>
-            <p className="text-gray-700 mb-2">
+            <p className="mb-2" style={{ color: theme.text }}>
               <strong>Email:</strong>{' '}
               <a
                 href={`mailto:${order.data.user.email}`}
-                className="text-primary hover:underline"
+                className="hover:underline" style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }}
               >
                 {order.data.user.email}
               </a>
             </p>
-            <p className="text-gray-700">
+            <p style={{ color: theme.text }}>
               <strong>Address:</strong> {order.data.shippingAddress.street},{' '}
               {order.data.shippingAddress.city},{' '}
               {order.data.shippingAddress.state},{' '}
@@ -315,14 +392,18 @@ const OrderPage = () => {
           </div>
 
           {/* Payment Method */}
-          <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <div className="rounded-lg shadow-md p-4 mb-4" style={{
+            backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+            border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+            boxShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.1)' : 'none'
+          }}>
             <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <FaCreditCard className="mr-2 text-primary" /> Payment
+              <FaCreditCard className="mr-2" style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} /> Payment
             </h2>
-            <p className="text-gray-700 mb-2">
+            <p className="mb-2" style={{ color: theme.text }}>
               <strong>Method:</strong> {order.data.paymentMethod}
             </p>
-            <p className="text-gray-700">
+            <p className="mb-2" style={{ color: theme.text }}>
               <strong>Status:</strong>{' '}
               {order.data.isPaid ? (
                 <span className="text-green-600">
@@ -332,12 +413,44 @@ const OrderPage = () => {
                 <span className="text-red-600">Not Paid</span>
               )}
             </p>
+
+            {!order.data.isPaid && !showPaymentProcessor && (
+              <button
+                onClick={() => setShowPaymentProcessor(true)}
+                className="mt-3 text-white px-4 py-2 rounded hover:opacity-90 flex items-center transition-opacity"
+                style={{
+                  backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : '#5046e5',
+                  color: '#ffffff',
+                  border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.3)' : 'none',
+                  boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.3)' : 'none'
+                }}
+                disabled={loadingPayment}
+              >
+                <FaMoneyBill className="mr-2" />
+                {loadingPayment ? 'Processing...' : 'Pay Now'}
+              </button>
+            )}
+
+            {showPaymentProcessor && (
+              <div className="mt-4">
+                <PaymentProcessor
+                  amount={order.data.totalPrice}
+                  paymentMethod={order.data.paymentMethod}
+                  onSuccess={handlePaymentSuccess}
+                  onCancel={handlePaymentCancel}
+                />
+              </div>
+            )}
           </div>
 
           {/* Order Items */}
-          <div className="bg-white rounded-lg shadow-md p-4">
+          <div className="rounded-lg shadow-md p-4" style={{
+            backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+            border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+            boxShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.1)' : 'none'
+          }}>
             <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <FaShoppingCart className="mr-2 text-primary" /> Order Items
+              <FaShoppingCart className="mr-2" style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} /> Order Items
             </h2>
             <ul className="divide-y divide-gray-200">
               {order.data.orderItems.map((item, index) => (
@@ -353,13 +466,13 @@ const OrderPage = () => {
                     <div className="ml-4 flex-1">
                       <Link
                         to={`/product/${item.product}`}
-                        className="text-primary hover:underline"
+                        className="hover:underline" style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }}
                       >
                         {item.name}
                       </Link>
                     </div>
-                    <div className="text-right">
-                      {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                    <div className="text-right" style={{ color: theme.text }}>
+                      {item.quantity} x {formatPrice(item.price)} = {formatPrice(item.quantity * item.price)}
                     </div>
                   </div>
                 </li>
@@ -370,8 +483,12 @@ const OrderPage = () => {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-md p-4 sticky top-4">
-            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+          <div className="rounded-lg shadow-md p-4 sticky top-4" style={{
+            backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+            border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+            boxShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.1)' : 'none'
+          }}>
+            <h2 className="text-xl font-bold mb-4" style={{ color: theme.text }}>Order Summary</h2>
 
             {/* 3D Order Document */}
             <div className="flex justify-center mb-6">
@@ -386,21 +503,21 @@ const OrderPage = () => {
             </div>
 
             <div className="space-y-3">
-              <div className="flex justify-between">
+              <div className="flex justify-between" style={{ color: theme.text }}>
                 <span>Items:</span>
-                <span>${order.data.itemsPrice.toFixed(2)}</span>
+                <span>{formatPrice(order.data.itemsPrice)}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between" style={{ color: theme.text }}>
                 <span>Shipping:</span>
-                <span>${order.data.shippingPrice.toFixed(2)}</span>
+                <span>{formatPrice(order.data.shippingPrice)}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between" style={{ color: theme.text }}>
                 <span>Tax:</span>
-                <span>${order.data.taxPrice.toFixed(2)}</span>
+                <span>{formatPrice(order.data.taxPrice)}</span>
               </div>
-              <div className="flex justify-between font-bold">
+              <div className="flex justify-between font-bold" style={{ color: theme.text }}>
                 <span>Total:</span>
-                <span>${order.data.totalPrice.toFixed(2)}</span>
+                <span style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }}>{formatPrice(order.data.totalPrice)}</span>
               </div>
             </div>
           </div>

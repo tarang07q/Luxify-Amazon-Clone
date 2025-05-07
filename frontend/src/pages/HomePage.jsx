@@ -143,78 +143,61 @@ const HomePage = () => {
         <div className="categories-section">
           <h2 className="section-title">Shop by Category</h2>
           <div className="categories-grid">
-            {categories.map((category) => {
+            {categories.slice(0, 8).map((category) => {
               // Get appropriate icon for each category
               let icon;
               let color;
+
+              // Define colors based on theme
+              const themeColors = {
+                primary: '#00f2ff',
+                secondary: '#ff00e4',
+                accent1: '#7928ca',
+                accent2: '#01ffc3',
+                accent3: '#ffaa00',
+                accent4: '#ff6b6b',
+                accent5: '#4ecdc4',
+                accent6: '#5046e5',
+                accent7: '#f7b801',
+                accent8: '#9c27b0'
+              };
+
               switch(category) {
                 case 'Electronics':
-                  icon = <FaBox size={24} />;
-                  color = '#00c3ff';
+                  icon = <FaBox size={28} />;
+                  color = themeColors.primary;
                   break;
                 case 'Computers':
-                  icon = <FaLaptop size={24} />;
-                  color = '#4ecdc4';
+                  icon = <FaLaptop size={28} />;
+                  color = themeColors.accent5;
                   break;
                 case 'Smart Home':
-                  icon = <FaHome size={24} />;
-                  color = '#6a0572';
+                  icon = <FaHome size={28} />;
+                  color = themeColors.accent1;
                   break;
                 case 'Home & Kitchen':
-                  icon = <FaHome size={24} />;
-                  color = '#ff6b6b';
+                  icon = <FaHome size={28} />;
+                  color = themeColors.accent4;
                   break;
                 case 'Clothing':
-                  icon = <FaTshirt size={24} />;
-                  color = '#f7b801';
+                  icon = <FaTshirt size={28} />;
+                  color = themeColors.accent7;
                   break;
                 case 'Beauty & Personal Care':
-                  icon = <FaSprayCan size={24} />;
-                  color = '#ff00e4';
+                  icon = <FaSprayCan size={28} />;
+                  color = themeColors.secondary;
                   break;
                 case 'Books':
-                  icon = <FaBook size={24} />;
-                  color = '#5046e5';
+                  icon = <FaBook size={28} />;
+                  color = themeColors.accent6;
                   break;
                 case 'Toys & Games':
-                  icon = <FaGamepad size={24} />;
-                  color = '#ff9900';
-                  break;
-                case 'Sports & Outdoors':
-                  icon = <FaRunning size={24} />;
-                  color = '#00f2ff';
-                  break;
-                case 'Grocery & Gourmet Food':
-                  icon = <FaShoppingBasket size={24} />;
-                  color = '#4caf50';
-                  break;
-                case 'Pet Supplies':
-                  icon = <FaPaw size={24} />;
-                  color = '#ff5722';
-                  break;
-                case 'Automotive':
-                  icon = <FaCar size={24} />;
-                  color = '#607d8b';
-                  break;
-                case 'Tools & Home Improvement':
-                  icon = <FaTools size={24} />;
-                  color = '#795548';
-                  break;
-                case 'Health & Household':
-                  icon = <FaFirstAid size={24} />;
-                  color = '#e91e63';
-                  break;
-                case 'Office Products':
-                  icon = <FaBriefcase size={24} />;
-                  color = '#3f51b5';
-                  break;
-                case 'Gift Cards':
-                  icon = <FaGift size={24} />;
-                  color = '#9c27b0';
+                  icon = <FaGamepad size={28} />;
+                  color = themeColors.accent3;
                   break;
                 default:
-                  icon = <FaBox size={24} />;
-                  color = '#00f2ff';
+                  icon = <FaBox size={28} />;
+                  color = themeColors.primary;
               }
 
               return (
@@ -225,7 +208,7 @@ const HomePage = () => {
                 >
                   <div className="category-icon">
                     <ProductBox3D
-                      size={80}
+                      size={100}
                       color={color}
                       icon={icon}
                       floatingAnimation={true}
@@ -236,6 +219,13 @@ const HomePage = () => {
                 </Link>
               );
             })}
+          </div>
+
+          {/* View All Categories Button */}
+          <div className="view-all-categories">
+            <Link to="/shop" className="view-all-button">
+              View All Categories <FaArrowRight style={{marginLeft: '8px'}} />
+            </Link>
           </div>
         </div>
       )}

@@ -172,13 +172,16 @@ const CartPage = () => {
               </div>
               <button
                 type="button"
-                className="w-full mt-4"
+                className="w-full py-3 rounded font-semibold mt-4 transition-all"
                 style={{
-                  backgroundColor: cartItems.length === 0 ? theme.border : theme.buttonPrimary,
+                  backgroundColor: cartItems.length === 0
+                    ? (currentTheme === 'dark' ? 'rgba(75, 85, 99, 0.2)' : '#e5e7eb')
+                    : (currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : theme.primary),
                   color: cartItems.length === 0 ? theme.textLight : theme.buttonText,
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.25rem',
-                  fontWeight: 'bold'
+                  border: currentTheme === 'dark' && !cartItems.length === 0 ? '1px solid rgba(0, 242, 255, 0.3)' : 'none',
+                  boxShadow: currentTheme === 'dark' && !cartItems.length === 0 ? '0 0 15px rgba(0, 242, 255, 0.3)' : 'none',
+                  opacity: cartItems.length === 0 ? 0.6 : 1,
+                  cursor: cartItems.length === 0 ? 'not-allowed' : 'pointer'
                 }}
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}

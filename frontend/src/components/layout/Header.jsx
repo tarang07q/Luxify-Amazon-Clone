@@ -68,10 +68,12 @@ const Header = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-      navigate(`/search/${keyword}`);
-      setKeyword('');
+      // Navigate to search page with keyword
+      navigate(`/search/${encodeURIComponent(keyword.trim())}`);
+      // Don't clear the keyword immediately to provide better UX
+      setTimeout(() => setKeyword(''), 300);
     } else {
-      navigate('/');
+      navigate('/shop');
     }
   };
 
@@ -141,7 +143,7 @@ const Header = () => {
 
           {/* Search Container */}
           <div className="search-container">
-            <form onSubmit={submitHandler}>
+            <form onSubmit={submitHandler} className="search-form">
               <input
                 type="text"
                 name="q"
@@ -149,8 +151,15 @@ const Header = () => {
                 value={keyword}
                 placeholder="Search products..."
                 className="search-input"
+                aria-label="Search products"
               />
-              <FaSearch className="search-icon" />
+              <button
+                type="submit"
+                className="search-button"
+                aria-label="Search"
+              >
+                <FaSearch className="search-icon" />
+              </button>
             </form>
           </div>
 
@@ -250,7 +259,7 @@ const Header = () => {
 
           {/* Mobile Search */}
           <div className="search-container" style={{ width: '100%', marginBottom: '1.5rem' }}>
-            <form onSubmit={(e) => { submitHandler(e); toggleMenu(); }}>
+            <form onSubmit={(e) => { submitHandler(e); toggleMenu(); }} className="search-form">
               <input
                 type="text"
                 name="q"
@@ -259,8 +268,15 @@ const Header = () => {
                 placeholder="Search products..."
                 className="search-input"
                 style={{ width: '100%' }}
+                aria-label="Search products"
               />
-              <FaSearch className="search-icon" />
+              <button
+                type="submit"
+                className="search-button"
+                aria-label="Search"
+              >
+                <FaSearch className="search-icon-mobile" />
+              </button>
             </form>
           </div>
 

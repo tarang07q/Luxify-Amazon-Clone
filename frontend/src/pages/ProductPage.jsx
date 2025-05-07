@@ -66,11 +66,11 @@ const ProductPage = () => {
                 borderColor: theme.border,
                 boxShadow: theme.shadow
               }}>
-                {product.data.images[activeImg] ? (
+                {product.data.images && product.data.images[activeImg] ? (
                   <img
                     src={product.data.images[activeImg]?.startsWith('http') ?
                       product.data.images[activeImg] :
-                      `/api${product.data.images[activeImg]}`}
+                      product.data.images[activeImg]}
                     alt={product.data.title}
                     className="w-full h-96 object-contain p-4"
                     onError={(e) => {
@@ -98,7 +98,7 @@ const ProductPage = () => {
                       onClick={() => setActiveImg(index)}
                     >
                       <img
-                        src={img?.startsWith('http') ? img : `/api${img}`}
+                        src={img?.startsWith('http') ? img : img}
                         alt={`${product.data.title} - ${index}`}
                         className="w-20 h-20 object-contain p-2"
                         onError={(e) => {

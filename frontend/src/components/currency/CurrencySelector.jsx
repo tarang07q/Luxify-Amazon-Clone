@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaGlobeAmericas, FaChevronDown } from 'react-icons/fa';
 import { useCurrency } from '../../context/CurrencyContext';
 import './CurrencySelector.css';
+import { useTheme } from '../../context/ThemeContext';
 
 const CurrencySelector = ({ className = '', variant = 'default' }) => {
   const { currency, supportedCurrencies, changeCurrency } = useCurrency();
+  const { theme, currentTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -39,6 +41,47 @@ const CurrencySelector = ({ className = '', variant = 'default' }) => {
     }
   };
 
+  // Apply theme-specific styles
+  const themeStyles = {
+    button: {
+      color: theme.navText,
+      backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(80, 70, 229, 0.1)',
+      border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.2)' : '1px solid rgba(80, 70, 229, 0.2)',
+      borderRadius: '8px',
+      padding: '0.5rem 0.75rem',
+    },
+    dropdown: {
+      backgroundColor: theme.cardBg,
+      border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.2)' : '1px solid rgba(80, 70, 229, 0.2)',
+      boxShadow: theme.shadow,
+    },
+    header: {
+      backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.8)' : 'rgba(249, 250, 251, 0.8)',
+      color: theme.text,
+      borderBottom: `1px solid ${theme.border}`,
+    },
+    option: {
+      color: theme.text,
+      borderBottom: `1px solid ${theme.border}`,
+      backgroundColor: 'transparent',
+    },
+    activeOption: {
+      backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(80, 70, 229, 0.1)',
+    },
+    hoverOption: {
+      backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.05)' : 'rgba(80, 70, 229, 0.05)',
+    },
+    symbol: {
+      color: theme.primary,
+    },
+    code: {
+      color: theme.text,
+    },
+    name: {
+      color: theme.textLight,
+    }
+  };
+
   return (
     <div className={`currency-selector ${className}`} ref={dropdownRef}>
       <button
@@ -46,6 +89,7 @@ const CurrencySelector = ({ className = '', variant = 'default' }) => {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="true"
+        style={variant === 'header' ? themeStyles.button : {}}
       >
         <FaGlobeAmericas className="currency-selector-icon" />
         <span className="currency-selector-code">{currency.code}</span>
@@ -53,8 +97,8 @@ const CurrencySelector = ({ className = '', variant = 'default' }) => {
       </button>
 
       {isOpen && (
-        <div className="currency-selector-dropdown">
-          <div className="currency-selector-dropdown-header">
+        <div className="currency-selector-dropdown" style={variant === 'header' ? themeStyles.dropdown : {}}>
+          <div className="currency-selector-dropdown-header" style={variant === 'header' ? themeStyles.header : {}}>
             Select Currency
           </div>
           <div className="currency-selector-dropdown-content">
@@ -62,11 +106,15 @@ const CurrencySelector = ({ className = '', variant = 'default' }) => {
               <button
                 key={curr.code}
                 className={`currency-selector-option ${curr.code === currency.code ? 'active' : ''}`}
+                style={{
+                  ...variant === 'header' ? themeStyles.option : {},
+                  ...(curr.code === currency.code && variant === 'header') ? themeStyles.activeOption : {}
+                }}
                 onClick={() => handleCurrencyChange(curr.code)}
               >
-                <span className="currency-selector-option-symbol">{curr.symbol}</span>
-                <span className="currency-selector-option-code">{curr.code}</span>
-                <span className="currency-selector-option-name">{curr.name}</span>
+                <span className="currency-selector-option-symbol" style={variant === 'header' ? themeStyles.symbol : {}}>{curr.symbol}</span>
+                <span className="currency-selector-option-code" style={variant === 'header' ? themeStyles.code : {}}>{curr.code}</span>
+                <span className="currency-selector-option-name" style={variant === 'header' ? themeStyles.name : {}}>{curr.name}</span>
               </button>
             ))}
           </div>

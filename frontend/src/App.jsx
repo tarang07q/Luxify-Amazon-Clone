@@ -113,7 +113,7 @@ function App() {
             {/* Footer Pages - Let Us Help You */}
             <Route path="/account" element={<AccountPage />} />
             <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/shipping" element={<ShippingRatesPage />} />
+            <Route path="/shipping-rates" element={<ShippingRatesPage />} />
             <Route path="/returns" element={<ReturnsPage />} />
             <Route path="/help" element={<HelpPage />} />
 

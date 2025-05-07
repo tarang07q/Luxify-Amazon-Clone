@@ -113,12 +113,11 @@ export const ThemeProvider = ({ children }) => {
       : 'light';
   };
 
-  const [currentTheme, setCurrentTheme] = useState('dark'); // Default to dark for futuristic look
+  const [currentTheme, setCurrentTheme] = useState(getInitialTheme); // Use the function to get initial theme
   const [themeLoaded, setThemeLoaded] = useState(false);
 
-  // Set theme on initial load (client-side only)
+  // Set theme loaded flag on initial load (client-side only)
   useEffect(() => {
-    setCurrentTheme(getInitialTheme());
     setThemeLoaded(true);
   }, []);
 
@@ -137,6 +136,7 @@ export const ThemeProvider = ({ children }) => {
     });
 
     // Set data-theme attribute for components that use it
+    document.documentElement.setAttribute('data-theme', currentTheme);
     document.body.setAttribute('data-theme', currentTheme);
 
     // Update meta theme-color for mobile browsers

@@ -72,7 +72,7 @@ const Footer = () => {
       links: [
         { text: 'Your Account', path: '/account', icon: <FaUser /> },
         { text: 'Your Orders', path: '/orders', icon: <FaClipboardList /> },
-        { text: 'Shipping Policies', path: '/shipping', icon: <FaTruck /> },
+        { text: 'Shipping Policies', path: '/shipping-rates', icon: <FaTruck /> },
         { text: 'Returns & Replacements', path: '/returns', icon: <FaUndo /> },
         { text: 'Help Center', path: '/help', icon: <FaQuestionCircle /> },
       ]

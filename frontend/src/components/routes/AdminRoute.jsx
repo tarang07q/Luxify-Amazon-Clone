@@ -1,8 +1,8 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-const AdminRoute = () => {
+const AdminRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
 
@@ -30,8 +30,8 @@ const AdminRoute = () => {
     );
   }
 
-  // If admin, render the outlet (child routes)
-  return <Outlet />;
+  // If admin, render the children
+  return children;
 };
 
 export default AdminRoute;

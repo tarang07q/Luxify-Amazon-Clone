@@ -107,6 +107,42 @@ exports.updateOrderStatus = async (req, res, next) => {
   }
 };
 
+// @desc    Update order to paid
+// @route   PUT /api/orders/:id/pay
+// @access  Private
+exports.updateOrderToPaid = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return next(new ErrorResponse(`Order not found with id of ${req.params.id}`, 404));
+    }
+
+    // Make sure user is order owner or admin
+    if (order.user.toString() !== req.user.id && req.user.role !== 'admin') {
+      return next(new ErrorResponse(`Not authorized to update this order`, 401));
+    }
+
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.paymentResult.id,
+      status: req.body.paymentResult.status,
+      update_time: req.body.paymentResult.update_time,
+      email_address: req.body.paymentResult.email_address
+    };
+
+    const updatedOrder = await order.save();
+
+    res.status(200).json({
+      success: true,
+      data: updatedOrder
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // @desc    Get logged in user orders
 // @route   GET /api/orders/my-orders
 // @access  Private

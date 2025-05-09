@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { FaSignInAlt, FaArrowRight, FaUserShield, FaSpinner, FaTools } from 'react-icons/fa';
 import ApiConnectionTest from '../ui/ApiConnectionTest';
 
-const LoginForm = ({ redirect = '/' }) => {
+const LoginForm = ({ redirect = '/', isAdmin = false }) => {
   // Check if there's a recently registered admin email
   const lastRegisteredAdmin = localStorage.getItem('lastRegisteredAdmin') || '';
 
@@ -73,30 +73,20 @@ const LoginForm = ({ redirect = '/' }) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mx-auto">
-      <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
-          <FaSignInAlt className="text-3xl text-indigo-600" />
-        </div>
-        <h1 className="text-2xl font-bold text-gray-800">Sign In</h1>
-        <p className="text-gray-700 mt-1">Welcome back! Sign in to your account</p>
-        <p className="text-xs text-gray-500 mt-2">Admin users will be redirected to the admin dashboard</p>
-        <div className="mt-2 p-2 bg-blue-50 rounded-md">
-          <p className="text-xs text-blue-700">Test Admin Credentials:</p>
-          <p className="text-xs text-blue-700">Email: admin@test.com</p>
-          <p className="text-xs text-blue-700">Password: admin123</p>
-        </div>
-      </div>
-
+    <>
       {apiError && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
+        <div className="mb-4 p-3 rounded-md text-sm" style={{
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderColor: 'rgba(239, 68, 68, 0.2)',
+          color: '#ef4444'
+        }}>
           <p>{apiError}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-800 font-medium mb-2">
+          <label htmlFor="email" className="block font-medium mb-2" style={{ color: 'inherit' }}>
             Email Address
           </label>
           <input
@@ -104,14 +94,21 @@ const LoginForm = ({ redirect = '/' }) => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+            className="w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              borderColor: 'rgba(99, 102, 241, 0.2)',
+              color: 'inherit',
+              borderWidth: '1px',
+              borderStyle: 'solid'
+            }}
             placeholder="Enter your email"
             required
           />
         </div>
 
         <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-800 font-medium mb-2">
+          <label htmlFor="password" className="block font-medium mb-2" style={{ color: 'inherit' }}>
             Password
           </label>
           <input
@@ -119,7 +116,14 @@ const LoginForm = ({ redirect = '/' }) => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+            className="w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              borderColor: 'rgba(99, 102, 241, 0.2)',
+              color: 'inherit',
+              borderWidth: '1px',
+              borderStyle: 'solid'
+            }}
             placeholder="Enter your password"
             required
           />
@@ -127,7 +131,11 @@ const LoginForm = ({ redirect = '/' }) => {
 
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors font-medium"
+          className="w-full py-2 px-4 rounded-md transition-colors font-medium flex items-center justify-center"
+          style={{
+            backgroundColor: 'rgba(99, 102, 241, 0.8)',
+            color: '#ffffff',
+          }}
           disabled={isLoading}
         >
           {isLoading ? (
@@ -138,40 +146,41 @@ const LoginForm = ({ redirect = '/' }) => {
             <span className="flex items-center justify-center">
               <FaUserShield className="mr-2" /> Admin Login Successful!
             </span>
-          ) : 'Sign In'}
+          ) : isAdmin ? (
+            <span className="flex items-center justify-center">
+              <FaUserShield className="mr-2" /> Admin Login
+            </span>
+          ) : (
+            <span className="flex items-center justify-center">
+              <FaSignInAlt className="mr-2" /> Sign In
+            </span>
+          )}
         </button>
       </form>
 
-      <div className="mt-6 pt-6 border-t border-gray-200">
-        <div className="text-center">
-          <p className="text-gray-700 mb-2">New Customer?</p>
-          <Link
-            to={`/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
-            className="text-indigo-600 hover:text-indigo-800 font-medium flex items-center justify-center"
-          >
-            Create an Account <FaArrowRight className="ml-1" />
-          </Link>
-        </div>
-
-        <div className="mt-4 pt-4 border-t border-gray-200">
+      {!isAdmin && (
+        <div className="mt-4 text-center">
           <Link
             to="/admin-registration"
-            className="flex items-center justify-center text-indigo-600 hover:text-indigo-800 font-medium"
+            className="text-sm flex items-center justify-center hover:underline"
+            style={{ color: 'rgba(99, 102, 241, 0.8)' }}
           >
             <FaUserShield className="mr-2" /> Create Admin Account
           </Link>
         </div>
+      )}
 
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <details className="text-sm">
-            <summary className="cursor-pointer text-gray-600 flex items-center justify-center">
-              <FaTools className="mr-2" /> Troubleshooting Tools
-            </summary>
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <details className="text-sm">
+          <summary className="cursor-pointer flex items-center justify-center" style={{ color: 'rgba(107, 114, 128, 0.8)' }}>
+            <FaTools className="mr-2" /> Troubleshooting Tools
+          </summary>
+          <div className="mt-2">
             <ApiConnectionTest />
-          </details>
-        </div>
+          </div>
+        </details>
       </div>
-    </div>
+    </>
   );
 };
 

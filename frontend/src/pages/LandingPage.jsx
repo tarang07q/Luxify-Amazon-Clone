@@ -17,12 +17,126 @@ import ModernCube from '../components/3d/ModernCube';
 
 const LandingPage = () => {
   const { theme, currentTheme } = useTheme();
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [showLoginOptions, setShowLoginOptions] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+      setActiveSection(sectionId);
+    }
+  };
 
   return (
     <div className="landing-page" style={{ backgroundColor: theme.background, color: theme.text }}>
+      {/* Navigation Bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 py-4" style={{
+        backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(10px)',
+        boxShadow: currentTheme === 'dark' ? '0 4px 20px rgba(0, 0, 0, 0.2)' : '0 4px 20px rgba(0, 0, 0, 0.1)',
+      }}>
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <div className="h-10 w-10 flex items-center justify-center" style={{
+                background: currentTheme === 'dark' ? 'linear-gradient(135deg, #00f2ff, #7928ca)' : 'linear-gradient(135deg, #5046e5, #f0338d)',
+                borderRadius: '8px',
+                boxShadow: currentTheme === 'dark' ? '0 0 10px rgba(0, 242, 255, 0.5)' : '0 0 10px rgba(80, 70, 229, 0.3)'
+              }}>
+                <ModernCube size={30} color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'} />
+              </div>
+              <span className="font-bold text-2xl ml-2" style={{
+                color: currentTheme === 'dark' ? '#ffffff' : theme.text,
+                textShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.5)' : 'none'
+              }}>Luxify</span>
+            </div>
+
+            <div className="hidden md:flex space-x-6">
+              <button
+                onClick={() => scrollToSection('home')}
+                className={`font-medium transition-colors ${activeSection === 'home' ? 'font-bold' : ''}`}
+                style={{
+                  color: activeSection === 'home'
+                    ? (currentTheme === 'dark' ? '#00f2ff' : '#5046e5')
+                    : (currentTheme === 'dark' ? '#ffffff' : theme.text)
+                }}
+              >
+                Home
+              </button>
+              <button
+                onClick={() => scrollToSection('about')}
+                className={`font-medium transition-colors ${activeSection === 'about' ? 'font-bold' : ''}`}
+                style={{
+                  color: activeSection === 'about'
+                    ? (currentTheme === 'dark' ? '#00f2ff' : '#5046e5')
+                    : (currentTheme === 'dark' ? '#ffffff' : theme.text)
+                }}
+              >
+                About Us
+              </button>
+              <button
+                onClick={() => scrollToSection('features')}
+                className={`font-medium transition-colors ${activeSection === 'features' ? 'font-bold' : ''}`}
+                style={{
+                  color: activeSection === 'features'
+                    ? (currentTheme === 'dark' ? '#00f2ff' : '#5046e5')
+                    : (currentTheme === 'dark' ? '#ffffff' : theme.text)
+                }}
+              >
+                Features
+              </button>
+              <button
+                onClick={() => scrollToSection('contact')}
+                className={`font-medium transition-colors ${activeSection === 'contact' ? 'font-bold' : ''}`}
+                style={{
+                  color: activeSection === 'contact'
+                    ? (currentTheme === 'dark' ? '#00f2ff' : '#5046e5')
+                    : (currentTheme === 'dark' ? '#ffffff' : theme.text)
+                }}
+              >
+                Contact
+              </button>
+            </div>
+
+            <div className="relative">
+              <button
+                className="flex items-center font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg hover:shadow-xl"
+                style={{
+                  backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : '#5046e5',
+                  color: '#ffffff',
+                  border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.3)' : 'none',
+                }}
+                onClick={() => setShowLoginOptions(!showLoginOptions)}
+              >
+                <FaSignInAlt className="mr-2" /> Sign In
+              </button>
+              <div className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50 transition-all duration-300 ${showLoginOptions ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                style={{
+                  backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.95)' : '#ffffff',
+                  border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.2)' : 'none',
+                }}
+              >
+                <div className="py-1">
+                  <Link to="/login" className="block px-4 py-2 hover:bg-indigo-100 hover:text-indigo-600" style={{
+                    color: currentTheme === 'dark' ? '#ffffff' : theme.text
+                  }}>
+                    <FaUser className="inline mr-2" /> User Login
+                  </Link>
+                  <Link to="/login?admin=true" className="block px-4 py-2 hover:bg-indigo-100 hover:text-indigo-600" style={{
+                    color: currentTheme === 'dark' ? '#ffffff' : theme.text
+                  }}>
+                    <FaUserShield className="inline mr-2" /> Admin Login
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section with Specialized 3D Icons */}
-      <section className="hero-section py-20" style={{
+      <section id="home" className="hero-section pt-32 pb-20" style={{
         background: currentTheme === 'light'
           ? 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)'
           : 'linear-gradient(135deg, #1E3A8A 0%, #5B21B6 50%, #831843 100%)',
@@ -45,24 +159,9 @@ const LandingPage = () => {
                 }}>
                   <FaShoppingBag className="mr-2" /> Start Shopping
                 </Link>
-                <div className="relative group">
-                  <button
-                    className="flex items-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                    onClick={() => setShowAdminLogin(!showAdminLogin)}
-                  >
-                    <FaSignInAlt className="mr-2" /> Sign In
-                  </button>
-                  <div className={`absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 transition-all duration-300 ${showAdminLogin ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                    <div className="py-1">
-                      <Link to="/login" className="block px-4 py-2 text-gray-800 hover:bg-indigo-100 hover:text-indigo-600">
-                        <FaUser className="inline mr-2" /> User Login
-                      </Link>
-                      <Link to="/login?admin=true" className="block px-4 py-2 text-gray-800 hover:bg-indigo-100 hover:text-indigo-600">
-                        <FaUserShield className="inline mr-2" /> Admin Login
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <Link to="/register" className="flex items-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                  <FaUserPlus className="mr-2" /> Create Account
+                </Link>
               </div>
             </div>
             <div className="md:w-1/2 h-64 md:h-96">
@@ -81,8 +180,92 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* About Us Section */}
+      <section id="about" className="about-section py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12 futuristic-title" style={{
+            background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            About Luxify
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold mb-4" style={{ color: theme.primary }}>Our Mission</h3>
+                <p className="text-lg" style={{ color: theme.text }}>
+                  At Luxify, our mission is to revolutionize online shopping by providing a curated selection of premium products
+                  with exceptional customer service. We believe in making luxury accessible to everyone through a seamless
+                  shopping experience.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: theme.primary }}>Our Vision</h3>
+                <p className="text-lg" style={{ color: theme.text }}>
+                  We envision a world where quality products are accessible to all, where shopping is not just a transaction
+                  but an experience, and where customer satisfaction is the ultimate measure of success. Luxify aims to be
+                  the global leader in premium online retail.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <ModernCube
+                size={300}
+                color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
+                floatingAnimation={true}
+                glowEffect={true}
+              />
+            </div>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-lg" style={{
+              backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+              boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
+            }}>
+              <h3 className="text-xl font-bold mb-3" style={{ color: theme.primary }}>Quality Products</h3>
+              <p style={{ color: theme.text }}>
+                We carefully select each product in our inventory to ensure the highest quality standards.
+                Our team of experts evaluates products based on craftsmanship, materials, and customer reviews.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg" style={{
+              backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+              boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
+            }}>
+              <h3 className="text-xl font-bold mb-3" style={{ color: theme.primary }}>Customer First</h3>
+              <p style={{ color: theme.text }}>
+                Our customers are at the heart of everything we do. We strive to provide exceptional service,
+                from browsing to delivery and beyond. Your satisfaction is our top priority.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg" style={{
+              backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+              boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
+            }}>
+              <h3 className="text-xl font-bold mb-3" style={{ color: theme.primary }}>Innovation</h3>
+              <p style={{ color: theme.text }}>
+                We continuously innovate our platform to enhance your shopping experience. From advanced search
+                features to personalized recommendations, we leverage technology to make shopping effortless.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section with Specialized 3D Icons */}
-      <section className="features-section py-20">
+      <section id="features" className="features-section py-20" style={{
+        backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.95)' : '#f9fafb',
+      }}>
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 futuristic-title" style={{
             background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`,
@@ -91,7 +274,7 @@ const LandingPage = () => {
           }}>
             Explore Our Features
           </h2>
-          <p className="text-xl text-center mb-12 max-w-3xl mx-auto">
+          <p className="text-xl text-center mb-12 max-w-3xl mx-auto" style={{ color: theme.text }}>
             Luxify brings you the best shopping experience with a wide range of premium products,
             fast shipping, secure payments, and exclusive deals. Discover why customers
             love shopping with us.
@@ -310,7 +493,7 @@ const LandingPage = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="contact-section py-16">
+      <section id="contact" className="contact-section py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 futuristic-title" style={{
             background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`,
@@ -320,59 +503,156 @@ const LandingPage = () => {
             Contact Us
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="contact-card p-6 rounded-lg text-center" style={{
-              backgroundColor: theme.cardBg,
-              boxShadow: `0 10px 25px rgba(0, 0, 0, 0.2)`,
-              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)'}`,
-              backdropFilter: 'blur(5px)',
-            }}>
-              <div className="icon-container mb-4 mx-auto" style={{ width: '60px', height: '60px' }}>
-                <div className="flex items-center justify-center w-full h-full rounded-full" style={{
-                  backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <div className="lg:col-span-2">
+              <div className="grid grid-cols-1 gap-8">
+                <div className="contact-card p-6 rounded-lg" style={{
+                  backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+                  border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                  boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
                 }}>
-                  <FaEnvelope size={24} style={{ color: theme.primary }} />
+                  <div className="flex items-center mb-4">
+                    <div className="icon-container mr-4" style={{ width: '50px', height: '50px' }}>
+                      <div className="flex items-center justify-center w-full h-full rounded-full" style={{
+                        backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
+                      }}>
+                        <FaEnvelope size={20} style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-1" style={{ color: theme.primary }}>Email Us</h3>
+                      <p style={{ color: theme.text }}>We'll respond within 24 hours</p>
+                    </div>
+                  </div>
+                  <div className="ml-16">
+                    <p style={{ color: theme.text }}>support@luxify.com</p>
+                    <p style={{ color: theme.text }}>sales@luxify.com</p>
+                  </div>
+                </div>
+
+                <div className="contact-card p-6 rounded-lg" style={{
+                  backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+                  border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                  boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
+                }}>
+                  <div className="flex items-center mb-4">
+                    <div className="icon-container mr-4" style={{ width: '50px', height: '50px' }}>
+                      <div className="flex items-center justify-center w-full h-full rounded-full" style={{
+                        backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
+                      }}>
+                        <FaPhone size={20} style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-1" style={{ color: theme.primary }}>Call Us</h3>
+                      <p style={{ color: theme.text }}>Mon-Fri: 9am - 6pm</p>
+                    </div>
+                  </div>
+                  <div className="ml-16">
+                    <p style={{ color: theme.text }}>+1 (800) 123-4567</p>
+                    <p style={{ color: theme.text }}>+1 (800) 987-6543</p>
+                  </div>
+                </div>
+
+                <div className="contact-card p-6 rounded-lg" style={{
+                  backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+                  border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                  boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
+                }}>
+                  <div className="flex items-center mb-4">
+                    <div className="icon-container mr-4" style={{ width: '50px', height: '50px' }}>
+                      <div className="flex items-center justify-center w-full h-full rounded-full" style={{
+                        backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
+                      }}>
+                        <FaMapMarkerAlt size={20} style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-1" style={{ color: theme.primary }}>Visit Us</h3>
+                      <p style={{ color: theme.text }}>Our headquarters</p>
+                    </div>
+                  </div>
+                  <div className="ml-16">
+                    <p style={{ color: theme.text }}>123 Tech Plaza</p>
+                    <p style={{ color: theme.text }}>San Francisco, CA 94105</p>
+                  </div>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: theme.primary }}>Email Us</h3>
-              <p style={{ color: theme.text }}>support@luxify.com</p>
-              <p style={{ color: theme.text }}>sales@luxify.com</p>
             </div>
 
-            <div className="contact-card p-6 rounded-lg text-center" style={{
-              backgroundColor: theme.cardBg,
-              boxShadow: `0 10px 25px rgba(0, 0, 0, 0.2)`,
-              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)'}`,
-              backdropFilter: 'blur(5px)',
+            <div className="lg:col-span-3 contact-form p-8 rounded-lg" style={{
+              backgroundColor: currentTheme === 'dark' ? 'rgba(20, 21, 57, 0.7)' : '#f9fafb',
+              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+              boxShadow: currentTheme === 'dark' ? '0 0 15px rgba(0, 242, 255, 0.1)' : 'none'
             }}>
-              <div className="icon-container mb-4 mx-auto" style={{ width: '60px', height: '60px' }}>
-                <div className="flex items-center justify-center w-full h-full rounded-full" style={{
-                  backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
-                }}>
-                  <FaPhone size={24} style={{ color: theme.primary }} />
+              <h3 className="text-2xl font-bold mb-6" style={{ color: theme.primary }}>Send Us a Message</h3>
+              <form>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label className="block mb-2 font-medium" style={{ color: theme.text }}>Your Name</label>
+                    <input
+                      type="text"
+                      className="w-full p-3 rounded-lg"
+                      style={{
+                        backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.8)' : '#ffffff',
+                        border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                        color: theme.text
+                      }}
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium" style={{ color: theme.text }}>Your Email</label>
+                    <input
+                      type="email"
+                      className="w-full p-3 rounded-lg"
+                      style={{
+                        backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.8)' : '#ffffff',
+                        border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                        color: theme.text
+                      }}
+                      placeholder="john@example.com"
+                    />
+                  </div>
                 </div>
-              </div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: theme.primary }}>Call Us</h3>
-              <p style={{ color: theme.text }}>+1 (800) 123-4567</p>
-              <p style={{ color: theme.text }}>Mon-Fri: 9am - 6pm</p>
-            </div>
-
-            <div className="contact-card p-6 rounded-lg text-center" style={{
-              backgroundColor: theme.cardBg,
-              boxShadow: `0 10px 25px rgba(0, 0, 0, 0.2)`,
-              border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)'}`,
-              backdropFilter: 'blur(5px)',
-            }}>
-              <div className="icon-container mb-4 mx-auto" style={{ width: '60px', height: '60px' }}>
-                <div className="flex items-center justify-center w-full h-full rounded-full" style={{
-                  backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
-                }}>
-                  <FaMapMarkerAlt size={24} style={{ color: theme.primary }} />
+                <div className="mb-6">
+                  <label className="block mb-2 font-medium" style={{ color: theme.text }}>Subject</label>
+                  <input
+                    type="text"
+                    className="w-full p-3 rounded-lg"
+                    style={{
+                      backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.8)' : '#ffffff',
+                      border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                      color: theme.text
+                    }}
+                    placeholder="How can we help you?"
+                  />
                 </div>
-              </div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: theme.primary }}>Visit Us</h3>
-              <p style={{ color: theme.text }}>123 Tech Plaza</p>
-              <p style={{ color: theme.text }}>San Francisco, CA 94105</p>
+                <div className="mb-6">
+                  <label className="block mb-2 font-medium" style={{ color: theme.text }}>Message</label>
+                  <textarea
+                    className="w-full p-3 rounded-lg"
+                    style={{
+                      backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.8)' : '#ffffff',
+                      border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
+                      color: theme.text
+                    }}
+                    rows="5"
+                    placeholder="Your message here..."
+                  ></textarea>
+                </div>
+                <button
+                  type="button"
+                  className="py-3 px-8 rounded-lg font-semibold transition duration-300 shadow-lg hover:shadow-xl"
+                  style={{
+                    backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : '#5046e5',
+                    color: '#ffffff',
+                    border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.3)' : 'none',
+                  }}
+                >
+                  Send Message
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -406,6 +686,31 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="py-8" style={{
+        backgroundColor: currentTheme === 'dark' ? 'rgba(10, 11, 30, 0.95)' : '#f9fafb',
+        borderTop: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.1)' : 'rgba(80, 70, 229, 0.1)'}`,
+      }}>
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center mb-4">
+            <div className="h-10 w-10 flex items-center justify-center mr-2" style={{
+              background: currentTheme === 'dark' ? 'linear-gradient(135deg, #00f2ff, #7928ca)' : 'linear-gradient(135deg, #5046e5, #f0338d)',
+              borderRadius: '8px',
+              boxShadow: currentTheme === 'dark' ? '0 0 10px rgba(0, 242, 255, 0.5)' : '0 0 10px rgba(80, 70, 229, 0.3)'
+            }}>
+              <ModernCube size={30} color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'} />
+            </div>
+            <span className="font-bold text-2xl" style={{
+              color: currentTheme === 'dark' ? '#ffffff' : theme.text,
+              textShadow: currentTheme === 'dark' ? '0 0 5px rgba(0, 242, 255, 0.5)' : 'none'
+            }}>Luxify</span>
+          </div>
+          <p className="text-sm" style={{ color: theme.textLight }}>
+            © {new Date().getFullYear()} Luxify. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

@@ -73,77 +73,90 @@ function App() {
       <ThemeProvider>
         <CurrencyProvider>
           <Router>
-            <div className="flex flex-col min-h-screen">
-              <GlobalErrorDisplay />
-              <ToastContainer position="top-right" autoClose={3000} />
-              <Header />
-              <main className="flex-grow py-3">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/shop" element={<HomePage />} />
-            <Route path="/search/:keyword" element={<HomePage />} />
-            <Route path="/page/:pageNumber" element={<HomePage />} />
-            <Route path="/search/:keyword/page/:pageNumber" element={<HomePage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/login" element={<NewLoginPage />} />
-            <Route path="/register" element={<NewRegisterPage />} />
-            <Route path="/admin-registration" element={<NewAdminRegistrationPage />} />
+            <GlobalErrorDisplay />
+            <ToastContainer position="top-right" autoClose={3000} />
 
-            {/* Footer Pages - Get to Know Us */}
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/business-card" element={<BusinessCardPage />} />
-            <Route path="/careers" element={<CareersPage />} />
-            <Route path="/press-releases" element={<PressReleasesPage />} />
-            <Route path="/amazer-science" element={<AmazerSciencePage />} />
+            <Routes>
+              {/* Landing Page - No Header/Footer */}
+              <Route path="/" element={<LandingPage />} />
 
-            {/* Footer Pages - Make Money with Us */}
-            <Route path="/sell" element={<SellPage />} />
-            <Route path="/associates" element={<AssociatesPage />} />
-            <Route path="/advertise" element={<AdvertisePage />} />
-            <Route path="/affiliate" element={<AffiliatePage />} />
+              {/* Auth Pages - No Header/Footer */}
+              <Route path="/login" element={<NewLoginPage />} />
+              <Route path="/register" element={<NewRegisterPage />} />
+              <Route path="/admin-registration" element={<NewAdminRegistrationPage />} />
 
-            {/* Footer Pages - Payment Products */}
-            <Route path="/business-card" element={<BusinessCardPage />} />
-            <Route path="/points" element={<PointsPage />} />
-            <Route path="/reload-balance" element={<ReloadBalancePage />} />
-            <Route path="/currency-converter" element={<CurrencyConverterPage />} />
-            <Route path="/rewards" element={<RewardsPage />} />
+              {/* Main Application with Header/Footer */}
+              <Route path="/*" element={
+                <div className="flex flex-col min-h-screen">
+                  <Header />
+                  <main className="flex-grow py-3">
+                    <Routes>
+                      <Route path="shop" element={<HomePage />} />
+                      <Route path="search/:keyword" element={<HomePage />} />
+                      <Route path="page/:pageNumber" element={<HomePage />} />
+                      <Route path="search/:keyword/page/:pageNumber" element={<HomePage />} />
+                      <Route path="product/:id" element={<ProductPage />} />
+                      <Route path="cart" element={<CartPage />} />
 
-            {/* Footer Pages - Let Us Help You */}
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/shipping-rates" element={<ShippingRatesPage />} />
-            <Route path="/returns" element={<ReturnsPage />} />
-            <Route path="/help" element={<HelpPage />} />
+                      {/* Footer Pages - Get to Know Us */}
+                      <Route path="about" element={<AboutPage />} />
+                      <Route path="business-card" element={<BusinessCardPage />} />
+                      <Route path="careers" element={<CareersPage />} />
+                      <Route path="press-releases" element={<PressReleasesPage />} />
+                      <Route path="amazer-science" element={<AmazerSciencePage />} />
 
-            {/* Protected Routes */}
-            <Route path="" element={<PrivateRoute />}>
-              <Route path="/profile" element={<EnhancedProfilePage />} />
-              <Route path="/shipping" element={<ShippingPage />} />
-              <Route path="/payment" element={<PaymentPage />} />
-              <Route path="/placeorder" element={<PlaceOrderPage />} />
-              <Route path="/order/:id" element={<OrderPage />} />
-              <Route path="/orderhistory" element={<OrderHistoryPage />} />
-            </Route>
+                      {/* Footer Pages - Make Money with Us */}
+                      <Route path="sell" element={<SellPage />} />
+                      <Route path="associates" element={<AssociatesPage />} />
+                      <Route path="advertise" element={<AdvertisePage />} />
+                      <Route path="affiliate" element={<AffiliatePage />} />
 
-            {/* Admin Routes */}
-            <Route path="" element={<AdminRoute />}>
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<EnhancedDashboardPage />} />
-                <Route path="dashboard" element={<EnhancedDashboardPage />} />
-                <Route path="products" element={<AdminProductListPage />} />
-                <Route path="products/new" element={<AdminProductCreatePage />} />
-                <Route path="product/:id/edit" element={<AdminProductEditPage />} />
-                <Route path="orders" element={<AdminOrderListPage />} />
-                <Route path="analytics" element={<AnalyticsPage />} />
-                <Route path="settings" element={<SettingsPage />} />
-              </Route>
-            </Route>
-          </Routes>
-        </main>
-              <Footer />
-            </div>
+                      {/* Footer Pages - Payment Products */}
+                      <Route path="points" element={<PointsPage />} />
+                      <Route path="reload-balance" element={<ReloadBalancePage />} />
+                      <Route path="currency-converter" element={<CurrencyConverterPage />} />
+                      <Route path="rewards" element={<RewardsPage />} />
+
+                      {/* Footer Pages - Let Us Help You */}
+                      <Route path="account" element={<AccountPage />} />
+                      <Route path="orders" element={<OrdersPage />} />
+                      <Route path="shipping-rates" element={<ShippingRatesPage />} />
+                      <Route path="returns" element={<ReturnsPage />} />
+                      <Route path="help" element={<HelpPage />} />
+
+                      {/* Protected Routes */}
+                      <Route path="" element={<PrivateRoute />}>
+                        <Route path="profile" element={<EnhancedProfilePage />} />
+                        <Route path="shipping" element={<ShippingPage />} />
+                        <Route path="payment" element={<PaymentPage />} />
+                        <Route path="placeorder" element={<PlaceOrderPage />} />
+                        <Route path="order/:id" element={<OrderPage />} />
+                        <Route path="orderhistory" element={<OrderHistoryPage />} />
+                      </Route>
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
+              } />
+
+              {/* Admin Dashboard with its own layout */}
+              <Route path="/admin/*" element={
+                <AdminRoute>
+                  <AdminLayout>
+                    <Routes>
+                      <Route path="/" element={<EnhancedDashboardPage />} />
+                      <Route path="dashboard" element={<EnhancedDashboardPage />} />
+                      <Route path="products" element={<AdminProductListPage />} />
+                      <Route path="products/new" element={<AdminProductCreatePage />} />
+                      <Route path="product/:id/edit" element={<AdminProductEditPage />} />
+                      <Route path="orders" element={<AdminOrderListPage />} />
+                      <Route path="analytics" element={<AnalyticsPage />} />
+                      <Route path="settings" element={<SettingsPage />} />
+                    </Routes>
+                  </AdminLayout>
+                </AdminRoute>
+              } />
+            </Routes>
           </Router>
         </CurrencyProvider>
       </ThemeProvider>

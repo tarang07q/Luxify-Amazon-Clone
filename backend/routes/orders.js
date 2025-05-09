@@ -3,6 +3,7 @@ const {
   createOrder,
   getOrderById,
   updateOrderStatus,
+  updateOrderToPaid,
   getMyOrders,
   getOrders
 } = require('../controllers/orderController');
@@ -22,5 +23,7 @@ router
   .route('/:id')
   .get(protect, getOrderById)
   .put(protect, authorize('admin'), updateOrderStatus);
+
+router.route('/:id/pay').put(protect, updateOrderToPaid);
 
 module.exports = router;

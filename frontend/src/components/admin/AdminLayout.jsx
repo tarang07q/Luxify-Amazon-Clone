@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTheme } from '../../context/ThemeContext';
 import {
@@ -245,7 +245,7 @@ const AdminLayout = ({ children }) => {
             ? 'radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.03) 0%, transparent 80%)'
             : 'none'
         }}>
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

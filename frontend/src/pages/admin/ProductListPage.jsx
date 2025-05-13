@@ -18,6 +18,8 @@ import {
   FaSort,
   FaSortUp,
   FaSortDown,
+  FaStar,
+  FaRegStar
 } from 'react-icons/fa';
 
 const ProductListPage = () => {
@@ -99,19 +101,32 @@ const ProductListPage = () => {
     <div>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h1 className="text-2xl font-bold mb-4 md:mb-0">Products</h1>
-        <button
-          onClick={createProductHandler}
-          className="btn-primary flex items-center"
-          disabled={loadingCreate}
-        >
-          {loadingCreate ? (
-            <Loader size="small" />
-          ) : (
-            <>
-              <FaPlus className="mr-1" /> Create Product
-            </>
-          )}
-        </button>
+        <div className="flex gap-3">
+          <Link
+            to="/admin/products/featured"
+            className="btn-secondary flex items-center"
+            style={{
+              backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.1)',
+              color: currentTheme === 'dark' ? '#ffffff' : theme.primary,
+              border: currentTheme === 'dark' ? '1px solid rgba(0, 242, 255, 0.3)' : '1px solid rgba(80, 70, 229, 0.3)',
+            }}
+          >
+            <FaStar className="mr-1" /> Manage Featured
+          </Link>
+          <button
+            onClick={createProductHandler}
+            className="btn-primary flex items-center"
+            disabled={loadingCreate}
+          >
+            {loadingCreate ? (
+              <Loader size="small" />
+            ) : (
+              <>
+                <FaPlus className="mr-1" /> Create Product
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -246,7 +261,12 @@ const ProductListPage = () => {
                       borderColor: theme.border,
                       ':hover': { backgroundColor: currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }
                     }}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: theme.text }}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm flex items-center" style={{ color: theme.text }}>
+                        {product.featured ? (
+                          <FaStar className="mr-1 text-yellow-500" title="Featured product" />
+                        ) : (
+                          <FaRegStar className="mr-1 text-gray-400" />
+                        )}
                         {product._id.substring(0, 8)}...
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

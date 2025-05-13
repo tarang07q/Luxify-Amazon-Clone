@@ -9,7 +9,8 @@ import {
   FaImage,
   FaHeart,
   FaRegHeart,
-  FaCheck
+  FaCheck,
+  FaTrophy
 } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../slices/cartSlice';
@@ -135,6 +136,20 @@ const ProductCard = ({ product }) => {
       {product.discount > 0 && (
         <div className="discount-badge themed-badge">
           {discountPercentage.toFixed(0)}% OFF
+        </div>
+      )}
+
+      {/* Featured Badge */}
+      {product.featured && (
+        <div className="featured-badge themed-badge" style={{
+          top: product.discount > 0 ? '40px' : '10px',
+          backgroundColor: '#FFD700',
+          color: '#000',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px'
+        }}>
+          <FaTrophy size={12} /> Featured
         </div>
       )}
 

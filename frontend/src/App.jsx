@@ -58,6 +58,7 @@ import EnhancedDashboardPage from './pages/admin/EnhancedDashboardPage';
 import AdminProductListPage from './pages/admin/ProductListPage';
 import AdminProductEditPage from './pages/admin/ProductEditPage';
 import AdminProductCreatePage from './pages/admin/ProductCreatePage';
+import FeaturedProductsPage from './pages/admin/FeaturedProductsPage';
 import AdminOrderListPage from './pages/admin/OrderListPage';
 import AnalyticsPage from './pages/admin/AnalyticsPage';
 import SettingsPage from './pages/admin/SettingsPage';
@@ -148,6 +149,7 @@ function App() {
                       <Route path="dashboard" element={<EnhancedDashboardPage />} />
                       <Route path="products" element={<AdminProductListPage />} />
                       <Route path="products/new" element={<AdminProductCreatePage />} />
+                      <Route path="products/featured" element={<FeaturedProductsPage />} />
                       <Route path="product/:id/edit" element={<AdminProductEditPage />} />
                       <Route path="orders" element={<AdminOrderListPage />} />
                       <Route path="analytics" element={<AnalyticsPage />} />

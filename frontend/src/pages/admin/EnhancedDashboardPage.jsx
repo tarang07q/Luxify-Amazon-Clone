@@ -129,7 +129,7 @@ const EnhancedDashboardPage = () => {
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
                   <DashboardPanel3D
-                    size={100}
+                    size={80}
                     color={currentTheme === 'dark' ? '#ffaa00' : '#f59e0b'}
                     floatingAnimation={true}
                     glowEffect={true}
@@ -159,7 +159,7 @@ const EnhancedDashboardPage = () => {
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
                   <OrderDoc3D
-                    size={100}
+                    size={80}
                     color={currentTheme === 'dark' ? '#7928ca' : '#8b5cf6'}
                     floatingAnimation={true}
                     glowEffect={true}
@@ -189,7 +189,7 @@ const EnhancedDashboardPage = () => {
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
                   <ProductBox3D
-                    size={100}
+                    size={80}
                     color={currentTheme === 'dark' ? '#ff00e4' : '#f0338d'}
                     floatingAnimation={true}
                     glowEffect={true}
@@ -219,7 +219,7 @@ const EnhancedDashboardPage = () => {
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
                   <ShoppingBag3D
-                    size={100}
+                    size={80}
                     color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
                     floatingAnimation={true}
                     glowEffect={true}

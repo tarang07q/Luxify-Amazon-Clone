@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
@@ -30,6 +30,7 @@ const ProductCreatePage = () => {
   const [featured, setFeatured] = useState(false);
   const [specKey, setSpecKey] = useState('');
   const [specValue, setSpecValue] = useState('');
+  const [errorState, setErrorState] = useState(null);
 
   const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
   const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
@@ -127,9 +128,16 @@ const ProductCreatePage = () => {
       toast.success('Product created successfully');
       navigate(`/admin/product/${result.data._id}/edit`);
     } catch (err) {
+      setErrorState(err);
       toast.error(err?.data?.error || err.error || 'An error occurred');
     }
   };
+
+  useEffect(() => {
+    if (errorState && (errorState.status === 404 || errorState.status === 'FETCH_ERROR' || errorState.data?.error?.toLowerCase().includes('not found'))) {
+      navigate('/admin/products');
+    }
+  }, [errorState, navigate]);
 
   const categories = [
     'Electronics',

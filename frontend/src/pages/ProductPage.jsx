@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -33,6 +33,12 @@ const ProductPage = () => {
     isLoading,
     error,
   } = useGetProductDetailsQuery(productId);
+
+  useEffect(() => {
+    if (error && (error.status === 404 || error.status === 'FETCH_ERROR' || error.data?.error?.toLowerCase().includes('not found'))) {
+      navigate('/');
+    }
+  }, [error, navigate]);
 
   const addToCartHandler = () => {
     dispatch(

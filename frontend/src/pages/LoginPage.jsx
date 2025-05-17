@@ -111,14 +111,14 @@ const LoginPage = () => {
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   {isAdminLogin ? (
                     <DashboardPanel3D
-                      size={80}
+                      size={100}
                       color={currentTheme === 'dark' ? '#ff00e4' : '#EC4899'}
                       floatingAnimation={true}
                       glowEffect={true}
                     />
                   ) : (
                     <ProfileCard3D
-                      size={80}
+                      size={100}
                       color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
                       floatingAnimation={true}
                       glowEffect={true}
@@ -146,15 +146,21 @@ const LoginPage = () => {
               <div className="flex justify-center mb-6">
                 <button
                   onClick={toggleAdminLogin}
-                  className="flex items-center px-4 py-2 rounded-full transition-all duration-300"
+                  className="flex items-center px-4 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
                   style={{
                     backgroundColor: currentTheme === 'dark'
                       ? 'rgba(0, 242, 255, 0.1)'
                       : 'rgba(99, 102, 241, 0.1)',
-                    color: theme.primary
+                    color: theme.primary,
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    border: `2px solid ${isAdminLogin ? (currentTheme === 'dark' ? '#ff00e4' : '#EC4899') : (currentTheme === 'dark' ? '#00f2ff' : '#5046e5')}`,
+                    boxShadow: isAdminLogin
+                      ? '0 0 12px rgba(255, 0, 228, 0.2)'
+                      : '0 0 12px rgba(0, 242, 255, 0.2)'
                   }}
                 >
-                  {isAdminLogin ? <FaToggleOn size={20} className="mr-2" /> : <FaToggleOff size={20} className="mr-2" />}
+                  {isAdminLogin ? <FaUser className="mr-2" /> : <FaUserShield className="mr-2" />}
                   {isAdminLogin ? 'Switch to User Login' : 'Switch to Admin Login'}
                 </button>
               </div>

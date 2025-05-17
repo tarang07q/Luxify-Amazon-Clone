@@ -60,6 +60,12 @@ const ProductEditPage = () => {
     }
   }, [product]);
 
+  useEffect(() => {
+    if (error && (error.status === 404 || error.status === 'FETCH_ERROR' || error.data?.error?.toLowerCase().includes('not found'))) {
+      navigate('/admin/products');
+    }
+  }, [error, navigate]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
 

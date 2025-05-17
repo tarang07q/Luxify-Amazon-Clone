@@ -284,6 +284,45 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Featured Products Section */}
+      <section id="featured" className="featured-section py-20" style={{
+        background: currentTheme === 'light'
+          ? 'linear-gradient(135deg, #f3f4f6 0%, #e0e7ff 100%)'
+          : 'linear-gradient(135deg, #18181b 0%, #312e81 100%)',
+      }}>
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12 futuristic-title" style={{
+            background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            Featured Products
+          </h2>
+          {/* Fetch and display featured products */}
+          {/* You may need to import useGetProductsQuery from your productService */}
+          {/* Example: */}
+          {/* const { data: featuredData, isLoading: featuredLoading } = useGetProductsQuery({ featured: true, limit: 8 }); */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {/* Replace with dynamic map over featuredData?.data */}
+            {[1,2,3,4].map((_, idx) => (
+              <div key={idx} className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 flex flex-col items-center transition-transform hover:-translate-y-2 hover:shadow-2xl" style={{ minHeight: 340 }}>
+                <ProductBox3D size={100} color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'} floatingAnimation={true} glowEffect={true} />
+                <h3 className="text-lg font-bold mt-6 mb-2" style={{ color: theme.primary }}>Product Name</h3>
+                <p className="text-gray-500 dark:text-gray-300 mb-4">Short product description goes here.</p>
+                <Link to="/product/1" className="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-lg hover:shadow-xl">
+                  View Product <FaArrowRight className="ml-2" />
+                </Link>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/search/featured" className="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl">
+              View All Featured <FaArrowRight className="ml-2" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Categories Section */}
       <section className="categories-section py-16" style={{
         background: currentTheme === 'light'

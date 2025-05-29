@@ -9,19 +9,72 @@ const path = require('path');
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// Import security middleware
+const {
+  generalLimiter,
+  authLimiter,
+  apiLimiter,
+  paymentLimiter,
+  uploadLimiter,
+  securityHeaders,
+  sanitizeData,
+  customSecurity,
+  requestSizeLimiter,
+  suspiciousActivityDetector,
+  corsSecurityCheck
+} = require('./middleware/security');
+
 // Initialize Express app
 const app = express();
 
-// Middleware
-app.use(express.json());
+// Trust proxy (for rate limiting behind reverse proxy)
+app.set('trust proxy', 1);
+
+// Security middleware (apply early)
+app.use(securityHeaders);
+app.use(customSecurity);
+app.use(corsSecurityCheck);
+app.use(requestSizeLimiter);
+app.use(suspiciousActivityDetector);
+
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://localhost:3004', 'http://localhost:3005'],
+
+// Data sanitization
+app.use(sanitizeData);
+
+// CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = process.env.CORS_ORIGIN ?
+      process.env.CORS_ORIGIN.split(',') :
+      ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://localhost:3004', 'http://localhost:3005'];
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-app.use(morgan('dev'));
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+// Logging middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
+
+// General rate limiting
+app.use('/api/', apiLimiter);
 
 // Static folder for uploads
 const uploadsPath = path.join(__dirname, 'uploads');
@@ -36,20 +89,35 @@ const reviewRoutes = require('./routes/reviews');
 const uploadRoutes = require('./routes/upload');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
+const paymentRoutes = require('./routes/payments');
+const wishlistRoutes = require('./routes/wishlist');
 
-// Use routes
-app.use('/api/auth', authRoutes);
+// Use routes with specific rate limiting
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/reviews/:productId', reviewRoutes);
 app.use('/api/reviews', reviewRoutes);
-app.use('/api/upload', uploadRoutes);
+app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/payments', paymentLimiter, paymentRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Luxify API is healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV
+  });
+});
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('Amazer API is running...');
+  res.send('Luxify API is running...');
 });
 
 // Import error handler middleware

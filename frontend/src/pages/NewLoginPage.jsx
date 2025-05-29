@@ -26,9 +26,14 @@ const NewLoginPage = () => {
     // Redirect if already logged in
     if (user) {
       if (user.role === 'admin') {
-        navigate('/admin');
+        navigate('/admin/dashboard');
       } else {
-        navigate(redirect);
+        // Redirect regular users to shop if they're trying to access admin routes
+        if (redirect === '/' || redirect === '/admin' || redirect.startsWith('/admin/')) {
+          navigate('/shop');
+        } else {
+          navigate(redirect);
+        }
       }
     }
   }, [navigate, redirect, user, adminParam]);

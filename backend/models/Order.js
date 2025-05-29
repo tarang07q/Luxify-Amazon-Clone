@@ -63,16 +63,64 @@ const OrderSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['Pending', 'Packed', 'Shipped', 'Delivered', 'Cancelled'],
+    enum: ['Pending', 'Processing', 'Packed', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled', 'Returned'],
     default: 'Pending'
+  },
+  trackingNumber: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  estimatedDelivery: {
+    type: Date
   },
   deliveredAt: {
     type: Date
   },
+  statusHistory: [{
+    status: {
+      type: String,
+      required: true
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now
+    },
+    location: String,
+    description: String,
+    updatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  }],
+  shippingCarrier: {
+    type: String,
+    enum: ['FedEx', 'UPS', 'DHL', 'USPS', 'Amazon Logistics'],
+    default: 'Amazon Logistics'
+  },
+  notes: String,
   createdAt: {
     type: Date,
     default: Date.now
   }
+});
+
+// Generate tracking number before saving
+OrderSchema.pre('save', function(next) {
+  if (this.isNew && !this.trackingNumber) {
+    this.trackingNumber = 'LUX' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
+  }
+
+  // Add status to history if status changed
+  if (this.isModified('status') && !this.isNew) {
+    this.statusHistory.push({
+      status: this.status,
+      timestamp: new Date(),
+      description: `Order status updated to ${this.status}`
+    });
+  }
+
+  next();
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

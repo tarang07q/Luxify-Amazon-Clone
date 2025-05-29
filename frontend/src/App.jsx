@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ui/ErrorBoundary';
 import GlobalErrorDisplay from './components/ui/GlobalErrorDisplay';
 import { ThemeProvider } from './context/ThemeContext';
 import { CurrencyProvider } from './context/CurrencyContext';
+import './utils/clearAuth'; // Import auth clearing utility
 
 // Layout Components
 import Header from './components/layout/Header';
@@ -25,6 +26,8 @@ import PaymentPage from './pages/PaymentPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import WishlistPage from './pages/WishlistPage';
+import OrderTrackingPage from './pages/OrderTrackingPage';
 
 // Footer Pages - Get to Know Us
 import AboutPage from './pages/AboutPage';
@@ -133,6 +136,8 @@ function App() {
                         <Route path="placeorder" element={<PlaceOrderPage />} />
                         <Route path="order/:id" element={<OrderPage />} />
                         <Route path="orderhistory" element={<OrderHistoryPage />} />
+                        <Route path="wishlist" element={<WishlistPage />} />
+                        <Route path="track/:orderId" element={<OrderTrackingPage />} />
                       </Route>
                     </Routes>
                   </main>

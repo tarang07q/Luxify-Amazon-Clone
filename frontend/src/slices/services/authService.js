@@ -29,6 +29,28 @@ export const authApiSlice = apiSlice.injectEndpoints({
       query: () => '/auth/me',
       providesTags: ['User'],
     }),
+    updateProfile: builder.mutation({
+      query: (userData) => ({
+        url: '/auth/profile',
+        method: 'PUT',
+        body: userData,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    changePassword: builder.mutation({
+      query: (passwordData) => ({
+        url: '/auth/change-password',
+        method: 'PUT',
+        body: passwordData,
+      }),
+    }),
+    deleteAccount: builder.mutation({
+      query: () => ({
+        url: '/auth/delete-account',
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
     verifyAdmin: builder.query({
       query: () => '/auth/verify-admin',
       providesTags: ['User'],
@@ -41,5 +63,8 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useGetMeQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+  useDeleteAccountMutation,
   useVerifyAdminQuery,
 } = authApiSlice;

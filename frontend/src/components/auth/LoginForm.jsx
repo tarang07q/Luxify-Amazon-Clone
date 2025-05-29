@@ -58,10 +58,18 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
 
         // Delay redirect to show success message
         setTimeout(() => {
-          setAdminRedirect(true);
+          navigate('/admin/dashboard');
         }, 1000);
       } else {
-        navigate(redirect);
+        console.log('Regular user detected, redirecting to:', redirect);
+        toast.success('Login successful!');
+
+        // Redirect regular users to the appropriate page
+        if (redirect === '/' || redirect === '/admin' || redirect.startsWith('/admin/')) {
+          navigate('/shop'); // Redirect regular users to shop instead of admin
+        } else {
+          navigate(redirect);
+        }
       }
     } catch (err) {
       console.error('Login error:', err);

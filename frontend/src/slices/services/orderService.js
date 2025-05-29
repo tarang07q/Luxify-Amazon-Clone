@@ -49,3 +49,6 @@ export const {
   useUpdateOrderStatusMutation,
   useUpdateOrderPaymentMutation,
 } = orderApiSlice;
+
+// Export with the expected name for compatibility
+export const useGetOrderByIdQuery = useGetOrderDetailsQuery;

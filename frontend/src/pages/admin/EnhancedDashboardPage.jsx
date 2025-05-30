@@ -1,27 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useGetProductsQuery } from '../../slices/services/productService';
 import { useGetAllOrdersQuery } from '../../slices/services/orderService';
 import Loader from '../../components/ui/Loader';
 import Message from '../../components/ui/Message';
-import DashboardCards from '../../components/admin/DashboardCards';
-import DashboardPanel3D from '../../components/3d/DashboardPanel3D';
-import OrderDoc3D from '../../components/3d/OrderDoc3D';
-import ProductBox3D from '../../components/3d/ProductBox3D';
-import ShoppingBag3D from '../../components/3d/ShoppingBag3D';
-import ProfileCard3D from '../../components/3d/ProfileCard3D';
+
 import { useTheme } from '../../context/ThemeContext';
+import { toast } from 'react-toastify';
 import {
   FaBox,
   FaShoppingCart,
-  FaUsers,
-  FaDollarSign,
   FaChartLine,
   FaChartPie,
   FaChartBar,
   FaPlus,
   FaEdit,
-  FaTags,
   FaExclamationTriangle,
   FaArrowRight,
   FaFileInvoiceDollar
@@ -30,6 +24,17 @@ import './EnhancedDashboard.css';
 
 const EnhancedDashboardPage = () => {
   const { theme, currentTheme } = useTheme();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
+  // Check if user is admin
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      toast.error('You do not have permission to access the admin area');
+      navigate('/login', { state: { from: '/admin/dashboard' } });
+    }
+  }, [user, navigate]);
+
   const { data: productsData, isLoading: productsLoading, error: productsError } =
     useGetProductsQuery({ limit: 100 });
 
@@ -46,46 +51,55 @@ const EnhancedDashboardPage = () => {
     lowStockProducts: 0,
   });
 
-  const [hoveredCard, setHoveredCard] = useState(null);
+
 
   useEffect(() => {
     if (productsData && ordersData) {
-      // Calculate statistics
-      const totalSales = ordersData.data.reduce(
-        (sum, order) => sum + order.totalPrice,
-        0
-      );
+      try {
+        // Calculate statistics
+        const totalSales = ordersData.data.reduce(
+          (sum, order) => sum + order.totalPrice,
+          0
+        );
 
-      const pendingOrders = ordersData.data.filter(
-        (order) => order.status === 'Pending'
-      ).length;
+        const pendingOrders = ordersData.data.filter(
+          (order) => order.status === 'Pending'
+        ).length;
 
-      const shippedOrders = ordersData.data.filter(
-        (order) => order.status === 'Shipped'
-      ).length;
+        const shippedOrders = ordersData.data.filter(
+          (order) => order.status === 'Shipped'
+        ).length;
 
-      const deliveredOrders = ordersData.data.filter(
-        (order) => order.status === 'Delivered'
-      ).length;
+        const deliveredOrders = ordersData.data.filter(
+          (order) => order.status === 'Delivered'
+        ).length;
 
-      const lowStockProducts = productsData.data.filter(
-        (product) => product.stock < 5
-      ).length;
+        const lowStockProducts = productsData.data.filter(
+          (product) => product.stock < 5
+        ).length;
 
-      setStats({
-        totalSales,
-        totalOrders: ordersData.data.length,
-        totalProducts: productsData.data.length,
-        pendingOrders,
-        shippedOrders,
-        deliveredOrders,
-        lowStockProducts,
-      });
+        setStats({
+          totalSales,
+          totalOrders: ordersData.data.length,
+          totalProducts: productsData.data.length,
+          pendingOrders,
+          shippedOrders,
+          deliveredOrders,
+          lowStockProducts,
+        });
+      } catch (error) {
+        console.error('Error calculating dashboard stats:', error);
+        toast.error('Error loading dashboard statistics');
+      }
     }
   }, [productsData, ordersData]);
 
   const isLoading = productsLoading || ordersLoading;
   const error = productsError || ordersError;
+
+  if (!user || user.role !== 'admin') {
+    return null; // Don't render anything if not admin
+  }
 
   return (
     <div className="enhanced-dashboard-container" style={{
@@ -97,7 +111,7 @@ const EnhancedDashboardPage = () => {
           <FaChartLine className="dashboard-title-icon" /> Admin Dashboard
         </h1>
         <p className="dashboard-subtitle">
-          Welcome back! Here's an overview of your store's performance.
+          Welcome back, {user.name}! Here's an overview of your store's performance.
         </p>
       </div>
 
@@ -107,19 +121,14 @@ const EnhancedDashboardPage = () => {
         </div>
       ) : error ? (
         <Message variant="danger">
-          {error?.data?.error || error.error || 'An error occurred'}
+          {error?.data?.error || error.error || 'An error occurred while loading dashboard data'}
         </Message>
       ) : (
         <>
-          {/* 3D Dashboard Cards */}
-          <DashboardCards />
-
           {/* Stats Cards */}
           <div className="enhanced-stats-grid">
             <div
               className="enhanced-stat-card sales"
-              onMouseEnter={() => setHoveredCard('sales')}
-              onMouseLeave={() => setHoveredCard(null)}
               style={{
                 backgroundColor: theme.cardBg,
                 boxShadow: theme.shadow,
@@ -128,28 +137,17 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <DashboardPanel3D
-                    size={80}
-                    color={currentTheme === 'dark' ? '#ffaa00' : '#f59e0b'}
-                    floatingAnimation={true}
-                    glowEffect={true}
-                    icon={<FaChartBar size={25} />}
-                  />
+                  <FaChartBar size={40} style={{ color: currentTheme === 'dark' ? '#ffaa00' : '#f59e0b' }} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Sales</p>
                   <p className="enhanced-stat-value" style={{ color: theme.text }}>${stats.totalSales.toFixed(2)}</p>
-                  <div className="enhanced-stat-trend positive">
-                    <span>+12.5%</span> from last month
-                  </div>
                 </div>
               </div>
             </div>
 
             <div
               className="enhanced-stat-card orders"
-              onMouseEnter={() => setHoveredCard('orders')}
-              onMouseLeave={() => setHoveredCard(null)}
               style={{
                 backgroundColor: theme.cardBg,
                 boxShadow: theme.shadow,
@@ -158,28 +156,17 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <OrderDoc3D
-                    size={80}
-                    color={currentTheme === 'dark' ? '#7928ca' : '#8b5cf6'}
-                    floatingAnimation={true}
-                    glowEffect={true}
-                    icon={<FaFileInvoiceDollar size={25} />}
-                  />
+                  <FaFileInvoiceDollar size={40} style={{ color: currentTheme === 'dark' ? '#7928ca' : '#8b5cf6' }} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Orders</p>
                   <p className="enhanced-stat-value" style={{ color: theme.text }}>{stats.totalOrders}</p>
-                  <div className="enhanced-stat-trend positive">
-                    <span>+8.2%</span> from last month
-                  </div>
                 </div>
               </div>
             </div>
 
             <div
               className="enhanced-stat-card products"
-              onMouseEnter={() => setHoveredCard('products')}
-              onMouseLeave={() => setHoveredCard(null)}
               style={{
                 backgroundColor: theme.cardBg,
                 boxShadow: theme.shadow,
@@ -188,28 +175,17 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <ProductBox3D
-                    size={80}
-                    color={currentTheme === 'dark' ? '#ff00e4' : '#f0338d'}
-                    floatingAnimation={true}
-                    glowEffect={true}
-                    icon={<FaBox size={25} />}
-                  />
+                  <FaBox size={40} style={{ color: currentTheme === 'dark' ? '#ff00e4' : '#f0338d' }} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Total Products</p>
                   <p className="enhanced-stat-value" style={{ color: theme.text }}>{stats.totalProducts}</p>
-                  <div className="enhanced-stat-trend positive">
-                    <span>+5.3%</span> new products
-                  </div>
                 </div>
               </div>
             </div>
 
             <div
               className="enhanced-stat-card low-stock"
-              onMouseEnter={() => setHoveredCard('lowStock')}
-              onMouseLeave={() => setHoveredCard(null)}
               style={{
                 backgroundColor: theme.cardBg,
                 boxShadow: theme.shadow,
@@ -218,20 +194,16 @@ const EnhancedDashboardPage = () => {
             >
               <div className="enhanced-stat-content">
                 <div className="enhanced-stat-icon-container">
-                  <ShoppingBag3D
-                    size={80}
-                    color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
-                    floatingAnimation={true}
-                    glowEffect={true}
-                    icon={<FaShoppingCart size={25} />}
-                  />
+                  <FaShoppingCart size={40} style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }} />
                 </div>
                 <div className="enhanced-stat-details">
                   <p className="enhanced-stat-label" style={{ color: theme.textLight }}>Low Stock Items</p>
                   <p className="enhanced-stat-value" style={{ color: theme.text }}>{stats.lowStockProducts}</p>
-                  <div className="enhanced-stat-trend negative">
-                    <span>Action needed</span>
-                  </div>
+                  {stats.lowStockProducts > 0 && (
+                    <div className="enhanced-stat-trend negative">
+                      <span>Action needed</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -255,21 +227,13 @@ const EnhancedDashboardPage = () => {
               <Link
                 to="/admin/products"
                 className="enhanced-action-button products"
-                onMouseEnter={() => setHoveredCard('actionProducts')}
-                onMouseLeave={() => setHoveredCard(null)}
                 style={{
                   backgroundColor: theme.primary,
                   color: theme.buttonText
                 }}
               >
                 <div className="enhanced-action-icon">
-                  <ProductBox3D
-                    size={60}
-                    color="#ffffff"
-                    floatingAnimation={false}
-                    glowEffect={true}
-                    icon={<FaBox size={20} />}
-                  />
+                  <FaBox size={30} />
                 </div>
                 <div className="enhanced-action-text">
                   <span>Manage Products</span>
@@ -280,21 +244,13 @@ const EnhancedDashboardPage = () => {
               <Link
                 to="/admin/orders"
                 className="enhanced-action-button orders"
-                onMouseEnter={() => setHoveredCard('actionOrders')}
-                onMouseLeave={() => setHoveredCard(null)}
                 style={{
                   backgroundColor: theme.secondary,
                   color: theme.buttonText
                 }}
               >
                 <div className="enhanced-action-icon">
-                  <OrderDoc3D
-                    size={60}
-                    color="#ffffff"
-                    floatingAnimation={false}
-                    glowEffect={true}
-                    icon={<FaFileInvoiceDollar size={20} />}
-                  />
+                  <FaFileInvoiceDollar size={30} />
                 </div>
                 <div className="enhanced-action-text">
                   <span>Manage Orders</span>
@@ -305,21 +261,13 @@ const EnhancedDashboardPage = () => {
               <Link
                 to="/admin/products/new"
                 className="enhanced-action-button add-product"
-                onMouseEnter={() => setHoveredCard('actionAdd')}
-                onMouseLeave={() => setHoveredCard(null)}
                 style={{
                   backgroundColor: theme.success,
                   color: theme.buttonText
                 }}
               >
                 <div className="enhanced-action-icon">
-                  <ProductBox3D
-                    size={60}
-                    color="#ffffff"
-                    floatingAnimation={false}
-                    glowEffect={true}
-                    icon={<FaPlus size={20} />}
-                  />
+                  <FaPlus size={30} />
                 </div>
                 <div className="enhanced-action-text">
                   <span>Add New Product</span>
@@ -342,18 +290,10 @@ const EnhancedDashboardPage = () => {
               <div
                 className="enhanced-card-header"
                 style={{ borderColor: theme.border }}
-                onMouseEnter={() => setHoveredCard('pieChart')}
-                onMouseLeave={() => setHoveredCard(null)}
               >
                 <div className="enhanced-card-title-container">
                   <div className="enhanced-card-title-icon">
-                    <DashboardPanel3D
-                      size={40}
-                      color={theme.primary}
-                      floatingAnimation={false}
-                      glowEffect={true}
-                      icon={<FaChartPie size={15} />}
-                    />
+                    <FaChartPie size={20} style={{ color: theme.primary }} />
                   </div>
                   <h2 className="enhanced-card-title" style={{ color: theme.text }}>
                     Order Status
@@ -431,18 +371,10 @@ const EnhancedDashboardPage = () => {
               <div
                 className="enhanced-card-header"
                 style={{ borderColor: theme.border }}
-                onMouseEnter={() => setHoveredCard('chart')}
-                onMouseLeave={() => setHoveredCard(null)}
               >
                 <div className="enhanced-card-title-container">
                   <div className="enhanced-card-title-icon">
-                    <DashboardPanel3D
-                      size={40}
-                      color={theme.primary}
-                      floatingAnimation={false}
-                      glowEffect={true}
-                      icon={<FaChartBar size={15} />}
-                    />
+                    <FaChartBar size={20} style={{ color: theme.primary }} />
                   </div>
                   <h2 className="enhanced-card-title" style={{ color: theme.text }}>
                     Recent Orders
@@ -517,18 +449,10 @@ const EnhancedDashboardPage = () => {
             <div
               className="enhanced-card-header"
               style={{ borderColor: theme.border }}
-              onMouseEnter={() => setHoveredCard('lowStockTable')}
-              onMouseLeave={() => setHoveredCard(null)}
             >
               <div className="enhanced-card-title-container">
                 <div className="enhanced-card-title-icon">
-                  <ShoppingBag3D
-                    size={40}
-                    color="#EF4444"
-                    floatingAnimation={false}
-                    glowEffect={true}
-                    icon={<FaExclamationTriangle size={15} />}
-                  />
+                  <FaExclamationTriangle size={20} style={{ color: "#EF4444" }} />
                 </div>
                 <h2 className="enhanced-card-title" style={{ color: theme.text }}>
                   Low Stock Products

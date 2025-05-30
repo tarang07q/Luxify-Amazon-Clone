@@ -15,30 +15,68 @@ const AdminRegistrationForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const { name, email, password, confirmPassword, secretKey } = formData;
 
+  const validateForm = () => {
+    const errors = {};
+    
+    // Name validation
+    if (!name) {
+      errors.name = 'Name is required';
+    } else if (name.length < 2) {
+      errors.name = 'Name must be at least 2 characters';
+    }
+
+    // Email validation
+    if (!email) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation
+    if (!password) {
+      errors.password = 'Password is required';
+    } else if (password.length < 8) {
+      errors.password = 'Password must be at least 8 characters';
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+    }
+
+    // Confirm password validation
+    if (!confirmPassword) {
+      errors.confirmPassword = 'Please confirm your password';
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+
+    // Secret key validation
+    if (!secretKey) {
+      errors.secretKey = 'Secret key is required';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear validation error when user starts typing
+    if (validationErrors[e.target.name]) {
+      setValidationErrors({
+        ...validationErrors,
+        [e.target.name]: ''
+      });
+    }
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form
-    if (!name || !email || !password || !confirmPassword || !secretKey) {
-      return toast.error('Please fill in all fields');
-    }
-
-    if (password !== confirmPassword) {
-      return toast.error('Passwords do not match');
-    }
-
-    // The secret key should match what's set in your backend
-    const ADMIN_SECRET_KEY = 'admin-secret-123';
-
-    if (secretKey !== ADMIN_SECRET_KEY) {
-      return toast.error('Invalid secret key');
+    if (!validateForm()) {
+      return;
     }
 
     setLoading(true);
@@ -152,10 +190,15 @@ const AdminRegistrationForm = () => {
               name="name"
               value={name}
               onChange={onChange}
-              className="pl-10 w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`pl-10 w-full px-4 py-2 text-gray-800 bg-white border ${
+                validationErrors.name ? 'border-red-500' : 'border-gray-300'
+              } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               placeholder="Enter your full name"
             />
           </div>
+          {validationErrors.name && (
+            <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -172,10 +215,15 @@ const AdminRegistrationForm = () => {
               name="email"
               value={email}
               onChange={onChange}
-              className="pl-10 w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`pl-10 w-full px-4 py-2 text-gray-800 bg-white border ${
+                validationErrors.email ? 'border-red-500' : 'border-gray-300'
+              } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               placeholder="Enter your email"
             />
           </div>
+          {validationErrors.email && (
+            <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -192,10 +240,15 @@ const AdminRegistrationForm = () => {
               name="password"
               value={password}
               onChange={onChange}
-              className="pl-10 w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`pl-10 w-full px-4 py-2 text-gray-800 bg-white border ${
+                validationErrors.password ? 'border-red-500' : 'border-gray-300'
+              } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               placeholder="Enter your password"
             />
           </div>
+          {validationErrors.password && (
+            <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -212,10 +265,15 @@ const AdminRegistrationForm = () => {
               name="confirmPassword"
               value={confirmPassword}
               onChange={onChange}
-              className="pl-10 w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`pl-10 w-full px-4 py-2 text-gray-800 bg-white border ${
+                validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+              } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               placeholder="Confirm your password"
             />
           </div>
+          {validationErrors.confirmPassword && (
+            <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -232,10 +290,15 @@ const AdminRegistrationForm = () => {
               name="secretKey"
               value={secretKey}
               onChange={onChange}
-              className="pl-10 w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`pl-10 w-full px-4 py-2 text-gray-800 bg-white border ${
+                validationErrors.secretKey ? 'border-red-500' : 'border-gray-300'
+              } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               placeholder="Enter admin secret key"
             />
           </div>
+          {validationErrors.secretKey && (
+            <p className="mt-1 text-sm text-red-600">{validationErrors.secretKey}</p>
+          )}
           <p className="text-xs text-gray-700 mt-1">
             This key is required to create an admin account. For demo purposes, use: "admin-secret-123"
           </p>
@@ -244,17 +307,20 @@ const AdminRegistrationForm = () => {
         <button
           type="submit"
           disabled={loading || success}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors font-medium"
+          className={`w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors font-medium ${
+            (loading || success) ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
           {loading ? (
             <span className="flex items-center justify-center">
-              <FaSpinner className="animate-spin mr-2" /> Creating...
+              <FaSpinner className="animate-spin mr-2" />
+              Creating Account...
             </span>
           ) : success ? (
-            <span className="flex items-center justify-center">
-              Account Created! Redirecting...
-            </span>
-          ) : 'Create Admin Account'}
+            'Account Created Successfully!'
+          ) : (
+            'Create Admin Account'
+          )}
         </button>
       </form>
     </div>

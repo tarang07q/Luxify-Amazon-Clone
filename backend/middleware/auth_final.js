@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/User_final');
 
 // Protect routes
 exports.protect = async (req, res, next) => {
@@ -24,7 +24,7 @@ exports.protect = async (req, res, next) => {
 
   try {
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'luxify_secret_key_2024');
 
     // Add user to request object
     req.user = await User.findById(decoded.id);
@@ -38,7 +38,7 @@ exports.protect = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.error('Auth middleware error:', err);
+    console.error('❌ Auth middleware error:', err);
     return res.status(401).json({
       success: false,
       error: 'Not authorized to access this route'

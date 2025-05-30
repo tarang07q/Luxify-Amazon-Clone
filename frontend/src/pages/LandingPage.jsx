@@ -350,7 +350,7 @@ const LandingPage = () => {
                 />
               },
               {
-                name: 'Fashion',
+                name: 'Clothing',
                 icon: <ShoppingBag3D
                   size={150}
                   color="#ec4899"
@@ -359,7 +359,7 @@ const LandingPage = () => {
                 />
               },
               {
-                name: 'Home & Kitchen',
+                name: 'Home & Garden',
                 icon: <ProductBox3D
                   size={150}
                   color="#10b981"

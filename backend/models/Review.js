@@ -85,7 +85,6 @@ ReviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
 // Additional indexes for performance
 ReviewSchema.index({ product: 1, isApproved: 1 });
-ReviewSchema.index({ user: 1 });
 ReviewSchema.index({ rating: 1 });
 
 // Update the updatedAt field before saving

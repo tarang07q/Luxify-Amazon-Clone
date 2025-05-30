@@ -33,14 +33,27 @@ const authSlice = createSlice({
       localStorage.setItem('token', token);
     },
     logout: (state) => {
+      // Clear Redux state
       state.user = null;
       state.token = null;
+
+      // Clear localStorage
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      localStorage.removeItem('lastRegisteredAdmin');
 
-      // Clear any cookies that might be related to authentication
-      document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = 'connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      // Clear all cookies
+      const cookies = document.cookie.split(';');
+      cookies.forEach(cookie => {
+        const [name] = cookie.split('=');
+        document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      });
+
+      // Clear session storage
+      sessionStorage.clear();
+
+      // Force reload to clear any cached state
+      window.location.href = '/';
     },
   },
 });

@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/User_final');
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -7,7 +7,7 @@ exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    console.log('Registration attempt:', { name, email });
+    console.log('🔐 Registration attempt:', { name, email });
 
     // Validate input
     if (!name || !email || !password) {
@@ -33,11 +33,11 @@ exports.register = async (req, res) => {
       password
     });
 
-    console.log('User created successfully:', { id: user._id, email: user.email });
+    console.log('✅ User created successfully:', { id: user._id, email: user.email });
 
     sendTokenResponse(user, 201, res);
   } catch (err) {
-    console.error('Registration error:', err);
+    console.error('❌ Registration error:', err);
     res.status(500).json({
       success: false,
       error: 'Server error during registration'
@@ -52,7 +52,7 @@ exports.registerAdmin = async (req, res) => {
   try {
     const { name, email, password, secretKey } = req.body;
 
-    console.log('Admin registration attempt:', { name, email });
+    console.log('🔐 Admin registration attempt:', { name, email });
 
     // Validate input
     if (!name || !email || !password || !secretKey) {
@@ -88,11 +88,11 @@ exports.registerAdmin = async (req, res) => {
       role: 'admin'
     });
 
-    console.log('Admin user created successfully:', { id: user._id, email: user.email });
+    console.log('✅ Admin user created successfully:', { id: user._id, email: user.email });
 
     sendTokenResponse(user, 201, res);
   } catch (err) {
-    console.error('Admin registration error:', err);
+    console.error('❌ Admin registration error:', err);
     res.status(500).json({
       success: false,
       error: 'Server error during admin registration'
@@ -107,7 +107,7 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log('Login attempt:', { email });
+    console.log('🔐 Login attempt:', { email });
 
     // Validate input
     if (!email || !password) {
@@ -121,7 +121,7 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      console.log('User not found:', email);
+      console.log('❌ User not found:', email);
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials'
@@ -132,7 +132,7 @@ exports.login = async (req, res) => {
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      console.log('Password mismatch for user:', email);
+      console.log('❌ Password mismatch for user:', email);
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials'
@@ -143,11 +143,11 @@ exports.login = async (req, res) => {
     user.lastLogin = new Date();
     await user.save();
 
-    console.log('Login successful:', { id: user._id, email: user.email, role: user.role });
+    console.log('✅ Login successful:', { id: user._id, email: user.email, role: user.role });
 
     sendTokenResponse(user, 200, res);
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('❌ Login error:', err);
     res.status(500).json({
       success: false,
       error: 'Server error during login'
@@ -171,7 +171,7 @@ exports.logout = async (req, res) => {
       message: 'Logged out successfully'
     });
   } catch (err) {
-    console.error('Logout error:', err);
+    console.error('❌ Logout error:', err);
     res.status(500).json({
       success: false,
       error: 'Server error during logout'
@@ -191,7 +191,7 @@ exports.getMe = async (req, res) => {
       data: user
     });
   } catch (err) {
-    console.error('Get me error:', err);
+    console.error('❌ Get me error:', err);
     res.status(500).json({
       success: false,
       error: 'Server error'

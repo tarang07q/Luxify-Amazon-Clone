@@ -5,11 +5,11 @@ const {
   login,
   logout,
   getMe
-} = require('../controllers/authController');
+} = require('../controllers/authController_final');
 
 const router = express.Router();
 
-const { protect } = require('../middleware/auth');
+const { protect } = require('../middleware/auth_final');
 
 router.post('/register', register);
 router.post('/register-admin', registerAdmin);

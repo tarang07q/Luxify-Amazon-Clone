@@ -2,24 +2,18 @@
  * Application constants
  */
 
-// Product categories
+// Product categories (matching backend categories)
 export const PRODUCT_CATEGORIES = [
   'Electronics',
-  'Computers',
-  'Smart Home',
-  'Home & Kitchen',
   'Clothing',
-  'Beauty & Personal Care',
+  'Home & Garden',
   'Books',
-  'Toys & Games',
-  'Sports & Outdoors',
-  'Grocery & Gourmet Food',
-  'Pet Supplies',
-  'Automotive',
-  'Tools & Home Improvement',
-  'Health & Household',
-  'Office Products',
-  'Gift Cards'
+  'Beauty',
+  'Sports',
+  'Toys',
+  'Health',
+  'Food',
+  'Automotive'
 ];
 
 // Order status options

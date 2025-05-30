@@ -6,7 +6,7 @@ import { addToCart, removeFromCart } from '../slices/cartSlice';
 import Message from '../components/ui/Message';
 import { useTheme } from '../context/ThemeContext';
 import usePriceFormatter from '../hooks/usePriceFormatter';
-import ShoppingBag3D from '../components/3d/ShoppingBag3D';
+
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -137,20 +137,7 @@ const CartPage = () => {
             }}>
               <h2 className="text-xl font-bold mb-4" style={{ color: theme.text }}>Order Summary</h2>
 
-              {/* 3D Shopping Bag */}
-              <div className="flex justify-center mb-6">
-                <div className="flex justify-center items-center h-48 w-48 rounded-md" style={{
-                  backgroundColor: 'transparent',
-                  backgroundImage: `radial-gradient(circle, ${currentTheme === 'light' ? '#f8fafc, #e2e8f0' : '#1e293b, #0f172a'})`,
-                }}>
-                  <ShoppingBag3D
-                    size={180}
-                    color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
-                    floatingAnimation={true}
-                    glowEffect={true}
-                  />
-                </div>
-              </div>
+
 
               <div className="space-y-3">
                 <div className="flex justify-between" style={{ color: theme.text }}>

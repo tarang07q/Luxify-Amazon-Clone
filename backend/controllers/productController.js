@@ -6,6 +6,8 @@ const ErrorResponse = require('../utils/errorResponse');
 // @access  Public
 exports.getProducts = async (req, res, next) => {
   try {
+    console.log('📦 GET /api/products called with query:', req.query);
+
     // Copy req.query
     const reqQuery = { ...req.query };
 
@@ -38,14 +40,13 @@ exports.getProducts = async (req, res, next) => {
     // Search functionality
     if (req.query.q) {
       const searchRegex = new RegExp(req.query.q, 'i');
-      query = query.find({
-        $or: [
-          { title: searchRegex },
-          { description: searchRegex },
-          { brand: searchRegex },
-          { category: searchRegex }
-        ]
-      });
+      parsedQuery.$or = [
+        { title: searchRegex },
+        { description: searchRegex },
+        { brand: searchRegex },
+        { category: searchRegex }
+      ];
+      query = Product.find(parsedQuery);
     }
 
     // Select Fields
@@ -73,6 +74,8 @@ exports.getProducts = async (req, res, next) => {
 
     // Executing query
     const products = await query;
+
+    console.log(`📦 Found ${products.length} products, total: ${total}`);
 
     // Pagination result
     const pagination = {};

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '../../context/ThemeContext';
+import { useLogoutMutation } from '../../slices/services/authService';
+import { logout } from '../../slices/authSlice';
+import { toast } from 'react-toastify';
 import {
   FaChartLine,
   FaBox,
@@ -19,8 +22,30 @@ import {
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { theme, currentTheme } = useTheme();
+  const [logoutApi] = useLogoutMutation();
+
+  // Check if user is admin
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      toast.error('You do not have permission to access the admin area');
+      navigate('/login', { state: { from: location.pathname } });
+    }
+  }, [user, navigate, location.pathname]);
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi().unwrap();
+      dispatch(logout());
+      toast.success('Logged out successfully');
+      navigate('/login');
+    } catch (err) {
+      toast.error(err?.data?.error || 'Error logging out');
+    }
+  };
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -181,9 +206,9 @@ const AdminLayout = ({ children }) => {
           borderColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.15)' : theme.border,
           borderImage: currentTheme === 'dark' ? 'linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.2), transparent) 1' : 'none'
         }}>
-          <Link
-            to="/"
-            className="flex items-center transition-all group"
+          <button
+            onClick={handleLogout}
+            className="flex items-center transition-all group w-full"
             style={{
               color: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.8)' : theme.primary,
               textShadow: currentTheme === 'dark' ? '0 0 3px rgba(0, 242, 255, 0.3)' : 'none'
@@ -203,8 +228,8 @@ const AdminLayout = ({ children }) => {
                 }}
               />
             </div>
-            <span>Back to Store</span>
-          </Link>
+            <span>Logout</span>
+          </button>
         </div>
       </div>
 

@@ -80,18 +80,18 @@ const sanitizeData = [
 const customSecurity = (req, res, next) => {
   // Remove sensitive headers
   res.removeHeader('X-Powered-By');
-  
+
   // Add custom security headers
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+
   // Add HSTS header in production
   if (process.env.NODE_ENV === 'production') {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   }
-  
+
   next();
 };
 
@@ -101,31 +101,35 @@ const ipWhitelist = (allowedIPs = []) => {
     if (process.env.NODE_ENV === 'development') {
       return next(); // Skip in development
     }
-    
+
     const clientIP = req.ip || req.connection.remoteAddress || req.socket.remoteAddress;
-    
+
     if (allowedIPs.length > 0 && !allowedIPs.includes(clientIP)) {
       return res.status(403).json({
         success: false,
         error: 'Access denied from this IP address'
       });
     }
-    
+
     next();
   };
 };
 
 // Request size limiter
 const requestSizeLimiter = (req, res, next) => {
-  const maxSize = process.env.MAX_REQUEST_SIZE || '10mb';
-  
-  if (req.headers['content-length'] && parseInt(req.headers['content-length']) > parseInt(maxSize)) {
+  const maxSizeStr = process.env.MAX_REQUEST_SIZE || '10mb';
+  // Convert size string to bytes (e.g., '10mb' -> 10485760)
+  const maxSizeBytes = maxSizeStr.includes('mb')
+    ? parseInt(maxSizeStr) * 1024 * 1024
+    : parseInt(maxSizeStr);
+
+  if (req.headers['content-length'] && parseInt(req.headers['content-length']) > maxSizeBytes) {
     return res.status(413).json({
       success: false,
       error: 'Request entity too large'
     });
   }
-  
+
   next();
 };
 
@@ -144,28 +148,38 @@ const suspiciousActivityDetector = (req, res, next) => {
     /cmd\.exe/i,
     /powershell/i
   ];
-  
+
   const checkString = JSON.stringify(req.body) + JSON.stringify(req.query) + JSON.stringify(req.params);
-  
+
   for (const pattern of suspiciousPatterns) {
     if (pattern.test(checkString)) {
       console.warn(`Suspicious activity detected from IP: ${req.ip}, Pattern: ${pattern}, URL: ${req.originalUrl}`);
-      
+
       return res.status(400).json({
         success: false,
         error: 'Invalid request detected'
       });
     }
   }
-  
+
   next();
 };
 
 // CORS security enhancement
 const corsSecurityCheck = (req, res, next) => {
-  const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:3004'];
+  const allowedOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',')
+    : [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:3002',
+        'http://localhost:3003',
+        'http://localhost:3004',
+        'http://localhost:3005',
+        'http://localhost:3006'
+      ];
   const origin = req.headers.origin;
-  
+
   if (origin && !allowedOrigins.includes(origin)) {
     console.warn(`Blocked request from unauthorized origin: ${origin}`);
     return res.status(403).json({
@@ -173,7 +187,7 @@ const corsSecurityCheck = (req, res, next) => {
       error: 'CORS policy violation'
     });
   }
-  
+
   next();
 };
 
@@ -182,17 +196,17 @@ const validateApiKey = (req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     return next(); // Skip in development
   }
-  
+
   const apiKey = req.headers['x-api-key'];
   const validApiKey = process.env.API_KEY;
-  
+
   if (validApiKey && (!apiKey || apiKey !== validApiKey)) {
     return res.status(401).json({
       success: false,
       error: 'Invalid or missing API key'
     });
   }
-  
+
   next();
 };
 

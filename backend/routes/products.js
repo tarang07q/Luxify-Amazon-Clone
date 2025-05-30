@@ -11,21 +11,27 @@ const router = express.Router();
 
 const { protect, authorize } = require('../middleware/auth');
 
-// Include reviews router
-const reviewRouter = require('./reviews');
+// Simple test route
+router.get('/test', (req, res) => {
+  res.json({ success: true, message: 'Product routes working!' });
+});
 
-// Re-route into other resource routers
-router.use('/:productId/reviews', reviewRouter);
+// Get all products
+router.get('/', (req, res, next) => {
+  console.log('🚀 Products route hit!');
+  getProducts(req, res, next);
+});
 
-router
-  .route('/')
-  .get(getProducts)
-  .post(protect, authorize('admin'), createProduct);
+// Create product (admin only)
+router.post('/', protect, authorize('admin'), createProduct);
 
-router
-  .route('/:id')
-  .get(getProduct)
-  .put(protect, authorize('admin'), updateProduct)
-  .delete(protect, authorize('admin'), deleteProduct);
+// Get single product
+router.get('/:id', getProduct);
+
+// Update product (admin only)
+router.put('/:id', protect, authorize('admin'), updateProduct);
+
+// Delete product (admin only)
+router.delete('/:id', protect, authorize('admin'), deleteProduct);
 
 module.exports = router;

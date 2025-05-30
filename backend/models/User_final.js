@@ -71,7 +71,7 @@ UserSchema.methods.getSignedJwtToken = function() {
       role: this.role,
       email: this.email
     },
-    process.env.JWT_SECRET || 'fallback_secret_key',
+    process.env.JWT_SECRET || 'luxify_secret_key_2024',
     { expiresIn: process.env.JWT_EXPIRE || '30d' }
   );
 };

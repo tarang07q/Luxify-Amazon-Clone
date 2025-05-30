@@ -64,6 +64,17 @@ export const productApiSlice = apiSlice.injectEndpoints({
       query: (productId) => `/reviews/${productId}`,
       providesTags: ['Review'],
     }),
+    getProductCategories: builder.query({
+      query: () => '/products/categories',
+      providesTags: ['Product'],
+    }),
+    getFeaturedProducts: builder.query({
+      query: () => ({
+        url: '/products',
+        params: { featured: true },
+      }),
+      providesTags: ['Product'],
+    }),
   }),
 });
 
@@ -76,4 +87,6 @@ export const {
   useUploadProductImageMutation,
   useCreateReviewMutation,
   useGetProductReviewsQuery,
+  useGetProductCategoriesQuery,
+  useGetFeaturedProductsQuery,
 } = productApiSlice;

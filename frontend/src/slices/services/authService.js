@@ -7,6 +7,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: '/auth/login',
         method: 'POST',
         body: credentials,
+        credentials: 'include', // Include cookies in the request
       }),
     }),
     register: builder.mutation({
@@ -14,6 +15,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: '/auth/register',
         method: 'POST',
         body: userData,
+        credentials: 'include', // Include cookies in the request
+      }),
+    }),
+    registerAdmin: builder.mutation({
+      query: (adminData) => ({
+        url: '/auth/register-admin',
+        method: 'POST',
+        body: adminData,
+        credentials: 'include', // Include cookies in the request
       }),
     }),
     logout: builder.mutation({
@@ -61,6 +71,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useRegisterAdminMutation,
   useLogoutMutation,
   useGetMeQuery,
   useUpdateProfileMutation,

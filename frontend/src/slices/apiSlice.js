@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  // Use relative URL to work with the proxy defined in vite.config.js
-  baseUrl: '/api',
+  // Use environment variable for base URL with fallback
+  baseUrl: import.meta.env.VITE_API_URL || '/api',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
@@ -13,8 +13,21 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+// Add error handling wrapper
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  // Handle 401 Unauthorized errors
+  if (result.error && result.error.status === 401) {
+    // Clear auth state
+    api.dispatch({ type: 'auth/logout' });
+  }
+
+  return result;
+};
+
 export const apiSlice = createApi({
-  baseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Product', 'Order', 'User', 'Review'],
   endpoints: (builder) => ({}),
 });

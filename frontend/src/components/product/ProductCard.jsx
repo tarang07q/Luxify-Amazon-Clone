@@ -23,6 +23,21 @@ const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const { theme, currentTheme } = useTheme();
   const { formatPrice } = usePriceFormatter();
+
+  // Early return if product is not provided
+  if (!product) {
+    return (
+      <div className="product-card themed-card">
+        <div className="fallback-image">
+          <div className="fallback-icon">
+            <FaImage size={50} />
+          </div>
+          <p className="fallback-title">Product not available</p>
+        </div>
+      </div>
+    );
+  }
+
   const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -31,11 +46,15 @@ const ProductCard = ({ product }) => {
 
   // Check if product is already in cart
   useEffect(() => {
-    const productInCart = cartItems.find(item => item._id === product._id);
-    setIsAddedToCart(!!productInCart);
-  }, [cartItems, product._id]);
+    if (product?._id) {
+      const productInCart = cartItems.find(item => item._id === product._id);
+      setIsAddedToCart(!!productInCart);
+    }
+  }, [cartItems, product?._id]);
 
   const addToCartHandler = () => {
+    if (!product) return;
+
     dispatch(
       addToCart({
         ...product,
@@ -43,7 +62,7 @@ const ProductCard = ({ product }) => {
       })
     );
     setIsAddedToCart(true);
-    toast.success(`${product.title} added to cart!`);
+    toast.success(`${product?.title || 'Product'} added to cart!`);
   };
 
   const toggleWishlist = (e) => {
@@ -51,8 +70,8 @@ const ProductCard = ({ product }) => {
     e.stopPropagation();
     setIsWishlisted(!isWishlisted);
     toast.success(isWishlisted
-      ? `${product.title} removed from wishlist!`
-      : `${product.title} added to wishlist!`
+      ? `${product?.title || 'Product'} removed from wishlist!`
+      : `${product?.title || 'Product'} added to wishlist!`
     );
   };
 
@@ -87,19 +106,23 @@ const ProductCard = ({ product }) => {
 
   // Preload images to ensure they're loaded before displaying
   useEffect(() => {
-    if (product.images && product.images.length > 0) {
+    if (product?.images && Array.isArray(product.images) && product.images.length > 0) {
       const preloadImages = () => {
         product.images.forEach((imgPath) => {
-          const img = new Image();
-          img.src = getImageUrl(imgPath);
+          if (imgPath) {
+            const img = new Image();
+            img.src = getImageUrl(imgPath);
+          }
         });
       };
       preloadImages();
     }
-  }, [product.images]);
+  }, [product?.images]);
 
-  // Calculate discount percentage
-  const discountPercentage = ((product.mrp - product.price) / product.mrp) * 100;
+  // Calculate discount percentage - with safe fallbacks
+  const discountPercentage = product?.mrp && product?.price && product.mrp > product.price
+    ? ((product.mrp - product.price) / product.mrp) * 100
+    : product?.discount || 0;
 
   // Rating stars
   const renderRatingStars = (rating) => {
@@ -133,16 +156,16 @@ const ProductCard = ({ product }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Discount Badge */}
-      {product.discount > 0 && (
+      {discountPercentage > 0 && (
         <div className="discount-badge themed-badge">
           {discountPercentage.toFixed(0)}% OFF
         </div>
       )}
 
       {/* Featured Badge */}
-      {product.featured && (
+      {product?.featured && (
         <div className="featured-badge themed-badge" style={{
-          top: product.discount > 0 ? '40px' : '10px',
+          top: discountPercentage > 0 ? '40px' : '10px',
           backgroundColor: '#FFD700',
           color: '#000',
           display: 'flex',
@@ -170,18 +193,18 @@ const ProductCard = ({ product }) => {
               <div className="fallback-icon">
                 <FaImage size={50} />
               </div>
-              <p className="fallback-title">{product.title.length > 30
+              <p className="fallback-title">{product?.title && product.title.length > 30
                 ? `${product.title.substring(0, 30)}...`
-                : product.title}
+                : product?.title || 'Product'}
               </p>
-              <p className="fallback-category">{product.category}</p>
+              <p className="fallback-category">{product?.category || 'Category'}</p>
             </div>
           ) : (
             <div className="image-wrapper">
               <img
-                src={product.images && product.images.length > 0 ?
+                src={product?.images && Array.isArray(product.images) && product.images.length > 0 ?
                   getImageUrl(product.images[0]) : '/placeholder.jpg'}
-                alt={product.title}
+                alt={product?.title || 'Product'}
                 className="product-image"
                 onError={handleImageError}
                 loading="eager"
@@ -195,10 +218,10 @@ const ProductCard = ({ product }) => {
                 }}
               />
               {/* Second image for hover effect */}
-              {product.images && product.images.length > 1 && (
+              {product?.images && Array.isArray(product.images) && product.images.length > 1 && (
                 <img
                   src={getImageUrl(product.images[1])}
-                  alt={`${product.title} - alternate view`}
+                  alt={`${product?.title || 'Product'} - alternate view`}
                   className={`product-image-hover ${isHovered ? 'visible' : ''}`}
                   onError={handleImageError}
                   loading="eager"
@@ -219,7 +242,7 @@ const ProductCard = ({ product }) => {
         {/* Quick Action Buttons */}
         <div className={`product-actions ${isHovered ? 'visible' : ''}`}>
           <Link
-            to={`/product/${product._id}`}
+            to={`/product/${product?._id}`}
             className="action-button quick-view"
             title="Quick View"
           >
@@ -227,7 +250,7 @@ const ProductCard = ({ product }) => {
           </Link>
           <button
             onClick={addToCartHandler}
-            disabled={product.stock === 0 || isAddedToCart}
+            disabled={(product?.stock || 0) === 0 || isAddedToCart}
             className={`action-button add-cart ${isAddedToCart ? 'added' : ''}`}
             title={isAddedToCart ? "Added to Cart" : "Add to Cart"}
           >
@@ -240,17 +263,17 @@ const ProductCard = ({ product }) => {
       <div className="product-details">
         {/* Category */}
         <div className="product-category">
-          <Link to={`/search/${product.category}`} className="category-link">
-            {product.category}
+          <Link to={`/search/${product?.category || 'all'}`} className="category-link">
+            {product?.category || 'Category'}
           </Link>
         </div>
 
         {/* Title */}
-        <Link to={`/product/${product._id}`} className="product-title-link">
+        <Link to={`/product/${product?._id}`} className="product-title-link">
           <h2 className="product-title">
-            {product.title.length > 40
+            {product?.title && product.title.length > 40
               ? `${product.title.substring(0, 40)}...`
-              : product.title
+              : product?.title || 'Product Name'
             }
           </h2>
         </Link>
@@ -258,15 +281,15 @@ const ProductCard = ({ product }) => {
         {/* Rating */}
         <div className="rating-container">
           <div className="stars">
-            {renderRatingStars(product.rating)}
+            {renderRatingStars(product?.rating || 0)}
           </div>
-          <span className="review-count">({product.numReviews})</span>
+          <span className="review-count">({product?.numReviews || 0})</span>
         </div>
 
         {/* Price */}
         <div className="price-container">
-          <span className="current-price">{formatPrice(product.price)}</span>
-          {product.discount > 0 && (
+          <span className="current-price">{formatPrice(product?.price || 0)}</span>
+          {discountPercentage > 0 && product?.mrp && (
             <span className="original-price">
               {formatPrice(product.mrp)}
             </span>
@@ -275,10 +298,10 @@ const ProductCard = ({ product }) => {
 
         {/* Stock Status */}
         <div className="product-meta">
-          <span className={`stock-status ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
-            {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+          <span className={`stock-status ${(product?.stock || 0) > 0 ? 'in-stock' : 'out-of-stock'}`}>
+            {(product?.stock || 0) > 0 ? 'In Stock' : 'Out of Stock'}
           </span>
-          {product.brand && (
+          {product?.brand && (
             <span className="brand">{product.brand}</span>
           )}
         </div>
@@ -286,8 +309,8 @@ const ProductCard = ({ product }) => {
         {/* Add to Cart Button */}
         <button
           onClick={addToCartHandler}
-          disabled={product.stock === 0 || isAddedToCart}
-          className={`add-to-cart-button ${isAddedToCart ? 'added' : product.stock > 0 ? 'enabled' : 'disabled'}`}
+          disabled={(product?.stock || 0) === 0 || isAddedToCart}
+          className={`add-to-cart-button ${isAddedToCart ? 'added' : (product?.stock || 0) > 0 ? 'enabled' : 'disabled'}`}
         >
           {isAddedToCart ? (
             <>

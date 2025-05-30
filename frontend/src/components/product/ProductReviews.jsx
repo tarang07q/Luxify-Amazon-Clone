@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa';
 import Loader from '../ui/Loader';
 
-const ProductReviews = ({ productId, canReview = false }) => {
+const ProductReviews = ({ productId, product, canReview = false }) => {
   const { theme } = useTheme();
   const { user } = useSelector((state) => state.auth);
 
@@ -125,13 +125,13 @@ const ProductReviews = ({ productId, canReview = false }) => {
 
         <div className="text-center">
           <div className="text-4xl font-bold mb-2" style={{ color: theme.text }}>
-            4.5
+            {product?.rating ? product.rating.toFixed(1) : '0.0'}
           </div>
           <div className="mb-2">
-            {renderStars(5)}
+            {renderStars(Math.round(product?.rating || 0))}
           </div>
           <p style={{ color: theme.textLight }}>
-            Based on {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
+            Based on {product?.numReviews || 0} {(product?.numReviews || 0) === 1 ? 'review' : 'reviews'}
           </p>
         </div>
       </div>

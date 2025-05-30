@@ -16,6 +16,7 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
   const [loginAttempted, setLoginAttempted] = useState(false);
   const [adminRedirect, setAdminRedirect] = useState(false);
   const [adminLoginSuccess, setAdminLoginSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   // Clear the last registered admin after using it
   useEffect(() => {
@@ -38,10 +39,36 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
 
   const [apiError, setApiError] = useState(null);
 
+  const validateForm = () => {
+    const errors = {};
+
+    // Email validation
+    if (!email) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation
+    if (!password) {
+      errors.password = 'Password is required';
+    } else if (password.length < 6) {
+      errors.password = 'Password must be at least 6 characters';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoginAttempted(true);
     setApiError(null);
+    setValidationErrors({});
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       console.log('Attempting login with:', { email, password });
@@ -101,11 +128,16 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setValidationErrors(prev => ({ ...prev, email: '' }));
+            }}
+            className={`w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
+              validationErrors.email ? 'border-red-500' : ''
+            }`}
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              borderColor: 'rgba(99, 102, 241, 0.2)',
+              borderColor: validationErrors.email ? 'rgba(239, 68, 68, 0.5)' : 'rgba(99, 102, 241, 0.2)',
               color: 'inherit',
               borderWidth: '1px',
               borderStyle: 'solid'
@@ -113,6 +145,9 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
             placeholder="Enter your email"
             required
           />
+          {validationErrors.email && (
+            <p className="mt-1 text-sm text-red-500">{validationErrors.email}</p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -123,11 +158,16 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setValidationErrors(prev => ({ ...prev, password: '' }));
+            }}
+            className={`w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
+              validationErrors.password ? 'border-red-500' : ''
+            }`}
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              borderColor: 'rgba(99, 102, 241, 0.2)',
+              borderColor: validationErrors.password ? 'rgba(239, 68, 68, 0.5)' : 'rgba(99, 102, 241, 0.2)',
               color: 'inherit',
               borderWidth: '1px',
               borderStyle: 'solid'
@@ -135,6 +175,9 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
             placeholder="Enter your password"
             required
           />
+          {validationErrors.password && (
+            <p className="mt-1 text-sm text-red-500">{validationErrors.password}</p>
+          )}
         </div>
 
         <button
@@ -167,15 +210,29 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
       </form>
 
       {!isAdmin && (
-        <div className="mt-4 text-center">
-          <Link
-            to="/admin-registration"
-            className="text-sm flex items-center justify-center hover:underline"
-            style={{ color: 'rgba(99, 102, 241, 0.8)' }}
-          >
-            <FaUserShield className="mr-2" /> Create Admin Account
-          </Link>
-        </div>
+        <>
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <div className="text-center">
+              <p className="text-gray-700 mb-2">Don't have an account?</p>
+              <Link
+                to={`/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
+                className="text-indigo-600 hover:text-indigo-800 font-medium flex items-center justify-center"
+              >
+                Create Account <FaArrowRight className="ml-1" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-4 text-center">
+            <Link
+              to="/admin-registration"
+              className="text-sm flex items-center justify-center hover:underline"
+              style={{ color: 'rgba(99, 102, 241, 0.8)' }}
+            >
+              <FaUserShield className="mr-2" /> Create Admin Account
+            </Link>
+          </div>
+        </>
       )}
 
       <div className="mt-4 pt-4 border-t border-gray-200">

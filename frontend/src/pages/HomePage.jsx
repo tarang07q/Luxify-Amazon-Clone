@@ -6,7 +6,7 @@ import ProductCard from '../components/product/ProductCard';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
 import Paginate from '../components/ui/Paginate';
-import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore, FaBox, FaLaptop, FaHome, FaBook, FaTshirt, FaSprayCan, FaGamepad, FaRunning, FaShoppingBasket, FaPaw, FaCar, FaTools, FaFirstAid, FaBriefcase, FaGift } from 'react-icons/fa';
+import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore, FaBox, FaLaptop, FaHome, FaBook, FaTshirt, FaSprayCan, FaGamepad, FaRunning, FaShoppingBasket, FaPaw, FaCar, FaTools, FaFirstAid, FaBriefcase, FaGift, FaHeartbeat, FaUtensils } from 'react-icons/fa';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, PresentationControls } from '@react-three/drei';
 import CubeIcon from '../components/3d/CubeIcon';
@@ -26,24 +26,18 @@ const HomePage = () => {
 
   const { user } = useSelector((state) => state.auth);
 
-  // Categories for display
+  // Categories for display (matching backend categories)
   const categories = [
     'Electronics',
-    'Computers',
-    'Smart Home',
-    'Home & Kitchen',
     'Clothing',
-    'Beauty & Personal Care',
+    'Home & Garden',
     'Books',
-    'Toys & Games',
-    'Sports & Outdoors',
-    'Grocery & Gourmet Food',
-    'Pet Supplies',
-    'Automotive',
-    'Tools & Home Improvement',
-    'Health & Household',
-    'Office Products',
-    'Gift Cards'
+    'Beauty',
+    'Sports',
+    'Toys',
+    'Health',
+    'Food',
+    'Automotive'
   ];
 
   // Check if keyword is a category or "featured"
@@ -167,33 +161,41 @@ const HomePage = () => {
                   icon = <FaBox size={28} />;
                   color = themeColors.primary;
                   break;
-                case 'Computers':
-                  icon = <FaLaptop size={28} />;
-                  color = themeColors.accent5;
-                  break;
-                case 'Smart Home':
-                  icon = <FaHome size={28} />;
-                  color = themeColors.accent1;
-                  break;
-                case 'Home & Kitchen':
-                  icon = <FaHome size={28} />;
-                  color = themeColors.accent4;
-                  break;
                 case 'Clothing':
                   icon = <FaTshirt size={28} />;
                   color = themeColors.accent7;
                   break;
-                case 'Beauty & Personal Care':
-                  icon = <FaSprayCan size={28} />;
-                  color = themeColors.secondary;
+                case 'Home & Garden':
+                  icon = <FaHome size={28} />;
+                  color = themeColors.accent4;
                   break;
                 case 'Books':
                   icon = <FaBook size={28} />;
                   color = themeColors.accent6;
                   break;
-                case 'Toys & Games':
+                case 'Beauty':
+                  icon = <FaSprayCan size={28} />;
+                  color = themeColors.secondary;
+                  break;
+                case 'Sports':
                   icon = <FaGamepad size={28} />;
                   color = themeColors.accent3;
+                  break;
+                case 'Toys':
+                  icon = <FaGamepad size={28} />;
+                  color = themeColors.accent8;
+                  break;
+                case 'Health':
+                  icon = <FaHeartbeat size={28} />;
+                  color = themeColors.accent1;
+                  break;
+                case 'Food':
+                  icon = <FaUtensils size={28} />;
+                  color = themeColors.accent5;
+                  break;
+                case 'Automotive':
+                  icon = <FaCar size={28} />;
+                  color = themeColors.accent2;
                   break;
                 default:
                   icon = <FaBox size={28} />;

@@ -151,3 +151,5 @@ storybook-static/
 auto-save-list
 tramp
 .\#*
+
+.vercel

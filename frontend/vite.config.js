@@ -93,5 +93,22 @@ export default defineConfig({
   // Disable WebGL shader warnings in development
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  },
+  optimizeDeps: {
+    include: [
+      'fs',
+      'path',
+      'url',
+      'crypto',
+      'util',
+      'stream',
+      'os',
+      'module',
+      'assert',
+      'perf_hooks',
+      'v8',
+      'tty',
+      'events'
+    ]
   }
 })

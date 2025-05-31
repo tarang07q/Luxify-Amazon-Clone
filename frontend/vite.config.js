@@ -78,6 +78,7 @@ export default defineConfig({
   },
   // Optimize build
   build: {
+    outDir: 'dist',
     // Reduce chunk size
     chunkSizeWarningLimit: 1000,
     rollupOptions: {

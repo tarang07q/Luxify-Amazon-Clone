@@ -693,16 +693,20 @@ const OrderPage = () => {
                       />
                     </div>
                     <div className="ml-4 flex-1">
-                      <Link
-                        to={`/product/${item.product}`}
-                        className="hover:underline" style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }}
-                        onClick={() => console.log('🔗 Navigating to product:', item.product, 'Full item:', item)}
-                      >
-                        {item.name}
-                      </Link>
+                      {item.product ? (
+                        <Link
+                          to={`/product/${item.product}`}
+                          className="hover:underline"
+                          style={{ color: currentTheme === 'dark' ? '#00f2ff' : '#5046e5' }}
+                        >
+                          {item.name}
+                        </Link>
+                      ) : (
+                        <span>{item.name}</span>
+                      )}
                     </div>
                     <div className="text-right" style={{ color: theme.text }}>
-                      {item.quantity} x {formatPrice(item.price)} = {formatPrice(item.quantity * item.price)}
+                      {(item.qty || item.quantity)} x {formatPrice(item.price)} = {formatPrice((item.qty || item.quantity) * item.price)}
                     </div>
                   </div>
                 </li>

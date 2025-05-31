@@ -30,8 +30,13 @@ exports.getProducts = async (req, res, next) => {
     const parsedQuery = JSON.parse(queryStr);
 
     // Add featured filter if requested
-    if (featured) {
+    if (req.query.featured === 'true') {
       parsedQuery.featured = true;
+    }
+
+    // Add category filter if provided and not empty
+    if (req.query.category && req.query.category !== '') {
+      parsedQuery.category = req.query.category;
     }
 
     // Search functionality

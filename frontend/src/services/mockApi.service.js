@@ -165,13 +165,13 @@ const mockApiService = {
    */
   getProducts: async (params = {}) => {
     await delay();
-    const { keyword = '', pageNumber = 1, pageSize = 10, category = '' } = params;
+    const { q = '', pageNumber = 1, pageSize = 10, category = '' } = params;
     
     let filteredProducts = [...MOCK_PRODUCTS];
     
     // Filter by keyword
-    if (keyword) {
-      const keywordLower = keyword.toLowerCase();
+    if (q) {
+      const keywordLower = q.toLowerCase();
       filteredProducts = filteredProducts.filter(product => 
         product.title.toLowerCase().includes(keywordLower) || 
         product.description.toLowerCase().includes(keywordLower)

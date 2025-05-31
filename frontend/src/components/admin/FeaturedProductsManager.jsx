@@ -23,7 +23,7 @@ const FeaturedProductsManager = () => {
     isLoading, 
     error, 
     refetch 
-  } = useGetProductsQuery({ limit: 100 });
+  } = useGetProductsQuery({ limit: 200 });
 
   const [updateProduct] = useUpdateProductMutation();
 

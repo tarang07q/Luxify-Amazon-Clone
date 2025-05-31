@@ -29,15 +29,19 @@ const HomePage = () => {
   // Categories for display (matching backend categories)
   const categories = [
     'Electronics',
-    'Clothing',
+    'Fashion',
     'Home & Kitchen',
     'Books',
-    'Beauty',
-    'Sports',
-    'Toys',
+    'Sports & Outdoors',
+    'Beauty & Personal Care',
+    'Automotive',
+    'Toys & Games',
+    'Pet Supplies',
+    'Grocery',
+    'Clothing',
+    'Home & Garden',
     'Health',
-    'Food',
-    'Automotive'
+    'Food'
   ];
 
   // Check if keyword is a category or "featured"
@@ -47,6 +51,7 @@ const HomePage = () => {
   // Set up query parameters
   const queryParams = {
     pageNumber,
+    limit: 40,
   };
 
   // If keyword is a category, use it as category filter
@@ -59,7 +64,7 @@ const HomePage = () => {
   }
   // Otherwise use keyword for search
   else if (keyword) {
-    queryParams.keyword = keyword;
+    queryParams.q = keyword;
   }
 
   const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams, {
@@ -67,12 +72,8 @@ const HomePage = () => {
     refetchOnFocus: true
   });
 
-
-
-
-
   // Fetch featured products for homepage
-  const { data: featuredData, isLoading: featuredLoading } = useGetProductsQuery({ featured: true, pageNumber: 1 }, { skip: !!keyword });
+  const { data: featuredData, isLoading: featuredLoading } = useGetProductsQuery({ featured: true, pageNumber: 1, limit: 40 }, { skip: !!keyword });
 
   useEffect(() => {
     // Refetch data when component mounts or keyword changes
@@ -144,7 +145,7 @@ const HomePage = () => {
         <div className="categories-section">
           <h2 className="section-title">Shop by Category</h2>
           <div className="categories-grid">
-            {categories.slice(0, 8).map((category) => {
+            {categories.map((category) => {
               // Get appropriate icon for each category
               let icon;
               let color;
@@ -215,9 +216,9 @@ const HomePage = () => {
                   to={`/search/${category}`}
                   className="category-card"
                 >
-                  <div className="category-icon">
+                  <div className="category-icon" style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center' }}>
                     <ProductBox3D
-                      size={100}
+                      size={60}
                       color={color}
                       icon={icon}
                       floatingAnimation={true}

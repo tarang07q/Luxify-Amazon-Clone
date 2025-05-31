@@ -3,10 +3,15 @@ import { apiSlice } from '../apiSlice';
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ keyword = '', pageNumber = '', category = '', sort = '', featured = false }) => ({
-        url: '/products',
-        params: { q: keyword, page: pageNumber, category, sort, featured },
-      }),
+      query: ({ q = '', pageNumber = '', category, sort = '', featured }) => {
+        const params = { q, page: pageNumber, sort };
+        if (category && category !== '') params.category = category;
+        if (featured === true) params.featured = true;
+        return {
+          url: '/products',
+          params,
+        };
+      },
       providesTags: ['Product'],
       transformResponse: (response) => {
         return {

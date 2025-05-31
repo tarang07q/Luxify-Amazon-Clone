@@ -38,7 +38,8 @@ const ProductListPage = () => {
   } = useGetProductsQuery({
     pageNumber: currentPage,
     sort: `${sortDirection === 'desc' ? '-' : ''}${sortField}`,
-    keyword: searchTerm || '',
+    q: searchTerm || '',
+    limit: 40,
   });
 
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();

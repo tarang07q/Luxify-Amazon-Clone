@@ -19,7 +19,7 @@ const AdvancedSearch = ({ onFiltersChange, totalResults = 0 }) => {
   const location = useLocation();
   
   const [filters, setFilters] = useState({
-    search: '',
+    q: '',
     category: '',
     minPrice: '',
     maxPrice: '',
@@ -62,7 +62,7 @@ const AdvancedSearch = ({ onFiltersChange, totalResults = 0 }) => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const newFilters = {
-      search: params.get('search') || '',
+      q: params.get('q') || '',
       category: params.get('category') || '',
       minPrice: params.get('minPrice') || '',
       maxPrice: params.get('maxPrice') || '',
@@ -99,7 +99,7 @@ const AdvancedSearch = ({ onFiltersChange, totalResults = 0 }) => {
 
   const clearFilters = () => {
     const clearedFilters = {
-      search: '',
+      q: '',
       category: '',
       minPrice: '',
       maxPrice: '',
@@ -135,8 +135,8 @@ const AdvancedSearch = ({ onFiltersChange, totalResults = 0 }) => {
         <input
           type="text"
           placeholder="Search products..."
-          value={filters.search}
-          onChange={(e) => handleFilterChange('search', e.target.value)}
+          value={filters.q}
+          onChange={(e) => handleFilterChange('q', e.target.value)}
           className="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 focus:outline-none"
           style={{
             backgroundColor: theme.inputBg,

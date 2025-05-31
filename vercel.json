@@ -13,7 +13,7 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist",
-        "buildCommand": "rm -rf node_modules package-lock.json && npm install --legacy-peer-deps && npm run build",
+        "buildCommand": "rm -rf node_modules package-lock.json && npm install --force && npm run build",
         "outputDirectory": "dist"
       }
     }

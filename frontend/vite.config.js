@@ -6,6 +6,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   server: {
     port: 3005,
     proxy: {
@@ -79,6 +80,9 @@ export default defineConfig({
   // Optimize build
   build: {
     outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    sourcemap: false,
     // Reduce chunk size
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
@@ -86,7 +90,11 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           ui: ['react-icons', 'tailwindcss'],
-        }
+          three: ['three', '@react-three/fiber', '@react-three/drei']
+        },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   },

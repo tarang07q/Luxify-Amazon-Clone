@@ -1012,12 +1012,155 @@ const categories = [
 
 const searchTerms = ['mouse', 'keyboard', 'laptop', 'shoes', 'book', 'bottle', 'bag', 'camera', 'headphones', 'watch', 'toy', 'car', 'lamp', 'sofa', 't-shirt', 'pants', 'jacket', 'blender', 'mixer', 'grill', 'bike', 'ball', 'doll', 'dog', 'cat', 'snack', 'cereal', 'juice', 'milk', 'tea', 'coffee'];
 
+// Category to image mapping for generated products
+const categoryImages = {
+  'Electronics': [
+    'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=1000&q=80'
+  ],
+  'Fashion': [
+    'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80'
+  ],
+  'Home & Kitchen': [
+    'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1503389152951-9c3d0c6b7a5c?auto=format&fit=crop&w=1000&q=80'
+  ],
+  'Books': [
+    'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1000&q=80'
+  ],
+  'Sports & Outdoors': 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1000&q=80',
+  'Beauty & Personal Care': 'https://images.unsplash.com/photo-1515378791036-4c8f8e92946d?auto=format&fit=crop&w=1000&q=80',
+  'Automotive': 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1000&q=80',
+  'Toys & Games': 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1000&q=80',
+  'Pet Supplies': 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1000&q=80',
+  'Grocery': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  'Clothing': 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=1000&q=80',
+  'Home & Garden': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1000&q=80',
+  'Health': 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1000&q=80',
+  'Food': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+};
+
+// Product type to image mapping for generated products
+const productTypeImages = {
+  mouse: [
+    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=1000&q=80',
+    'https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/mice/mx-master-3s/gallery/mx-master-3s-top-view-graphite.png?v=1'
+  ],
+  keyboard: [
+    'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=80'
+  ],
+  laptop: [
+    'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80',
+    'https://i.dell.com/sites/csimages/Video_Imagery/all/xps-13-9300-laptop.jpg'
+  ],
+  shoes: [
+    'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80',
+    'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/6b6e2e2e-2e2e-4e2e-8e2e-2e2e2e2e2e2e/air-max-270-mens-shoes-KkLcGR.png',
+    'https://assets.adidas.com/images/w_600,f_auto,q_auto/0c7e2e2e2e2e2e2e2e2e2e2e2e2e2e2e_9366/Ultraboost_22_Shoes_Black_GX5462_01_standard.jpg'
+  ],
+  book: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+  bottle: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  bag: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80',
+  camera: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1000&q=80',
+  headphones: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=80',
+  watch: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=1000&q=80',
+  toy: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1000&q=80',
+  car: 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1000&q=80',
+  lamp: 'https://images.unsplash.com/photo-1503389152951-9c3d0c6b7a5c?auto=format&fit=crop&w=1000&q=80',
+  sofa: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1000&q=80',
+  't-shirt': 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80',
+  pants: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=1000&q=80',
+  jacket: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80',
+  blender: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1000&q=80',
+  mixer: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1000&q=80',
+  grill: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1000&q=80',
+  bike: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1000&q=80',
+  ball: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1000&q=80',
+  doll: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1000&q=80',
+  dog: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1000&q=80',
+  cat: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1000&q=80',
+  snack: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  cereal: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  juice: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  milk: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  tea: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  coffee: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+};
+
+// Curated keyword-to-image mapping for real product images
+const keywordImageMap = [
+  { keyword: 'Logitech Mouse', urls: [
+    'https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/mice/mx-master-3s/gallery/mx-master-3s-top-view-graphite.png?v=1',
+    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Apple iPhone', urls: [
+    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-blue-titanium?wid=5120&hei=2880&fmt=jpeg&qlt=80&.v=1692923777972',
+    'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Nike Shoes', urls: [
+    'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/6b6e2e2e-2e2e-4e2e-8e2e-2e2e2e2e2e2e/air-max-270-mens-shoes-KkLcGR.png',
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Canon Camera', urls: [
+    'https://static.bhphoto.com/images/images500x500/canon_eos_r5_mirrorless_digital_1594227986_1575636.jpg',
+    'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Sony Headphones', urls: [
+    'https://m.media-amazon.com/images/I/71o8Q5XJS5L._AC_SL1500_.jpg',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Dell Laptop', urls: [
+    'https://i.dell.com/sites/csimages/Video_Imagery/all/xps-13-9300-laptop.jpg',
+    'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Adidas Shoes', urls: [
+    'https://assets.adidas.com/images/w_600,f_auto,q_auto/0c7e2e2e2e2e2e2e2e2e2e2e2e2e2e2e_9366/Ultraboost_22_Shoes_Black_GX5462_01_standard.jpg',
+    'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Kindle', urls: [
+    'https://m.media-amazon.com/images/I/61Iz2yy2CKL._AC_SL1000_.jpg',
+    'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'MacBook', urls: [
+    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp14-spaceblack-select-202310?wid=2000&hei=2000&fmt=jpeg&qlt=95&.v=1697309296342',
+    'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  { keyword: 'Samsung TV', urls: [
+    'https://images.samsung.com/is/image/samsung/p6pim/in/ua65au8000klxl/gallery/in-uhd-au8000-ua65au8000klxl-530347601?$650_519_PNG$',
+    'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=1000&q=80'
+  ] },
+  // ...add more as needed
+];
+
+function getRelevantImages(title, category, term) {
+  // Try to match the most specific keyword first
+  for (const entry of keywordImageMap) {
+    if (title.toLowerCase().includes(entry.keyword.toLowerCase())) {
+      return entry.urls;
+    }
+  }
+  // Fallback to productTypeImages, then categoryImages
+  if (productTypeImages[term]) return productTypeImages[term];
+  if (categoryImages[category]) return categoryImages[category];
+  return ['https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80']; // generic fallback
+}
+
 let generatedProducts = [];
 categories.forEach((cat, cIdx) => {
   for (let i = 1; i <= 30; i++) {
     const term = searchTerms[(i + cIdx) % searchTerms.length];
+    const title = `${cat} ${term.charAt(0).toUpperCase() + term.slice(1)} Model ${i}`;
+    const imagesArr = getRelevantImages(title, cat, term);
+    // Pick up to 5 images, shuffle for variety
+    const shuffled = imagesArr.sort(() => 0.5 - Math.random());
+    const selectedImages = shuffled.slice(0, Math.min(5, imagesArr.length));
     generatedProducts.push({
-      title: `${cat} ${term.charAt(0).toUpperCase() + term.slice(1)} Model ${i}`,
+      title,
       name: `${term.charAt(0).toUpperCase() + term.slice(1)} ${i}`,
       description: `A high-quality ${term} for ${cat.toLowerCase()}. Perfect for your needs.`,
       brand: `${cat}Brand${i}`,
@@ -1026,9 +1169,7 @@ categories.forEach((cat, cIdx) => {
       originalPrice: 30 + Math.floor(Math.random() * 600),
       discount: Math.floor(Math.random() * 30),
       stock: 10 + Math.floor(Math.random() * 100),
-      images: [
-        `https://source.unsplash.com/featured/300x300?${encodeURIComponent(term)},${encodeURIComponent(cat)}`
-      ],
+      images: selectedImages,
       category: cat,
       featured: i <= 15,
       rating: 3.5 + Math.random() * 1.5,

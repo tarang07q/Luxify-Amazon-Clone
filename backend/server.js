@@ -101,10 +101,14 @@ const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const paymentRoutes = require('./routes/payments');
 const wishlistRoutes = require('./routes/wishlist');
+const adminUserRoutes = require('./routes/adminUserRoutes');
 
 // Use routes
 app.use('/api/auth', authRoutes);
 console.log('✅ Registered /api/auth routes');
+
+app.use('/api/admin', adminUserRoutes);
+console.log('✅ Registered /api/admin routes');
 
 console.log('✅ Registering /api/products routes');
 app.use('/api/products', productRoutes);

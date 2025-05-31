@@ -29,20 +29,23 @@ exports.getProducts = async (req, res, next) => {
     // Parse the query
     const parsedQuery = JSON.parse(queryStr);
 
+    // Build query object
+    const queryObj = {};
+
     // Add featured filter if requested
     if (req.query.featured === 'true') {
-      parsedQuery.featured = true;
+      queryObj.featured = true;
     }
 
     // Add category filter if provided and not empty
     if (req.query.category && req.query.category !== '') {
-      parsedQuery.category = req.query.category;
+      queryObj.category = req.query.category;
     }
 
     // Search functionality
     if (req.query.q) {
       const searchRegex = new RegExp(req.query.q, 'i');
-      parsedQuery.$or = [
+      queryObj.$or = [
         { title: searchRegex },
         { description: searchRegex },
         { brand: searchRegex },
@@ -51,7 +54,7 @@ exports.getProducts = async (req, res, next) => {
     }
 
     // Finding resource
-    let query = Product.find(parsedQuery);
+    let query = Product.find(queryObj);
 
     // Select Fields
     if (req.query.select) {
@@ -72,7 +75,7 @@ exports.getProducts = async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 10;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await Product.countDocuments(parsedQuery);
+    const total = await Product.countDocuments(queryObj);
 
     query = query.skip(startIndex).limit(limit);
 

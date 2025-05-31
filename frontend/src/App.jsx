@@ -67,6 +67,7 @@ import FeaturedProductsPage from './pages/admin/FeaturedProductsPage';
 import AdminOrderListPage from './pages/admin/OrderListPage';
 import AnalyticsPage from './pages/admin/AnalyticsPage';
 import SettingsPage from './pages/admin/SettingsPage';
+import UserListPage from './pages/admin/UserListPage';
 import AdminLayout from './components/admin/AdminLayout';
 
 // Route Protection
@@ -172,6 +173,7 @@ function App() {
                       <Route path="orders" element={<AdminOrderListPage />} />
                       <Route path="analytics" element={<AnalyticsPage />} />
                       <Route path="settings" element={<SettingsPage />} />
+                      <Route path="users" element={<UserListPage />} />
                     </Routes>
                   </AdminLayout>
                 </AdminRoute>

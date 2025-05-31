@@ -62,6 +62,7 @@ const AdminLayout = ({ children }) => {
     { name: 'Orders', href: '/admin/orders', icon: FaShoppingCart },
     { name: 'Analytics', href: '/admin/analytics', icon: FaChartPie },
     { name: 'Settings', href: '/admin/settings', icon: FaCog },
+    { name: 'User Management', href: '/admin/users', icon: FaUsers },
   ];
 
   return (

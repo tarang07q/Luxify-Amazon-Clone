@@ -200,7 +200,19 @@ const ProductCard = ({ product }) => {
               <p className="fallback-category">{product?.category || 'Category'}</p>
             </div>
           ) : (
-            <div className="image-wrapper">
+            <div className="image-wrapper" style={{
+              width: '100%',
+              aspectRatio: '1/1',
+              background: '#181a20',
+              borderRadius: '12px',
+              border: '1.5px solid #23263a',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              position: 'relative',
+            }}>
               <img
                 src={product?.images && Array.isArray(product.images) && product.images.length > 0 ?
                   getImageUrl(product.images[0]) : '/placeholder.jpg'}
@@ -211,10 +223,11 @@ const ProductCard = ({ product }) => {
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'contain',
-                  margin: 'auto',
-                  padding: '15px',
-                  transition: 'transform 0.5s ease'
+                  objectFit: 'cover',
+                  borderRadius: '12px',
+                  background: '#23263a',
+                  transition: 'transform 0.5s ease',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
                 }}
               />
               {/* Second image for hover effect */}
@@ -228,23 +241,44 @@ const ProductCard = ({ product }) => {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain',
-                    margin: 'auto',
-                    padding: '15px',
-                    transition: 'transform 0.5s ease'
+                    objectFit: 'cover',
+                    borderRadius: '12px',
+                    background: '#23263a',
+                    transition: 'transform 0.5s ease',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
                   }}
                 />
+              )}
+              {imageError && (
+                <div className="fallback-image" style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#23263a',
+                  color: '#888',
+                  borderRadius: '12px',
+                }}>
+                  <FaImage size={48} />
+                  <span style={{ marginTop: 8, fontSize: 14 }}>No Image</span>
+                </div>
               )}
             </div>
           )}
         </Link>
 
         {/* Quick Action Buttons */}
-        <div className={`product-actions ${isHovered ? 'visible' : ''}`}>
+        <div className={`product-actions ${isHovered ? 'visible' : ''}`} style={{ gap: '10px', justifyContent: 'center' }}>
           <Link
             to={`/product/${product?._id}`}
             className="action-button quick-view"
             title="Quick View"
+            style={{ borderRadius: '8px', background: '#23263a', color: '#00f2ff', border: 'none', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}
           >
             <FaEye />
           </Link>
@@ -253,6 +287,7 @@ const ProductCard = ({ product }) => {
             disabled={(product?.stock || 0) === 0 || isAddedToCart}
             className={`action-button add-cart ${isAddedToCart ? 'added' : ''}`}
             title={isAddedToCart ? "Added to Cart" : "Add to Cart"}
+            style={{ borderRadius: '8px', background: '#23263a', color: isAddedToCart ? '#00ff99' : '#ffaa00', border: 'none', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}
           >
             {isAddedToCart ? <FaCheck /> : <FaShoppingCart />}
           </button>

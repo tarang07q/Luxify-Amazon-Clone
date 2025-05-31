@@ -35,10 +35,17 @@ const ProductPage = () => {
   const product = productResponse?.data;
 
   useEffect(() => {
-    if (error && (error.status === 404 || error.status === 'FETCH_ERROR' || error.data?.error?.toLowerCase().includes('not found'))) {
-      navigate('/');
+    // Validate product ID format
+    if (productId && !/^[0-9a-fA-F]{24}$/.test(productId)) {
+      console.error('Invalid product ID format:', productId);
+      navigate('/shop');
+      return;
     }
-  }, [error, navigate]);
+
+    if (error && (error.status === 404 || error.status === 'FETCH_ERROR' || error.data?.error?.toLowerCase().includes('not found'))) {
+      navigate('/shop');
+    }
+  }, [error, navigate, productId]);
 
   const addToCartHandler = () => {
     if (!product) return;

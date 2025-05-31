@@ -38,6 +38,7 @@ const ProductListPage = () => {
   } = useGetProductsQuery({
     pageNumber: currentPage,
     sort: `${sortDirection === 'desc' ? '-' : ''}${sortField}`,
+    keyword: searchTerm || '',
   });
 
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
@@ -92,9 +93,14 @@ const ProductListPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Implement search functionality
-    // This would typically involve calling the API with a search parameter
-    toast.info('Search functionality would be implemented here');
+    setCurrentPage(1); // Reset to first page when searching
+    refetch(); // Trigger refetch with new search term
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setCurrentPage(1);
+    refetch();
   };
 
   return (
@@ -155,16 +161,31 @@ const ProductListPage = () => {
               </div>
             </div>
           </div>
-          <button
-            type="submit"
-            className="btn-primary"
-            style={{
-              backgroundColor: theme.buttonPrimary,
-              color: theme.buttonText
-            }}
-          >
-            Search
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              className="btn-primary"
+              style={{
+                backgroundColor: theme.buttonPrimary,
+                color: theme.buttonText
+              }}
+            >
+              Search
+            </button>
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="btn-secondary"
+                style={{
+                  backgroundColor: theme.secondary,
+                  color: theme.buttonText
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </form>
       </div>
 

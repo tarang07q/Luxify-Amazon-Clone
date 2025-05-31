@@ -30,7 +30,7 @@ const HomePage = () => {
   const categories = [
     'Electronics',
     'Clothing',
-    'Home & Garden',
+    'Home & Kitchen',
     'Books',
     'Beauty',
     'Sports',
@@ -62,15 +62,22 @@ const HomePage = () => {
     queryParams.keyword = keyword;
   }
 
-  const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams);
+  const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true
+  });
+
+
+
+
 
   // Fetch featured products for homepage
   const { data: featuredData, isLoading: featuredLoading } = useGetProductsQuery({ featured: true, pageNumber: 1 }, { skip: !!keyword });
 
   useEffect(() => {
-    // Refetch data when component mounts
+    // Refetch data when component mounts or keyword changes
     refetch();
-  }, [refetch]);
+  }, [refetch, keyword, pageNumber]);
 
   // This categories array is now defined above
 
@@ -264,7 +271,7 @@ const HomePage = () => {
               Try Again
             </button>
           </div>
-        ) : !data || !data.data || (isFeatured && !data.data.some(product => product.featured)) || data.data.length === 0 ? (
+        ) : !data || !data.data || data.data.length === 0 ? (
           <div style={{padding: '40px 0', textAlign: 'center'}}>
             <Message>No products found</Message>
             <div style={{marginTop: '16px'}}>

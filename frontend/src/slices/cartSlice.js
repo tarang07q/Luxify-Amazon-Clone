@@ -1,15 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Helper function to get user-specific localStorage key
+const getUserKey = (key) => {
+  const userInfo = localStorage.getItem('user');
+  if (userInfo) {
+    const user = JSON.parse(userInfo);
+    return `${key}_${user.id}`;
+  }
+  return key; // fallback to global key if no user
+};
+
 const initialState = {
-  cartItems: localStorage.getItem('cartItems')
-    ? JSON.parse(localStorage.getItem('cartItems'))
-    : [],
-  shippingAddress: localStorage.getItem('shippingAddress')
-    ? JSON.parse(localStorage.getItem('shippingAddress'))
-    : {},
-  paymentMethod: localStorage.getItem('paymentMethod')
-    ? localStorage.getItem('paymentMethod')
-    : 'Cash on Delivery',
+  cartItems: [],
+  shippingAddress: {},
+  paymentMethod: 'Cash on Delivery',
 };
 
 const cartSlice = createSlice({
@@ -28,27 +32,37 @@ const cartSlice = createSlice({
         state.cartItems = [...state.cartItems, item];
       }
 
-      // Update localStorage
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      // Update user-specific localStorage
+      localStorage.setItem(getUserKey('cartItems'), JSON.stringify(state.cartItems));
     },
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      localStorage.setItem(getUserKey('cartItems'), JSON.stringify(state.cartItems));
     },
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
       localStorage.setItem(
-        'shippingAddress',
+        getUserKey('shippingAddress'),
         JSON.stringify(state.shippingAddress)
       );
     },
     savePaymentMethod: (state, action) => {
       state.paymentMethod = action.payload;
-      localStorage.setItem('paymentMethod', state.paymentMethod);
+      localStorage.setItem(getUserKey('paymentMethod'), state.paymentMethod);
     },
     clearCartItems: (state) => {
       state.cartItems = [];
-      localStorage.removeItem('cartItems');
+      localStorage.removeItem(getUserKey('cartItems'));
+    },
+    loadUserCart: (state) => {
+      // Load user-specific cart data
+      const cartItems = localStorage.getItem(getUserKey('cartItems'));
+      const shippingAddress = localStorage.getItem(getUserKey('shippingAddress'));
+      const paymentMethod = localStorage.getItem(getUserKey('paymentMethod'));
+
+      state.cartItems = cartItems ? JSON.parse(cartItems) : [];
+      state.shippingAddress = shippingAddress ? JSON.parse(shippingAddress) : {};
+      state.paymentMethod = paymentMethod || 'Cash on Delivery';
     },
   },
 });
@@ -59,6 +73,7 @@ export const {
   saveShippingAddress,
   savePaymentMethod,
   clearCartItems,
+  loadUserCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

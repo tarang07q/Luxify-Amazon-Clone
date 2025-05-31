@@ -50,8 +50,7 @@ const WishlistSchema = new mongoose.Schema({
   }
 });
 
-// Index for efficient queries
-WishlistSchema.index({ user: 1 });
+// Index for efficient queries (user field already has unique: true, so no need for additional index)
 WishlistSchema.index({ 'items.product': 1 });
 
 // Update the updatedAt field before saving

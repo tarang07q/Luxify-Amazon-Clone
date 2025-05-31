@@ -10,19 +10,20 @@ const path = require('path');
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // Import security middleware
-const {
-  generalLimiter,
-  authLimiter,
-  apiLimiter,
-  paymentLimiter,
-  uploadLimiter,
-  securityHeaders,
-  sanitizeData,
-  customSecurity,
-  requestSizeLimiter,
-  suspiciousActivityDetector,
-  corsSecurityCheck
-} = require('./middleware/security');
+const helmet = require('helmet');
+// const {
+//   generalLimiter,
+//   authLimiter,
+//   apiLimiter,
+//   paymentLimiter,
+//   uploadLimiter,
+//   securityHeaders,
+//   sanitizeData,
+//   customSecurity,
+//   requestSizeLimiter,
+//   suspiciousActivityDetector,
+//   corsSecurityCheck
+// } = require('./middleware/security');
 
 // Initialize Express app
 const app = express();
@@ -30,9 +31,21 @@ const app = express();
 // Trust proxy (for rate limiting behind reverse proxy)
 app.set('trust proxy', 1);
 
-// Minimal security middleware for testing
-// app.use(securityHeaders);
-// app.use(customSecurity);
+// Security middleware
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "https:", "blob:"],
+        scriptSrc: ["'self'"],
+        connectSrc: ["'self'", "https://api.stripe.com"]
+      }
+    }
+  }));
+}
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -89,25 +102,34 @@ const settingsRoutes = require('./routes/settings');
 const paymentRoutes = require('./routes/payments');
 const wishlistRoutes = require('./routes/wishlist');
 
-// Use routes with specific rate limiting
-app.use('/api/auth', authRoutes); // Temporarily removed authLimiter
+// Use routes
+app.use('/api/auth', authRoutes);
 console.log('✅ Registered /api/auth routes');
 
-// console.log('✅ Registering /api/products routes');
-// app.use('/api/products', productRoutes);
-// console.log('✅ Registered /api/products routes');
+console.log('✅ Registering /api/products routes');
+app.use('/api/products', productRoutes);
+console.log('✅ Registered /api/products routes');
 
-// console.log('✅ Registering /api/orders routes');
-// app.use('/api/orders', orderRoutes);
-// console.log('✅ Registered /api/orders routes');
+app.use('/api/orders', orderRoutes);
+console.log('✅ Registered /api/orders routes');
 
-// Temporarily disable other routes to isolate the issue
-// app.use('/api/reviews', reviewRoutes);
-// app.use('/api/upload', uploadLimiter, uploadRoutes);
-// app.use('/api/analytics', analyticsRoutes);
-// app.use('/api/settings', settingsRoutes);
-// app.use('/api/payments', paymentLimiter, paymentRoutes);
-// app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/reviews', reviewRoutes);
+console.log('✅ Registered /api/reviews routes');
+
+app.use('/api/upload', uploadRoutes);
+console.log('✅ Registered /api/upload routes');
+
+app.use('/api/analytics', analyticsRoutes);
+console.log('✅ Registered /api/analytics routes');
+
+app.use('/api/settings', settingsRoutes);
+console.log('✅ Registered /api/settings routes');
+
+app.use('/api/payments', paymentRoutes);
+console.log('✅ Registered /api/payments routes');
+
+app.use('/api/wishlist', wishlistRoutes);
+console.log('✅ Registered /api/wishlist routes');
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -151,7 +173,7 @@ app.get('/', (req, res) => {
 const errorHandler = require('./middleware/error');
 
 // 404 handler for unmatched routes
-app.use('*', (req, res) => {
+app.use((req, res, next) => {
   console.log(`❌ 404 - Route not found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
     success: false,

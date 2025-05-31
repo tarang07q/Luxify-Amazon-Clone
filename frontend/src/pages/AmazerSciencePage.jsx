@@ -1,56 +1,58 @@
 import React from 'react';
-import { FaRobot, FaVrCardboard, FaServer, FaShieldAlt, FaLightbulb } from 'react-icons/fa';
-import PageTemplate from '../components/layout/PageTemplate';
+import { FaRobot, FaVrCardboard, FaServer, FaShieldAlt, FaLightbulb, FaFlask } from 'react-icons/fa';
+import FooterPageTemplate from '../components/layout/FooterPageTemplate';
 
 const AmazerSciencePage = () => {
   return (
-    <PageTemplate 
-      title="Luxify Science" 
+    <FooterPageTemplate
+      title="Luxify Science"
+      subtitle="Pioneering the future of e-commerce technology"
+      icon={<FaFlask />}
       breadcrumbs={[{ text: 'Luxify Science' }]}
     >
-      <div className="page-section">
+      <div className="footer-page-section">
         <p className="text-lg">
-          At Luxify Science, we're pushing the boundaries of what's possible in e-commerce. 
-          Our team of scientists, engineers, and researchers work on cutting-edge technologies 
+          At Luxify Science, we're pushing the boundaries of what's possible in e-commerce.
+          Our team of scientists, engineers, and researchers work on cutting-edge technologies
           that power the Luxify shopping experience and shape the future of online retail.
         </p>
       </div>
 
-      <div className="page-section">
-        <h2>Our Research Areas</h2>
-        
-        <div className="info-grid">
-          <div className="info-card">
-            <FaRobot className="text-primary text-3xl mb-4" />
-            <h3>Artificial Intelligence</h3>
-            <p>
-              Our AI team develops advanced machine learning models that power personalized 
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Our Research Areas</h2>
+
+        <div className="footer-card-grid">
+          <div className="footer-card">
+            <FaRobot className="footer-card-icon" />
+            <h3 className="footer-card-title">Artificial Intelligence</h3>
+            <p className="footer-card-content">
+              Our AI team develops advanced machine learning models that power personalized
               recommendations, natural language processing for search, and automated customer service.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaVrCardboard className="text-primary text-3xl mb-4" />
-            <h3>3D Visualization & AR</h3>
-            <p>
-              We're pioneering new ways to visualize products online with photorealistic 3D models 
+
+          <div className="footer-card">
+            <FaVrCardboard className="footer-card-icon" />
+            <h3 className="footer-card-title">3D Visualization & AR</h3>
+            <p className="footer-card-content">
+              We're pioneering new ways to visualize products online with photorealistic 3D models
               and augmented reality experiences that let customers see products in their own space.
             </p>
           </div>
-          
-          <div className="info-card">
-            <FaServer className="text-primary text-3xl mb-4" />
-            <h3>Cloud Computing</h3>
-            <p>
-              Our cloud infrastructure team builds scalable systems that handle millions of 
+
+          <div className="footer-card">
+            <FaServer className="footer-card-icon" />
+            <h3 className="footer-card-title">Cloud Computing</h3>
+            <p className="footer-card-content">
+              Our cloud infrastructure team builds scalable systems that handle millions of
               transactions while maintaining lightning-fast performance and reliability.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="page-section">
-        <h2>Recent Innovations</h2>
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Recent Innovations</h2>
         
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-indigo-50 to-pink-50 p-6 rounded-xl">
@@ -86,9 +88,9 @@ const AmazerSciencePage = () => {
         </div>
       </div>
 
-      <div className="page-section">
-        <h2 className="flex items-center">
-          <FaShieldAlt className="mr-2 text-primary" />
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle flex items-center">
+          <FaShieldAlt className="mr-2" />
           Our Commitment to Responsible Innovation
         </h2>
         
@@ -105,23 +107,23 @@ const AmazerSciencePage = () => {
         </ul>
       </div>
 
-      <div className="page-section">
-        <h2 className="flex items-center">
-          <FaLightbulb className="mr-2 text-primary" />
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle flex items-center">
+          <FaLightbulb className="mr-2" />
           Join Our Team
         </h2>
-        
+
         <p className="mb-6">
-          We're always looking for talented scientists, engineers, and researchers to join our team. 
-          If you're passionate about solving complex problems and creating technologies that improve 
+          We're always looking for talented scientists, engineers, and researchers to join our team.
+          If you're passionate about solving complex problems and creating technologies that improve
           the lives of millions of customers, we want to hear from you.
         </p>
-        
-        <button className="cta-button">
+
+        <button className="footer-page-button footer-page-button-primary">
           View Science Careers
         </button>
       </div>
-    </PageTemplate>
+    </FooterPageTemplate>
   );
 };
 

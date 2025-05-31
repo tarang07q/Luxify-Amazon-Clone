@@ -8,23 +8,13 @@ const {
 } = require('../controllers/analyticsController');
 const { protect, admin } = require('../middleware/auth');
 
-// All routes are protected
+// All routes are protected and require admin access
 router.use(protect);
+router.use(admin);
 
-// Check if admin middleware exists
-const adminCheck = (req, res, next) => {
-  if (!req.user.isAdmin) {
-    return res.status(403).json({
-      success: false,
-      error: 'Not authorized to access this route. Admin access required.'
-    });
-  }
-  next();
-};
-
-router.route('/dashboard').get(adminCheck, getDashboardAnalytics);
-router.route('/sales').get(adminCheck, getSalesAnalytics);
-router.route('/products').get(adminCheck, getProductAnalytics);
-router.route('/users').get(adminCheck, getUserAnalytics);
+router.route('/dashboard').get(getDashboardAnalytics);
+router.route('/sales').get(getSalesAnalytics);
+router.route('/products').get(getProductAnalytics);
+router.route('/users').get(getUserAnalytics);
 
 module.exports = router;

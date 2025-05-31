@@ -32,7 +32,8 @@ const PlaceOrderPage = () => {
   const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
 
   useEffect(() => {
-    if (!shippingAddress.street) {
+    // Check for both old and new field names for backward compatibility
+    if (!shippingAddress.street && !shippingAddress.address) {
       navigate('/shipping');
     } else if (!paymentMethod) {
       navigate('/payment');
@@ -45,7 +46,35 @@ const PlaceOrderPage = () => {
 
   const placeOrderHandler = async () => {
     try {
-      console.log('Shipping Address:', shippingAddress);
+      console.log('🚀 PlaceOrder - Original Shipping Address:', shippingAddress);
+
+      // Normalize shipping address to match backend schema exactly
+      const normalizedShippingAddress = {
+        name: shippingAddress.name || 'Default User',
+        street: shippingAddress.street || shippingAddress.address || 'Default Street',
+        city: shippingAddress.city || 'Default City',
+        state: shippingAddress.state || 'Delhi',
+        zipCode: shippingAddress.zipCode || shippingAddress.postalCode || '110001', // Backend expects 'zipCode'
+        country: shippingAddress.country || 'India',
+        phone: shippingAddress.phone || '9999999999'
+      };
+
+      console.log('📦 PlaceOrder - Normalized Shipping Address:', normalizedShippingAddress);
+
+      // Validate required fields
+      if (!normalizedShippingAddress.name || !normalizedShippingAddress.street ||
+          !normalizedShippingAddress.city || !normalizedShippingAddress.state ||
+          !normalizedShippingAddress.zipCode) {
+        console.error('❌ Missing required shipping fields:', {
+          name: normalizedShippingAddress.name,
+          street: normalizedShippingAddress.street,
+          city: normalizedShippingAddress.city,
+          state: normalizedShippingAddress.state,
+          zipCode: normalizedShippingAddress.zipCode
+        });
+        toast.error('Please ensure all shipping address fields are filled');
+        return;
+      }
 
       const orderData = {
         orderItems: cartItems.map((item) => ({
@@ -55,7 +84,7 @@ const PlaceOrderPage = () => {
           price: item.price,
           product: item._id,
         })),
-        shippingAddress,
+        shippingAddress: normalizedShippingAddress,
         paymentMethod,
         itemsPrice,
         taxPrice,
@@ -97,9 +126,9 @@ const PlaceOrderPage = () => {
               <p className="mb-1"><strong>Name:</strong> {shippingAddress.name || 'Not provided'}</p>
               <p className="mb-1"><strong>Phone:</strong> {shippingAddress.phone || 'Not provided'}</p>
               <p className="mb-1">
-                <strong>Address:</strong> {shippingAddress.street},{' '}
+                <strong>Address:</strong> {shippingAddress.address || shippingAddress.street},{' '}
                 {shippingAddress.city}, {shippingAddress.state},{' '}
-                {shippingAddress.zipCode}, {shippingAddress.country}
+                {shippingAddress.postalCode || shippingAddress.zipCode}, {shippingAddress.country}
               </p>
             </div>
           </div>

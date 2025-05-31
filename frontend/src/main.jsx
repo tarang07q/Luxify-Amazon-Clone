@@ -29,11 +29,9 @@ window.addEventListener('error', (event) => {
 });
 
 createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </Provider>
 );

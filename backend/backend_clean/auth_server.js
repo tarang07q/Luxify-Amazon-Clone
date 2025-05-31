@@ -1002,6 +1002,56 @@ app.get('/api/admin/analytics', protect, adminOnly, async (req, res) => {
   }
 });
 
+// ===== ADDRESS ROUTES =====
+
+// Get all Indian states
+app.get('/api/address/states', (req, res) => {
+  try {
+    const indianStatesAndCities = require('../data/indianStatesAndCities');
+    const states = Object.keys(indianStatesAndCities).sort();
+    res.json({
+      success: true,
+      count: states.length,
+      data: states
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
+});
+
+// Get cities by state
+app.get('/api/address/cities/:state', (req, res) => {
+  try {
+    const indianStatesAndCities = require('../data/indianStatesAndCities');
+    const { state } = req.params;
+    const cities = indianStatesAndCities[state];
+
+    if (!cities) {
+      return res.status(404).json({
+        success: false,
+        message: 'State not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      state: state,
+      count: cities.length,
+      data: cities.sort()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);

@@ -34,9 +34,6 @@ exports.getProducts = async (req, res, next) => {
       parsedQuery.featured = true;
     }
 
-    // Finding resource
-    let query = Product.find(parsedQuery);
-
     // Search functionality
     if (req.query.q) {
       const searchRegex = new RegExp(req.query.q, 'i');
@@ -46,8 +43,10 @@ exports.getProducts = async (req, res, next) => {
         { brand: searchRegex },
         { category: searchRegex }
       ];
-      query = Product.find(parsedQuery);
     }
+
+    // Finding resource
+    let query = Product.find(parsedQuery);
 
     // Select Fields
     if (req.query.select) {
@@ -68,7 +67,7 @@ exports.getProducts = async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 10;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await Product.countDocuments(JSON.parse(queryStr));
+    const total = await Product.countDocuments(parsedQuery);
 
     query = query.skip(startIndex).limit(limit);
 
@@ -96,9 +95,11 @@ exports.getProducts = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      count: products.length,
+      count: total,
       pagination,
-      data: products
+      data: products,
+      page: page,
+      pages: Math.ceil(total / limit)
     });
   } catch (err) {
     next(err);

@@ -20,18 +20,35 @@ const AnalyticsPage = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get('/api/analytics/dashboard');
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const { data } = await axios.get('/api/analytics/dashboard', config);
         setDashboardData(data);
         setLoading(false);
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load dashboard data');
+        console.error('Analytics error:', err);
+        setError(err.response?.data?.message || err.response?.data?.error || 'Failed to load dashboard data');
         setLoading(false);
       }
     };
 
     const fetchSalesData = async () => {
       try {
-        const { data } = await axios.get('/api/analytics/sales');
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const { data } = await axios.get('/api/analytics/sales', config);
         setSalesData(data);
       } catch (err) {
         console.error('Failed to load sales data:', err);
@@ -40,7 +57,15 @@ const AnalyticsPage = () => {
 
     const fetchProductData = async () => {
       try {
-        const { data } = await axios.get('/api/analytics/products');
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const { data } = await axios.get('/api/analytics/products', config);
         setProductData(data);
       } catch (err) {
         console.error('Failed to load product data:', err);
@@ -49,7 +74,15 @@ const AnalyticsPage = () => {
 
     const fetchUserData = async () => {
       try {
-        const { data } = await axios.get('/api/analytics/users');
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const { data } = await axios.get('/api/analytics/users', config);
         setUserData(data);
       } catch (err) {
         console.error('Failed to load user data:', err);

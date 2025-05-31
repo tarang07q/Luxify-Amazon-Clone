@@ -18,7 +18,7 @@ const getDashboardAnalytics = asyncHandler(async (req, res) => {
   const totalProducts = await Product.countDocuments();
   
   // Get total users
-  const totalUsers = await User.countDocuments({ isAdmin: false });
+  const totalUsers = await User.countDocuments({ role: 'user' });
   
   // Get recent orders
   const recentOrders = await Order.find({})
@@ -124,23 +124,23 @@ const getProductAnalytics = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getUserAnalytics = asyncHandler(async (req, res) => {
   // Get total users
-  const totalUsers = await User.countDocuments({ isAdmin: false });
-  
+  const totalUsers = await User.countDocuments({ role: 'user' });
+
   // Get new users in the last 30 days
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
+
   const newUsers = await User.countDocuments({
-    isAdmin: false,
+    role: 'user',
     createdAt: { $gte: thirtyDaysAgo }
   });
-  
+
   // Get users by registration date (last 6 months)
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-  
+
   const users = await User.find({
-    isAdmin: false,
+    role: 'user',
     createdAt: { $gte: sixMonthsAgo }
   });
   

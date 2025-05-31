@@ -55,15 +55,31 @@ export const CurrencyProvider = ({ children }) => {
 
   // Function to convert price from USD to selected currency
   const convertPrice = (priceInUSD) => {
+    // Handle null, undefined, or invalid price values
+    if (priceInUSD === null || priceInUSD === undefined || isNaN(priceInUSD)) {
+      return 0;
+    }
+
     if (currency.code === 'USD') return priceInUSD;
-    
+
     const rate = EXCHANGE_RATES.USD[currency.code] || 1;
     return priceInUSD * rate;
   };
 
   // Function to format price with currency symbol
   const formatPrice = (price) => {
+    // Handle null, undefined, or invalid price values
+    if (price === null || price === undefined || isNaN(price)) {
+      return `${currency.symbol}0.00`;
+    }
+
     const convertedPrice = convertPrice(price);
+
+    // Additional safety check for converted price
+    if (convertedPrice === null || convertedPrice === undefined || isNaN(convertedPrice)) {
+      return `${currency.symbol}0.00`;
+    }
+
     return `${currency.symbol}${convertedPrice.toFixed(2)}`;
   };
 

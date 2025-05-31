@@ -11,10 +11,10 @@ const safeJSONParse = (jsonString) => {
 };
 
 const initialState = {
-  user: localStorage.getItem('user')
-    ? safeJSONParse(localStorage.getItem('user'))
+  user: localStorage.getItem('luxify_user')
+    ? safeJSONParse(localStorage.getItem('luxify_user'))
     : null,
-  token: localStorage.getItem('token') || null,
+  token: localStorage.getItem('luxify_auth_token') || null,
 };
 
 // Log initial state for debugging
@@ -29,8 +29,8 @@ const authSlice = createSlice({
       console.log('Setting credentials:', { user, token });
       state.user = user;
       state.token = token;
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', token);
+      localStorage.setItem('luxify_user', JSON.stringify(user));
+      localStorage.setItem('luxify_auth_token', token);
     },
     logout: (state) => {
       // Clear Redux state
@@ -38,9 +38,23 @@ const authSlice = createSlice({
       state.token = null;
 
       // Clear localStorage
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
+      localStorage.removeItem('luxify_user');
+      localStorage.removeItem('luxify_auth_token');
       localStorage.removeItem('lastRegisteredAdmin');
+
+      // Clear user-specific cart data
+      const userInfo = localStorage.getItem('luxify_user');
+      if (userInfo) {
+        try {
+          const user = JSON.parse(userInfo);
+          localStorage.removeItem(`cartItems_${user.id}`);
+          localStorage.removeItem(`shippingAddress_${user.id}`);
+          localStorage.removeItem(`paymentMethod_${user.id}`);
+          localStorage.removeItem(`savedAddresses_${user.id}`);
+        } catch (e) {
+          console.error('Error clearing user-specific data:', e);
+        }
+      }
 
       // Clear all cookies
       const cookies = document.cookie.split(';');

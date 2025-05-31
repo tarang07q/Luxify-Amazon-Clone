@@ -122,7 +122,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="nav-links">
-            <Link to="/" className="nav-link">
+            <Link to="/shop" className="nav-link">
               <FaHome />
               <span>Home</span>
             </Link>
@@ -281,7 +281,7 @@ const Header = () => {
           </div>
 
           <div className="mobile-nav-links">
-            <Link to="/" className="mobile-nav-link" onClick={toggleMenu}>
+            <Link to="/shop" className="mobile-nav-link" onClick={toggleMenu}>
               <FaHome />
               <span>Home</span>
             </Link>

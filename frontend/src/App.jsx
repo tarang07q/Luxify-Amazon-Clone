@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUserCart } from './slices/cartSlice';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import GlobalErrorDisplay from './components/ui/GlobalErrorDisplay';
 import { ThemeProvider } from './context/ThemeContext';
@@ -16,10 +19,10 @@ import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
+
 import NewLoginPage from './pages/NewLoginPage';
 import NewRegisterPage from './pages/NewRegisterPage';
 import NewAdminRegistrationPage from './pages/NewAdminRegistrationPage';
-import ProfilePage from './pages/ProfilePage';
 import EnhancedProfilePage from './pages/EnhancedProfilePage';
 import ShippingPage from './pages/ShippingPage';
 import PaymentPage from './pages/PaymentPage';
@@ -56,7 +59,6 @@ import ReturnsPage from './pages/ReturnsPage';
 import HelpPage from './pages/HelpPage';
 
 // Admin Pages
-import AdminDashboardPage from './pages/admin/DashboardPage';
 import EnhancedDashboardPage from './pages/admin/EnhancedDashboardPage';
 import AdminProductListPage from './pages/admin/ProductListPage';
 import AdminProductEditPage from './pages/admin/ProductEditPage';
@@ -72,6 +74,17 @@ import PrivateRoute from './components/routes/PrivateRoute';
 import AdminRoute from './components/routes/AdminRoute';
 
 function App() {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  // Load user-specific cart when app initializes if user is logged in
+  useEffect(() => {
+    if (user) {
+      console.log('🛒 Loading user cart for:', user.email);
+      dispatch(loadUserCart());
+    }
+  }, [user, dispatch]);
+
   return (
     <ErrorBoundary>
       <ThemeProvider>

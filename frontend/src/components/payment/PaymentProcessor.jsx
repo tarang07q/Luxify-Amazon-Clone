@@ -81,25 +81,29 @@ const PaymentProcessor = ({ amount, paymentMethod, onSuccess, onCancel }) => {
 
     setProcessing(true);
 
-    // Simulate payment processing
+    // Simulate payment processing with better UX
     setTimeout(() => {
       setProcessing(false);
 
-      // 90% success rate for demo purposes
-      const isSuccess = Math.random() < 0.9;
+      // 95% success rate for demo purposes
+      const isSuccess = Math.random() < 0.95;
 
       if (isSuccess) {
-        toast.success(`Payment of ${formatPrice(amount)} processed successfully!`);
+        const paymentId = `LUX-${Date.now().toString().slice(-8)}`;
+        toast.success(`✅ Payment of ${formatPrice(amount)} processed successfully!`);
+
         onSuccess({
-          id: `payment-${Date.now()}`,
+          id: paymentId,
           status: 'COMPLETED',
           update_time: new Date().toISOString(),
-          email_address: 'customer@example.com',
+          email_address: 'customer@luxify.com',
+          payment_method: paymentMethod,
+          amount: amount
         });
       } else {
-        toast.error('Payment failed. Please try again.');
+        toast.error('❌ Payment failed. Please check your details and try again.');
       }
-    }, 2000);
+    }, 3000); // Slightly longer for more realistic feel
   };
 
   // Render payment method specific UI

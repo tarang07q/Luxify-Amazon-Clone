@@ -23,10 +23,10 @@ export const orderApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Order'],
     }),
     updateOrderStatus: builder.mutation({
-      query: ({ orderId, status }) => ({
-        url: `/orders/${orderId}/status`,
+      query: ({ orderId, status, paymentReceived }) => ({
+        url: `/orders/${orderId}`,
         method: 'PUT',
-        body: { status },
+        body: { status, paymentReceived },
       }),
       invalidatesTags: ['Order'],
     }),

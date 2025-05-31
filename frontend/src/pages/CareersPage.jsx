@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaBriefcase, FaLaptopCode, FaChartLine, FaShippingFast, FaHeadset } from 'react-icons/fa';
-import PageTemplate from '../components/layout/PageTemplate';
+import FooterPageTemplate from '../components/layout/FooterPageTemplate';
 
 const CareersPage = () => {
   // Sample job listings
@@ -40,49 +40,51 @@ const CareersPage = () => {
   ];
 
   return (
-    <PageTemplate 
-      title="Careers at Luxify" 
+    <FooterPageTemplate
+      title="Careers at Luxify"
+      subtitle="Join our team and shape the future of e-commerce"
+      icon={<FaBriefcase />}
       breadcrumbs={[{ text: 'Careers' }]}
     >
-      <div className="page-section">
+      <div className="footer-page-section">
         <p className="text-lg">
-          Join our team and help shape the future of premium e-commerce. At Luxify, we're 
-          building something special—a platform that combines luxury products with cutting-edge 
+          Join our team and help shape the future of premium e-commerce. At Luxify, we're
+          building something special—a platform that combines luxury products with cutting-edge
           technology to create exceptional shopping experiences.
         </p>
       </div>
 
-      <div className="page-section">
-        <h2>Why Work With Us</h2>
-        <div className="info-grid">
-          <div className="info-card">
-            <h3>Innovative Environment</h3>
-            <p>
-              Work on challenging problems and cutting-edge technologies like 3D product 
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Why Work With Us</h2>
+        <div className="footer-card-grid">
+          <div className="footer-card">
+            <h3 className="footer-card-title">Innovative Environment</h3>
+            <p className="footer-card-content">
+              Work on challenging problems and cutting-edge technologies like 3D product
               visualization, AI-powered recommendations, and more.
             </p>
           </div>
-          
-          <div className="info-card">
-            <h3>Growth Opportunities</h3>
-            <p>
-              We're growing rapidly, creating abundant opportunities for career advancement 
+
+          <div className="footer-card">
+            <h3 className="footer-card-title">Growth Opportunities</h3>
+            <p className="footer-card-content">
+              We're growing rapidly, creating abundant opportunities for career advancement
               and professional development.
             </p>
           </div>
-          
-          <div className="info-card">
-            <h3>Competitive Benefits</h3>
-            <p>
-              Enjoy competitive salaries, comprehensive health benefits, generous PTO, 
+
+          <div className="footer-card">
+            <h3 className="footer-card-title">Competitive Benefits</h3>
+            <p className="footer-card-content">
+              Enjoy competitive salaries, comprehensive health benefits, generous PTO,
               employee discounts, and more.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="page-section">
-        <h2>Our Values</h2>
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle">Our Values</h2>
         <ul className="list-disc pl-6 space-y-3">
           <li><strong>Customer Obsession:</strong> We start with the customer and work backward.</li>
           <li><strong>Innovation:</strong> We constantly seek new ways to improve the shopping experience.</li>
@@ -92,38 +94,38 @@ const CareersPage = () => {
         </ul>
       </div>
 
-      <div className="page-section">
-        <h2 className="flex items-center">
-          <FaBriefcase className="mr-2 text-primary" />
+      <div className="footer-page-section">
+        <h2 className="footer-page-subtitle flex items-center">
+          <FaBriefcase className="mr-2" />
           Open Positions
         </h2>
         
         <div className="mt-6 space-y-4">
           {jobListings.map(job => (
-            <div key={job.id} className="info-card">
+            <div key={job.id} className="footer-card">
               <div className="flex items-start">
                 <div className="mr-4 mt-1">{job.icon}</div>
                 <div>
-                  <h3 className="text-xl font-semibold">{job.title}</h3>
+                  <h3 className="footer-card-title">{job.title}</h3>
                   <div className="text-gray-600 mt-1">
                     <p>{job.department} • {job.location}</p>
                     <p className="text-sm mt-1">{job.type}</p>
                   </div>
-                  <button className="cta-button mt-4">Apply Now</button>
+                  <button className="footer-page-button footer-page-button-primary mt-4">Apply Now</button>
                 </div>
               </div>
             </div>
           ))}
         </div>
-        
+
         <div className="mt-8 text-center">
           <p className="mb-4">Don't see a position that matches your skills?</p>
-          <button className="secondary-button">
+          <button className="footer-page-button footer-page-button-secondary">
             Submit Your Resume
           </button>
         </div>
       </div>
-    </PageTemplate>
+    </FooterPageTemplate>
   );
 };
 

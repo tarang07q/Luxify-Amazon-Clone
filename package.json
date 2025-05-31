@@ -8,12 +8,18 @@
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm install && npm run build --prefix frontend",
+    "install-server": "npm install --prefix backend",
+    "install-client": "npm install --prefix frontend",
+    "install-all": "npm run install-server && npm run install-client",
     "data:import": "node backend/seeder.js -i",
     "data:destroy": "node backend/seeder.js -d",
     "admin:create": "node backend/seeder.js -a",
     "products:import": "node backend/seedProducts.js",
     "products:destroy": "node backend/seedProducts.js -d",
-    "create:admin": "node backend/createSimpleAdmin.js"
+    "create:admin": "node backend/createSimpleAdmin.js",
+    "deploy": "bash deploy.sh",
+    "vercel-build": "npm run build"
   },
   "keywords": [
     "ecommerce",

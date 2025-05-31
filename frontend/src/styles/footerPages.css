@@ -183,11 +183,11 @@
 }
 
 .footer-card {
-  background-color: rgba(20, 21, 57, 0.5);
+  background-color: var(--cardBg);
   border-radius: 8px;
   padding: 25px;
-  box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
-  border: 1px solid rgba(0, 242, 255, 0.1);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   transition: all 0.3s ease;
   height: 100%;
   display: flex;
@@ -227,8 +227,9 @@
 }
 
 .footer-card:hover {
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+  box-shadow: var(--shadowHover);
   transform: translateY(-5px);
+  background-color: var(--cardHoverBg);
 }
 
 .footer-card:hover::before,
@@ -294,30 +295,30 @@
 }
 
 .footer-page-button-primary {
-  background-color: rgba(0, 242, 255, 0.2);
-  color: var(--primary);
-  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-  border: 1px solid rgba(0, 242, 255, 0.3);
+  background-color: var(--buttonPrimary);
+  color: var(--buttonText);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--primary);
   backdrop-filter: blur(5px);
 }
 
 .footer-page-button-primary:hover {
-  background-color: rgba(0, 242, 255, 0.3);
+  background-color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+  box-shadow: var(--shadowHover);
 }
 
 .footer-page-button-secondary {
   background-color: transparent;
   color: var(--text);
-  border: 1px solid rgba(0, 242, 255, 0.3);
+  border: 1px solid var(--border);
   backdrop-filter: blur(5px);
 }
 
 .footer-page-button-secondary:hover {
-  background-color: rgba(255, 0, 228, 0.1);
+  background-color: var(--cardHoverBg);
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(255, 0, 228, 0.3);
+  box-shadow: var(--shadowHover);
   border-color: var(--secondary);
 }
 
@@ -493,11 +494,13 @@
 
 /* Call to action */
 .footer-cta-container {
-  background-color: rgba(20, 21, 57, 0.5);
+  background-color: var(--cardBg);
   border-radius: 8px;
   padding: 40px;
   color: var(--text);
   text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
   margin: 3rem 0;
   position: relative;
   overflow: hidden;

@@ -11,9 +11,10 @@ export const productApiSlice = apiSlice.injectEndpoints({
       transformResponse: (response) => {
         return {
           data: response.data || [],
-          pages: Math.ceil(response.count / 10) || 1,
-          page: 1,
-          count: response.count || 0
+          pages: response.pages || Math.ceil((response.count || 0) / 10) || 1,
+          page: response.page || 1,
+          count: response.count || 0,
+          success: response.success
         };
       },
     }),

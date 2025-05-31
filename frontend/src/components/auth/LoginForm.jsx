@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLoginMutation } from '../../slices/services/authService';
 import { setCredentials } from '../../slices/authSlice';
+import { loadUserCart } from '../../slices/cartSlice';
 import { toast } from 'react-toastify';
 import { FaSignInAlt, FaArrowRight, FaUserShield, FaSpinner, FaTools } from 'react-icons/fa';
+import { useTheme } from '../../context/ThemeContext';
 import ApiConnectionTest from '../ui/ApiConnectionTest';
 
 const LoginForm = ({ redirect = '/', isAdmin = false }) => {
@@ -27,6 +29,7 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { theme, currentTheme } = useTheme();
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -75,32 +78,52 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
       const res = await login({ email, password }).unwrap();
       console.log('Login response:', res);
 
-      dispatch(setCredentials(res));
+      // Ensure we have the correct data structure
+      const userData = res.user || res.data;
+      const token = res.token;
+
+      if (!userData || !token) {
+        throw new Error('Invalid response format from server');
+      }
+
+      dispatch(setCredentials({ user: userData, token }));
+      dispatch(loadUserCart()); // Load user-specific cart data
 
       // Check if user is admin and redirect accordingly
-      if (res.user && res.user.role === 'admin') {
+      if (userData.role === 'admin') {
         console.log('Admin user detected, redirecting to admin dashboard');
         setAdminLoginSuccess(true);
-        toast.success('Admin login successful!');
+        toast.success(`Welcome back, ${userData.name}! Redirecting to admin dashboard...`);
 
         // Delay redirect to show success message
         setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 1000);
+          navigate('/admin/dashboard', { replace: true });
+        }, 1500);
       } else {
         console.log('Regular user detected, redirecting to:', redirect);
-        toast.success('Login successful!');
+        toast.success(`Welcome back, ${userData.name}!`);
 
         // Redirect regular users to the appropriate page
-        if (redirect === '/' || redirect === '/admin' || redirect.startsWith('/admin/')) {
-          navigate('/shop'); // Redirect regular users to shop instead of admin
-        } else {
-          navigate(redirect);
-        }
+        const targetPath = (redirect === '/' || redirect === '/admin' || redirect.startsWith('/admin/'))
+          ? '/shop'
+          : redirect;
+
+        setTimeout(() => {
+          navigate(targetPath, { replace: true });
+        }, 1000);
       }
     } catch (err) {
       console.error('Login error:', err);
-      const errorMessage = err?.data?.error || err.error || 'Authentication failed. Please check your credentials.';
+      let errorMessage = 'Authentication failed. Please check your credentials.';
+
+      if (err?.data?.error) {
+        errorMessage = err.data.error;
+      } else if (err?.error) {
+        errorMessage = err.error;
+      } else if (err?.message) {
+        errorMessage = err.message;
+      }
+
       setApiError(errorMessage);
       toast.error(errorMessage);
       setLoginAttempted(false);
@@ -211,12 +234,13 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
 
       {!isAdmin && (
         <>
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4" style={{ borderTop: `1px solid ${theme.border}` }}>
             <div className="text-center">
-              <p className="text-gray-700 mb-2">Don't have an account?</p>
+              <p className="mb-2" style={{ color: theme.textLight }}>Don't have an account?</p>
               <Link
                 to={`/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
-                className="text-indigo-600 hover:text-indigo-800 font-medium flex items-center justify-center"
+                className="font-medium flex items-center justify-center hover:opacity-80 transition-opacity"
+                style={{ color: theme.primary }}
               >
                 Create Account <FaArrowRight className="ml-1" />
               </Link>
@@ -226,8 +250,8 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
           <div className="mt-4 text-center">
             <Link
               to="/admin-registration"
-              className="text-sm flex items-center justify-center hover:underline"
-              style={{ color: 'rgba(99, 102, 241, 0.8)' }}
+              className="text-sm flex items-center justify-center hover:underline transition-opacity hover:opacity-80"
+              style={{ color: theme.textLight }}
             >
               <FaUserShield className="mr-2" /> Create Admin Account
             </Link>
@@ -235,9 +259,9 @@ const LoginForm = ({ redirect = '/', isAdmin = false }) => {
         </>
       )}
 
-      <div className="mt-4 pt-4 border-t border-gray-200">
+      <div className="mt-4 pt-4" style={{ borderTop: `1px solid ${theme.border}` }}>
         <details className="text-sm">
-          <summary className="cursor-pointer flex items-center justify-center" style={{ color: 'rgba(107, 114, 128, 0.8)' }}>
+          <summary className="cursor-pointer flex items-center justify-center" style={{ color: theme.textLight }}>
             <FaTools className="mr-2" /> Troubleshooting Tools
           </summary>
           <div className="mt-2">

@@ -6,7 +6,7 @@ import ProductCard from '../components/product/ProductCard';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
 import Paginate from '../components/ui/Paginate';
-import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore, FaBox, FaLaptop, FaHome, FaBook, FaTshirt, FaSprayCan, FaGamepad, FaRunning, FaShoppingBasket, FaPaw, FaCar, FaTools, FaFirstAid, FaBriefcase, FaGift, FaHeartbeat, FaUtensils } from 'react-icons/fa';
+import { FaArrowRight, FaUser, FaShoppingCart, FaSearch, FaStore, FaBox, FaLaptop, FaHome, FaBook, FaTshirt, FaSprayCan, FaGamepad, FaRunning, FaShoppingBasket, FaPaw, FaCar, FaTools, FaFirstAid, FaBriefcase, FaGift, FaHeartbeat, FaUtensils, FaHSquare } from 'react-icons/fa';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, PresentationControls } from '@react-three/drei';
 import CubeIcon from '../components/3d/CubeIcon';
@@ -96,9 +96,11 @@ const HomePage = () => {
                   <>Discover <span>Premium</span> Products at Luxify</>
                 )}
               </h1>
-              <p className="hero-description">
+              <p className="hero-description justify-center ">
                 Experience luxury shopping with our curated collection of high-quality products.
+                <br></br>
                 Explore exclusive items with immersive 3D visualization technology.
+                
               </p>
               <div className="hero-buttons">
                 <Link
@@ -112,9 +114,16 @@ const HomePage = () => {
             {isShopPage ? (
               <div className="shop-3d-icon">
                 <ShoppingBag3D
-                  size={200}
+                  size={115}
+                  // shifting it to the left to align with the text
+                  style={{ transform: 'translateX(-120px)' }}
+                  // shifting it down to align with the text
+                  iconStyle={{ transform: 'translateY(10px)' }}
+        
+                  color="#00f2ff"
                   floatingAnimation={true}
                   glowEffect={true}
+
                 />
               </div>
             ) : (
@@ -152,24 +161,25 @@ const HomePage = () => {
 
               // Define colors based on theme
               const themeColors = {
-                primary: '#00f2ff',
+                primary: '#000000',
                 secondary: '#ff00e4',
-                accent1: '#7928ca',
+                accent1: '#ff0000',
                 accent2: '#01ffc3',
                 accent3: '#ffaa00',
-                accent4: '#ff6b6b',
+                accent4: '#228b22',
                 accent5: '#4ecdc4',
                 accent6: '#5046e5',
                 accent7: '#f7b801',
-                accent8: '#9c27b0'
+                accent8: '#9c27b0',
+                accent9: '#ffdb58'
               };
 
               switch(category) {
                 case 'Electronics':
-                  icon = <FaBox size={28} />;
+                  icon = <FaLaptop size={28} />;
                   color = themeColors.primary;
                   break;
-                case 'Clothing':
+                case 'Fashion':
                   icon = <FaTshirt size={28} />;
                   color = themeColors.accent7;
                   break;
@@ -205,9 +215,14 @@ const HomePage = () => {
                   icon = <FaCar size={28} />;
                   color = themeColors.accent2;
                   break;
+                case 'Grocery':
+                  icon = <FaShoppingCart size={28} />;
+                  color = themeColors.accent9;
+                  break;
                 default:
                   icon = <FaBox size={28} />;
-                  color = themeColors.primary;
+                  color = themeColors.secondary;
+
               }
 
               return (
@@ -232,11 +247,7 @@ const HomePage = () => {
           </div>
 
           {/* View All Categories Button */}
-          <div className="view-all-categories">
-            <Link to="/shop" className="view-all-button">
-              View All Categories <FaArrowRight style={{marginLeft: '8px'}} />
-            </Link>
-          </div>
+          
         </div>
       )}
 
@@ -293,12 +304,12 @@ const HomePage = () => {
                   ))
               }
             </div>
-            <div style={{marginTop: '32px'}}>
-              <Paginate
-                pages={data.pages || 1}
-                page={data.page || 1}
-                keyword={keyword ? keyword : ''}
-              />
+            <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', padding: '8px 0' }}>
+            <Paginate
+              pages={data.pages || 1}
+              page={data.page || 1}
+              keyword={keyword ? keyword : ''}
+            />
             </div>
           </>
         )}

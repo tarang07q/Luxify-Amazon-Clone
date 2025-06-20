@@ -10,7 +10,8 @@ const HelpPage = () => {
   const popularTopics = [
     {
       title: "Where's My Order?",
-      icon: <FaShoppingCart className="text-primary text-2xl" />,
+      icon: <FaShoppingCart className="text-primary text-2xl mr-2 mt-1 justify-center" />,
+      
       description: "Track your package, view order status, and get delivery updates.",
       link: "/orders"
     },

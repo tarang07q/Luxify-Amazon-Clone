@@ -36,7 +36,10 @@ const finalBatchProducts = [
     originalPrice: 19.99,
     discount: 15,
     stock: 200,
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Books',
     featured: true,
     rating: 4.8,
@@ -52,7 +55,10 @@ const finalBatchProducts = [
     originalPrice: 18.99,
     discount: 21,
     stock: 300,
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Books',
     featured: true,
     rating: 4.9,
@@ -68,7 +74,10 @@ const finalBatchProducts = [
     originalPrice: 17.99,
     discount: 22,
     stock: 150,
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Books',
     featured: false,
     rating: 4.7,
@@ -84,7 +93,10 @@ const finalBatchProducts = [
     originalPrice: 16.99,
     discount: 24,
     stock: 180,
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Books',
     featured: false,
     rating: 4.6,
@@ -100,7 +112,10 @@ const finalBatchProducts = [
     originalPrice: 19.99,
     discount: 20,
     stock: 120,
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Books',
     featured: true,
     rating: 4.8,
@@ -118,7 +133,10 @@ const finalBatchProducts = [
     originalPrice: 44.99,
     discount: 11,
     stock: 150,
-    images: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Beauty',
     featured: true,
     rating: 4.7,
@@ -134,7 +152,10 @@ const finalBatchProducts = [
     originalPrice: 9.99,
     discount: 20,
     stock: 300,
-    images: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Beauty',
     featured: false,
     rating: 4.5,
@@ -150,7 +171,10 @@ const finalBatchProducts = [
     originalPrice: 42.99,
     discount: 9,
     stock: 100,
-    images: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Beauty',
     featured: true,
     rating: 4.8,
@@ -166,7 +190,10 @@ const finalBatchProducts = [
     originalPrice: 89.99,
     discount: 12,
     stock: 80,
-    images: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Beauty',
     featured: false,
     rating: 4.6,
@@ -182,7 +209,10 @@ const finalBatchProducts = [
     originalPrice: 26.99,
     discount: 15,
     stock: 120,
-    images: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Beauty',
     featured: true,
     rating: 4.7,
@@ -200,7 +230,10 @@ const finalBatchProducts = [
     originalPrice: 2795.99,
     discount: 11,
     stock: 15,
-    images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Sports',
     featured: true,
     rating: 4.8,
@@ -216,7 +249,10 @@ const finalBatchProducts = [
     originalPrice: 39.99,
     discount: 13,
     stock: 200,
-    images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Sports',
     featured: false,
     rating: 4.7,
@@ -232,7 +268,10 @@ const finalBatchProducts = [
     originalPrice: 299.99,
     discount: 17,
     stock: 45,
-    images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Sports',
     featured: false,
     rating: 4.6,
@@ -248,7 +287,10 @@ const finalBatchProducts = [
     originalPrice: 49.99,
     discount: 10,
     stock: 150,
-    images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Sports',
     featured: true,
     rating: 4.8,
@@ -264,7 +306,10 @@ const finalBatchProducts = [
     originalPrice: 499.99,
     discount: 20,
     stock: 25,
-    images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Sports',
     featured: true,
     rating: 4.7,
@@ -282,7 +327,10 @@ const finalBatchProducts = [
     originalPrice: 399.99,
     discount: 8,
     stock: 30,
-    images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Toys',
     featured: true,
     rating: 4.9,
@@ -298,7 +346,10 @@ const finalBatchProducts = [
     originalPrice: 249.99,
     discount: 20,
     stock: 50,
-    images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Toys',
     featured: false,
     rating: 4.6,
@@ -314,7 +365,10 @@ const finalBatchProducts = [
     originalPrice: 179.99,
     discount: 17,
     stock: 40,
-    images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Toys',
     featured: false,
     rating: 4.5,
@@ -330,7 +384,10 @@ const finalBatchProducts = [
     originalPrice: 34.99,
     discount: 14,
     stock: 100,
-    images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Toys',
     featured: true,
     rating: 4.4,
@@ -346,7 +403,10 @@ const finalBatchProducts = [
     originalPrice: 24.99,
     discount: 20,
     stock: 200,
-    images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80'
+    ],
     category: 'Toys',
     featured: false,
     rating: 4.3,

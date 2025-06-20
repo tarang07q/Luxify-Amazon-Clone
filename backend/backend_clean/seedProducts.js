@@ -108,7 +108,8 @@ const sampleProducts = [
     discount: 8,
     stock: 50,
     images: [
-      'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=1000&q=80'
     ],
     category: 'Electronics',
     featured: true,
@@ -126,7 +127,8 @@ const sampleProducts = [
     discount: 8,
     stock: 35,
     images: [
-      'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?auto=format&fit=crop&w=1000&q=80'
     ],
     category: 'Electronics',
     featured: true,
@@ -144,7 +146,8 @@ const sampleProducts = [
     discount: 9,
     stock: 25,
     images: [
-      'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80'
     ],
     category: 'Electronics',
     featured: true,
@@ -162,7 +165,8 @@ const sampleProducts = [
     discount: 12,
     stock: 75,
     images: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1000&q=80'
     ],
     category: 'Electronics',
     featured: false,
@@ -180,7 +184,8 @@ const sampleProducts = [
     discount: 16,
     stock: 120,
     images: [
-      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1000&q=80'
     ],
     category: 'Clothing',
     featured: false,

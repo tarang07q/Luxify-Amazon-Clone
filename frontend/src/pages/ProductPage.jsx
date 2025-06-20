@@ -8,7 +8,6 @@ import { addToCart } from '../slices/cartSlice';
 import Loader from '../components/ui/Loader';
 import Message from '../components/ui/Message';
 import Rating from '../components/ui/Rating';
-import ProductReviews from '../components/product/ProductReviews';
 import { FaArrowLeft, FaShoppingCart, FaRegHeart, FaImage } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 import usePriceFormatter from '../hooks/usePriceFormatter';
@@ -218,13 +217,13 @@ const ProductPage = () => {
                 {(product?.stock || 0) > 0 && (
                   <div className="mb-4 flex justify-between">
                     <div>
-                      <span className="text-gray-700">Qty:</span>
+                      <span className="text-gray-400">Qty:</span>
                     </div>
                     <div>
                       <select
                         value={qty}
                         onChange={(e) => setQty(Number(e.target.value))}
-                        className="border rounded p-1"
+                        className="border rounded p-1 text-black"
                       >
                         {[...Array(Math.min(product?.stock || 1, 10)).keys()].map(
                           (x) => (
@@ -273,11 +272,6 @@ const ProductPage = () => {
 
 
             </div>
-          </div>
-
-          {/* Reviews Section */}
-          <div className="mt-8">
-            <ProductReviews productId={productId} product={product} canReview={true} />
           </div>
         </>
       )}

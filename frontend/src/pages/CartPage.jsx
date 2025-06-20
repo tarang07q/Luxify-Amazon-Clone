@@ -88,13 +88,13 @@ const CartPage = () => {
                         </div>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-2">
                           <div className="flex items-center">
-                            <span className="mr-2">Qty:</span>
+                            <span className="mr-2 text-black">Qty:</span>
                             <select
                               value={item.qty}
                               onChange={(e) =>
                                 updateQtyHandler(item, Number(e.target.value))
                               }
-                              className="border rounded p-1"
+                              className="border rounded p-1 text-black"
                             >
                               {[...Array(Math.min(item.stock, 10)).keys()].map(
                                 (x) => (

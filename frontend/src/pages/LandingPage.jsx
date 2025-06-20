@@ -15,6 +15,7 @@ import SpecializedIconShowcase from '../components/3d/SpecializedIconShowcase';
 import ModernCube from '../components/3d/ModernCube';
 
 
+
 const LandingPage = () => {
   const { theme, currentTheme } = useTheme();
   const [showLoginOptions, setShowLoginOptions] = useState(false);
@@ -152,24 +153,25 @@ const LandingPage = () => {
                 Discover a new dimension of online shopping with our curated selection of premium products.
                 Experience fast shipping, secure payments, and exceptional customer service.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/shop" className="flex items-center font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1" style={{
-                  backgroundColor: '#ffffff',
-                  color: '#6366F1',
-                }}>
-                  <FaShoppingBag className="mr-2" /> Start Shopping
-                </Link>
-                <Link to="/register" className="flex items-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                  <FaUserPlus className="mr-2" /> Create Account
-                </Link>
-              </div>
+              
             </div>
-            <div className="md:w-1/2 h-64 md:h-96">
+            <div className="md:w-1/2 h-55 md:h-62">
               <div className="w-full h-full">
                 <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <ShoppingBag3D
                     size={300}
                     color={currentTheme === 'dark' ? '#00f2ff' : '#5046e5'}
+                    rotation={true}
+                    rotationSpeed={0.5}
+                    rotationAxis="y"
+                    rotationDuration={10}
+                    rotationEasing="ease-in-out"
+                    rotationDelay={0}
+                    rotationCount={1}
+                    rotationInfinite={true}
+                    rotationInfiniteCount={1}
+                    rotationInfiniteDelay={0}
+                    rotationInfiniteEasing="ease-in-out"
                     floatingAnimation={true}
                     glowEffect={true}
                   />
@@ -481,8 +483,7 @@ const LandingPage = () => {
                 }}>User Account</h3>
               </div>
               <p className="mb-6" style={{ color: theme.text }}>
-                Create a personal account to shop, track orders, and save your favorite products.
-                Enjoy a personalized shopping experience with Luxify.
+              Create an account to shop, track orders, and save favorites for a personalized Luxify experience.
               </p>
               <Link to="/register" className="flex items-center justify-center w-full font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1" style={{
                 backgroundColor: currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : '#6366F1',
@@ -637,7 +638,7 @@ const LandingPage = () => {
                         border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
                         color: theme.text
                       }}
-                      placeholder="John Doe"
+                      placeholder="Tarang Bhargava"
                     />
                   </div>
                   <div>
@@ -650,7 +651,7 @@ const LandingPage = () => {
                         border: `1px solid ${currentTheme === 'dark' ? 'rgba(0, 242, 255, 0.2)' : 'rgba(80, 70, 229, 0.2)'}`,
                         color: theme.text
                       }}
-                      placeholder="john@example.com"
+                      placeholder="123@example.com"
                     />
                   </div>
                 </div>

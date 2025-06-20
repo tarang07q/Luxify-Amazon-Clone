@@ -118,6 +118,55 @@ npm run dev
 - Frontend: http://localhost:3004
 - Backend API: http://localhost:5000
 
+## 🌍 Deployment Guide
+
+### 🚀 Vercel Deployment (Recommended)
+1. **Connect your GitHub repository to Vercel** ([vercel.com](https://vercel.com)).
+2. **Set the following in Vercel project settings:**
+   - **Root Directory:** `./`
+   - **Build Command:** `cd frontend && npm run build`
+   - **Output Directory:** `frontend/dist`
+   - **Environment Variables:** Add all required backend and frontend variables (see below).
+3. **Deploy:** Vercel will build and deploy both frontend and backend (see `vercel.json` for routing/API config).
+
+### 🌐 Netlify Deployment (Frontend Only)
+1. **Build the frontend locally:**
+   ```sh
+   npm run build --prefix frontend
+   ```
+2. **Set Netlify Publish Directory:**
+   - Use `frontend/dist` as the publish directory in Netlify site settings.
+3. **Add SPA Redirects:**
+   - In `frontend/public/`, create a file named `_redirects` with:
+     ```
+     /*    /index.html   200
+     ```
+   - This ensures React Router works and prevents 404 errors on refresh.
+4. **Deploy:** Drag and drop the `frontend/dist` folder in Netlify UI or connect your repo and set the build command to `npm run build` and publish directory to `frontend/dist`.
+
+### 🐳 Docker Compose (Full Stack)
+- See the `docker-compose.yml` for running MongoDB, backend, and frontend together.
+- Use `docker-compose up -d` from the project root.
+
+### 🔑 Environment Variables
+- **Backend:** See `.env.example` in `backend/` and deployment guides for required variables (MongoDB URI, JWT secret, Stripe keys, etc).
+- **Frontend:** See `.env.example` in `frontend/` (API URL, Stripe publishable key, etc).
+- **Set these in your deployment platform's environment settings.**
+
+### 🛠️ Troubleshooting
+- **Netlify 404 Errors:**
+  - Ensure `_redirects` file is present in `frontend/public/`.
+  - Confirm `index.html` is in `frontend/dist` after build.
+  - Set publish directory to `frontend/dist`.
+- **Vercel API Issues:**
+  - Check `vercel.json` for correct API routing.
+  - Set all environment variables in Vercel dashboard.
+- **General:**
+  - Check build logs for errors.
+  - Make sure all dependencies are installed and up to date.
+
+For advanced deployment, monitoring, and troubleshooting, see `DEPLOYMENT.md` and `DEPLOYMENT_GUIDE.md`.
+
 ## 🐳 Docker Deployment
 
 ### **Using Docker Compose**
